@@ -1,27 +1,23 @@
 package gov.samhsa.c2s.c2suiapi.web;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.ValueSetService;
+import gov.samhsa.c2s.c2suiapi.infrastructure.VssContract;
+import gov.samhsa.c2s.c2suiapi.infrastructure.VssService;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ValueSetCategoryDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/vss")
-public class VSSRestController {
-
-    private ValueSetService valueSetService;
+public class VSSRestController implements VssContract {
 
     @Autowired
-    public VSSRestController(ValueSetService valueSetService) {
-        this.valueSetService = valueSetService;
-    }
+    private VssService vssService;
 
-    @RequestMapping(value = "/valueSetCategories", method = RequestMethod.GET)
+    @Override
     public List<ValueSetCategoryDto> getValueSetCategories() {
-        return valueSetService.getValueSetCategories();
+        return vssService.getValueSetCategories();
     }
 }
