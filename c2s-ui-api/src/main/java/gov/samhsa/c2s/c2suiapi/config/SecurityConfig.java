@@ -14,7 +14,7 @@ import static gov.samhsa.c2s.common.oauth2.OAuth2ScopeUtils.hasScopes;
 @Configuration
 public class SecurityConfig {
 
-    private static final String RESOURCE_ID = "c2s-ui-api";
+    private static final String RESOURCE_ID = "c2sUiApi";
 
     @Bean
     public ResourceServerConfigurer resourceServer(SecurityProperties securityProperties) {
@@ -30,7 +30,7 @@ public class SecurityConfig {
                     http.requiresChannel().anyRequest().requiresSecure();
                 }
                 http.authorizeRequests()
-                        .antMatchers(HttpMethod.GET, "/**").access(hasScopes("c2s-ui-api.read"))
+                        .antMatchers(HttpMethod.GET, "/**").access(hasScopes("c2sUiApi.read"))
                         .anyRequest().denyAll();
             }
         };

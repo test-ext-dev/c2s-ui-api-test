@@ -11,12 +11,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/vss")
-public class ValueSetLookupRestController {
+public class VSSRestController {
 
     private ValueSetService valueSetService;
 
     @Autowired
-    public ValueSetLookupRestController(ValueSetService valueSetService) {
+    public VSSRestController(ValueSetService valueSetService) {
         this.valueSetService = valueSetService;
     }
 
