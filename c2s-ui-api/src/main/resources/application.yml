@@ -1,5 +1,5 @@
 server:
-  port: 8447
+  port: 8459
 logging:
   file: /java/C2S_LOGS/c2s-ui-api/c2sUiApi.log
 info:
