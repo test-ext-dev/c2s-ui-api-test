@@ -25,4 +25,8 @@ public class ValueSetCategoryDto {
      * The isFederal.
      */
     private boolean isFederal;
+    /**
+     * The system.
+     */
+    private String system;
 }
