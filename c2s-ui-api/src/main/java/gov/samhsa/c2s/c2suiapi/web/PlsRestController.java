@@ -17,8 +17,20 @@ public class PlsRestController implements PlsService {
     private PlsClient plsClient;
 
     @Override
-    public PagedResources<FlattenedSmallProviderDto> getFlattenedSmallProviderDto(
-            @RequestParam(value = "projection") String projection) {
-        return plsClient.getFlattenedSmallProviderDto(projection);
+    public PagedResources<FlattenedSmallProviderDto> searchProviders(
+            @RequestParam(value = "state", required = false) String state,
+            @RequestParam(value = "city", required = false) String city,
+            @RequestParam(value = "zipcode", required = false) String zipCode,
+            @RequestParam(value = "firstname", required = false) String firstName,
+            @RequestParam(value = "lastname", required = false) String lastName,
+            @RequestParam(value = "gendercode", required = false) String genderCode,
+            @RequestParam(value = "orgname", required = false) String orgName,
+            @RequestParam(value = "phone", required = false) String phone,
+            @RequestParam(value = "page", required = false) String page,
+            @RequestParam(value = "size", required = false) String size,
+            @RequestParam(value = "sort", required = false) String sort,
+            @RequestParam(value = "projection", required = false) String projection) {
+        return plsClient.searchProviders(state, city, zipCode, firstName, lastName, genderCode,
+                orgName, phone, page, size, sort, projection);
     }
 }
