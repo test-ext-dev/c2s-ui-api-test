@@ -1,6 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.web;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PcmFlattenedSmallProviderDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.c2suiapi.service.PcmService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ public class PcmRestController {
     private PcmService pcmService;
 
     @GetMapping("/providers")
-    public List<FlattenedSmallProviderDto> getProviders() {
+    public List<PcmFlattenedSmallProviderDto> getProviders() {
         return pcmService.getProviders();
     }
 
