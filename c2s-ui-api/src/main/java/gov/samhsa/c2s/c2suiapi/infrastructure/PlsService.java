@@ -21,5 +21,9 @@ public interface PlsService {
             @RequestParam(value = "page", required = false) String page,
             @RequestParam(value = "size", required = false) String size,
             @RequestParam(value = "sort", required = false) String sort,
-            @RequestParam(value = "projection", required = false) String projection);
+            @RequestParam(value = "projection", defaultValue = PlsService.Projection.FLATTEN_SMALL_PROVIDER) String projection);
+
+    interface Projection {
+        String FLATTEN_SMALL_PROVIDER = "FlattenSmallProvider";
+    }
 }

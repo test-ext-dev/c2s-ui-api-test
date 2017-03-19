@@ -29,7 +29,7 @@ public class PlsRestController implements PlsService {
             @RequestParam(value = "page", required = false) String page,
             @RequestParam(value = "size", required = false) String size,
             @RequestParam(value = "sort", required = false) String sort,
-            @RequestParam(value = "projection", required = false) String projection) {
+            @RequestParam(value = "projection", defaultValue = Projection.FLATTEN_SMALL_PROVIDER) String projection) {
         return plsClient.searchProviders(state, city, zipCode, firstName, lastName, genderCode,
                 orgName, phone, page, size, sort, projection);
     }
