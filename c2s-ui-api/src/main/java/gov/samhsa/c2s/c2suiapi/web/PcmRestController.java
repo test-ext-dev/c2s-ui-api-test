@@ -1,12 +1,13 @@
 package gov.samhsa.c2s.c2suiapi.web;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.c2suiapi.service.PcmService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -16,9 +17,15 @@ public class PcmRestController {
     @Autowired
     private PcmService pcmService;
 
-    @RequestMapping(value = "/providers", method = RequestMethod.GET)
+    @GetMapping("/providers")
     List<FlattenedSmallProviderDto> getProviders() {
         List<FlattenedSmallProviderDto> flattenedSmallProviderDtos = pcmService.getProviders();
         return flattenedSmallProviderDtos;
+    }
+
+    @PostMapping("/providers")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void saveProviders(@Valid @RequestBody IdentifiersDto providerIdentifiersDto) {
+        pcmService.saveProviders(providerIdentifiersDto);
     }
 }

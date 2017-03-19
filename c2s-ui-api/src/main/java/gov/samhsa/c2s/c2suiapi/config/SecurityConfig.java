@@ -31,6 +31,7 @@ public class SecurityConfig {
                 }
                 http.authorizeRequests()
                         .antMatchers(HttpMethod.GET, "/**").access(hasScopes("c2sUiApi.read"))
+                        .antMatchers(HttpMethod.POST, "/**").access(hasScopes("c2sUiApi.write"))
                         .anyRequest().denyAll();
             }
         };
