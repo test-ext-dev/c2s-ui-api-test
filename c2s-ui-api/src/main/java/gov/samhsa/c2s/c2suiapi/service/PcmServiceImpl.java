@@ -24,4 +24,9 @@ public class PcmServiceImpl implements PcmService {
     public void saveProviders(IdentifiersDto providerIdentifiersDto) {
         pcmClient.saveProviders(PATIENT_ID, providerIdentifiersDto);
     }
+
+    @Override
+    public void deleteProvider(Long providerId) {
+        pcmClient.deleteProvider(PATIENT_ID, providerId);
+    }
 }

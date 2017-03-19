@@ -20,4 +20,8 @@ public interface PcmClient {
     @ResponseStatus(HttpStatus.CREATED)
     void saveProviders(@PathVariable("patientId") Long patientId,
                        @Valid @RequestBody IdentifiersDto providerIdentifiersDto);
+
+    @RequestMapping(value = "/providers/{providerId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void deleteProvider(@PathVariable("patientId") Long patientId, @PathVariable("providerId") Long providerId);
 }

@@ -9,4 +9,6 @@ public interface PcmService {
     List<FlattenedSmallProviderDto> getProviders();
 
     void saveProviders(IdentifiersDto providerIdentifiersDto);
+
+    void deleteProvider(Long providerId);
 }

@@ -11,21 +11,26 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pcm")
+@RequestMapping("/pcm/patients")
 public class PcmRestController {
 
     @Autowired
     private PcmService pcmService;
 
     @GetMapping("/providers")
-    List<FlattenedSmallProviderDto> getProviders() {
-        List<FlattenedSmallProviderDto> flattenedSmallProviderDtos = pcmService.getProviders();
-        return flattenedSmallProviderDtos;
+    public List<FlattenedSmallProviderDto> getProviders() {
+        return pcmService.getProviders();
     }
 
     @PostMapping("/providers")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveProviders(@Valid @RequestBody IdentifiersDto providerIdentifiersDto) {
         pcmService.saveProviders(providerIdentifiersDto);
+    }
+
+    @DeleteMapping("/providers/{providerId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProvider(@PathVariable Long providerId) {
+        pcmService.deleteProvider(providerId);
     }
 }

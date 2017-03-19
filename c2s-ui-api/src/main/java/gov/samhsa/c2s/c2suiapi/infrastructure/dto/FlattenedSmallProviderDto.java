@@ -10,6 +10,7 @@ public class FlattenedSmallProviderDto {
     private String firstLinePracticeLocationAddress;
     private String firstName;
     private String genderCode;
+    private Long id;
     private String lastName;
     private String lastUpdateDate;
     private String middleName;
@@ -22,4 +23,5 @@ public class FlattenedSmallProviderDto {
     private String practiceLocationAddressStateName;
     private String practiceLocationAddressTelephoneNumber;
     private String secondLinePracticeLocationAddress;
+    private String system;
 }
