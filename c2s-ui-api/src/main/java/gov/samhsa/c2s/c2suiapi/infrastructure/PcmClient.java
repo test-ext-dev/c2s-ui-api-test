@@ -1,6 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.infrastructure;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PcmFlattenedSmallProviderDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,7 @@ import java.util.List;
 public interface PcmClient {
 
     @RequestMapping(value = "/providers", method = RequestMethod.GET)
-    List<PcmFlattenedSmallProviderDto> getProviders(@PathVariable("patientId") Long patientId);
+    List<FlattenedSmallProviderDto> getProviders(@PathVariable("patientId") Long patientId);
 
     @RequestMapping(value = "/providers", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)

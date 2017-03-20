@@ -3,13 +3,14 @@ package gov.samhsa.c2s.c2suiapi.infrastructure.dto;
 import lombok.Data;
 
 @Data
-public class PlsFlattenedSmallProviderDto {
+public class FlattenedSmallProviderDto {
     private String entityTypeCode;
     private String entityTypeDisplayName;
     private String enumerationDate;
     private String firstLinePracticeLocationAddress;
     private String firstName;
     private String genderCode;
+    private Long id;
     private String lastName;
     private String lastUpdateDate;
     private String middleName;
@@ -22,4 +23,5 @@ public class PlsFlattenedSmallProviderDto {
     private String practiceLocationAddressStateName;
     private String practiceLocationAddressTelephoneNumber;
     private String secondLinePracticeLocationAddress;
+    private String system;
 }
