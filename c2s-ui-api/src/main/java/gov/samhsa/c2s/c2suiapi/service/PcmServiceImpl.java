@@ -2,6 +2,7 @@ package gov.samhsa.c2s.c2suiapi.service;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.PatientUserClient;
 import gov.samhsa.c2s.c2suiapi.infrastructure.PcmClient;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,11 +14,15 @@ import java.util.List;
 public class PcmServiceImpl implements PcmService {
     private static final Long USER_ID = 3L;
 
-    @Autowired
-    private PatientUserClient patientUserClient;
+    private final PatientUserClient patientUserClient;
+
+    private final PcmClient pcmClient;
 
     @Autowired
-    private PcmClient pcmClient;
+    public PcmServiceImpl(PatientUserClient patientUserClient, PcmClient pcmClient) {
+        this.patientUserClient = patientUserClient;
+        this.pcmClient = pcmClient;
+    }
 
     @Override
     public List<FlattenedSmallProviderDto> getProviders() {
@@ -35,5 +40,11 @@ public class PcmServiceImpl implements PcmService {
     public void deleteProvider(Long providerId) {
         Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         pcmClient.deleteProvider(patientId, providerId);
+    }
+
+    @Override
+    public void saveConsent(ConsentDto consentDto) {
+        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        pcmClient.saveConsent(patientId, consentDto);
     }
 }

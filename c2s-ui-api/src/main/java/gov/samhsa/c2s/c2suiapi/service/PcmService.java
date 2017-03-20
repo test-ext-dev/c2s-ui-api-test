@@ -1,5 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 
@@ -11,4 +12,6 @@ public interface PcmService {
     void saveProviders(IdentifiersDto providerIdentifiersDto);
 
     void deleteProvider(Long providerId);
+
+    void saveConsent(ConsentDto consentDto);
 }

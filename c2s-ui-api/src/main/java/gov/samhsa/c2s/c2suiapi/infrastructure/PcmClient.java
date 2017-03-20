@@ -1,10 +1,13 @@
 package gov.samhsa.c2s.c2suiapi.infrastructure;
 
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -17,11 +20,14 @@ public interface PcmClient {
     List<FlattenedSmallProviderDto> getProviders(@PathVariable("patientId") Long patientId);
 
     @RequestMapping(value = "/providers", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
     void saveProviders(@PathVariable("patientId") Long patientId,
                        @Valid @RequestBody IdentifiersDto providerIdentifiersDto);
 
     @RequestMapping(value = "/providers/{providerId}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    void deleteProvider(@PathVariable("patientId") Long patientId, @PathVariable("providerId") Long providerId);
+    void deleteProvider(@PathVariable("patientId") Long patientId,
+                        @PathVariable("providerId") Long providerId);
+
+    @RequestMapping(value = "/consents", method = RequestMethod.POST)
+    void saveConsent(@PathVariable("patientId") Long patientId,
+                     @Valid @RequestBody ConsentDto consentDto);
 }

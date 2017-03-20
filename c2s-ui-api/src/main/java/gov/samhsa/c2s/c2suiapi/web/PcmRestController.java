@@ -1,5 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.web;
 
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.c2suiapi.service.PcmService;
@@ -32,5 +33,11 @@ public class PcmRestController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProvider(@PathVariable Long providerId) {
         pcmService.deleteProvider(providerId);
+    }
+
+    @PostMapping("/consents")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void saveConsent(@Valid @RequestBody ConsentDto consentDto) {
+        pcmService.saveConsent(consentDto);
     }
 }
