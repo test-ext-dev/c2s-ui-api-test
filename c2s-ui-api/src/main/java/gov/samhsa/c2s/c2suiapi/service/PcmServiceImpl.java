@@ -2,6 +2,7 @@ package gov.samhsa.c2s.c2suiapi.service;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.PatientUserClient;
 import gov.samhsa.c2s.c2suiapi.infrastructure.PcmClient;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
@@ -58,5 +59,11 @@ public class PcmServiceImpl implements PcmService {
     public void updateConsent(Long consentId, ConsentDto consentDto) {
         Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         pcmClient.updateConsent(patientId, consentId, consentDto);
+    }
+
+    @Override
+    public void attestConsent(Long consentId, ConsentAttestationDto consentAttestationDto) {
+        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        pcmClient.attestConsent(patientId, consentId, consentAttestationDto);
     }
 }

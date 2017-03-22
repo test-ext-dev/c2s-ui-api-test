@@ -1,5 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.web;
 
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
@@ -51,5 +52,12 @@ public class PcmRestController {
     public void updateConsent(@PathVariable Long consentId,
                               @Valid @RequestBody ConsentDto consentDto) {
         pcmService.updateConsent(consentId, consentDto);
+    }
+
+    @PutMapping("/consents/{consentId}/attestation")
+    @ResponseStatus(HttpStatus.OK)
+    public void attestConsent(@PathVariable Long consentId,
+                              @Valid @RequestBody ConsentAttestationDto consentAttestationDto) {
+        pcmService.attestConsent(consentId, consentAttestationDto);
     }
 }

@@ -1,13 +1,12 @@
 package gov.samhsa.c2s.c2suiapi.infrastructure;
 
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -39,4 +38,10 @@ public interface PcmClient {
     void updateConsent(@PathVariable("patientId") Long patientId,
                        @PathVariable("consentId") Long consentId,
                        @Valid @RequestBody ConsentDto consentDto);
+
+    @RequestMapping(value = "/consents/{consentId}/attestation", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    void attestConsent(@PathVariable("patientId") Long patientId,
+                       @PathVariable("consentId") Long consentId,
+                       @Valid @RequestBody ConsentAttestationDto consentAttestationDto);
 }
