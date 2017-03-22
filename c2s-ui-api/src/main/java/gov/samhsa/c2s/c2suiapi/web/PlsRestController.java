@@ -5,12 +5,11 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.PlsService;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.PagedResources;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/pls")
 public class PlsRestController implements PlsService {
 
     @Autowired
@@ -29,8 +28,12 @@ public class PlsRestController implements PlsService {
             @RequestParam(value = "page", required = false) String page,
             @RequestParam(value = "size", required = false) String size,
             @RequestParam(value = "sort", required = false) String sort,
-            @RequestParam(value = "projection", defaultValue = Projection.FLATTEN_SMALL_PROVIDER) String projection) {
+            @RequestParam(value = "projection", defaultValue = Projection.FLATTEN_SMALL_PROVIDER) String projection,
+            @RequestHeader(X_FORWARDED_PROTO) String xForwardedProto,
+            @RequestHeader(X_FORWARDED_HOST) String xForwardedHost,
+            @RequestHeader(X_FORWARDED_PREFIX) String xForwardedPrefix,
+            @RequestHeader(X_FORWARDED_PORT) int xForwardedPort) {
         return plsClient.searchProviders(state, city, zipCode, firstName, lastName, genderCode,
-                orgName, phone, page, size, sort, projection);
+                orgName, phone, page, size, sort, projection, xForwardedProto, xForwardedHost, xForwardedPrefix, xForwardedPort);
     }
 }
