@@ -6,10 +6,12 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.PagedResources;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/pls")
 public class PlsRestController implements PlsService {
 
     @Autowired
@@ -34,6 +36,6 @@ public class PlsRestController implements PlsService {
             @RequestHeader(X_FORWARDED_PREFIX) String xForwardedPrefix,
             @RequestHeader(X_FORWARDED_PORT) int xForwardedPort) {
         return plsClient.searchProviders(state, city, zipCode, firstName, lastName, genderCode,
-                orgName, phone, page, size, sort, projection, xForwardedProto, xForwardedHost, xForwardedPrefix, xForwardedPort);
+                orgName, phone, page, size, sort, projection, xForwardedProto, xForwardedHost, xForwardedPrefix.concat("/pls"), xForwardedPort);
     }
 }
