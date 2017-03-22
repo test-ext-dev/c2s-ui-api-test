@@ -69,4 +69,9 @@ public class PcmServiceImpl implements PcmService {
         Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         pcmClient.revokeConsent(patientId, consentId, consentRevocationDto);
     }
+
+    @Override
+    public List<PurposeDto> getPurposes() {
+        return pcmClient.getPurposes();
+    }
 }

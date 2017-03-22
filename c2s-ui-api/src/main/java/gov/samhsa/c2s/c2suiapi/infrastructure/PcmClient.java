@@ -9,42 +9,44 @@ import javax.validation.Valid;
 import java.util.List;
 
 @FeignClient("pcm")
-@RequestMapping("/patients/{patientId}")
 public interface PcmClient {
 
-    @RequestMapping(value = "/providers", method = RequestMethod.GET)
+    @RequestMapping(value = "/patients/{patientId}/providers", method = RequestMethod.GET)
     List<FlattenedSmallProviderDto> getProviders(@PathVariable("patientId") Long patientId);
 
-    @RequestMapping(value = "/providers", method = RequestMethod.POST)
+    @RequestMapping(value = "/patients/{patientId}/providers", method = RequestMethod.POST)
     void saveProviders(@PathVariable("patientId") Long patientId,
                        @Valid @RequestBody IdentifiersDto providerIdentifiersDto);
 
-    @RequestMapping(value = "/providers/{providerId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/patients/{patientId}/providers/{providerId}", method = RequestMethod.DELETE)
     void deleteProvider(@PathVariable("patientId") Long patientId,
                         @PathVariable("providerId") Long providerId);
 
-    @RequestMapping(value = "/consents", method = RequestMethod.POST)
+    @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.POST)
     void saveConsent(@PathVariable("patientId") Long patientId,
                      @Valid @RequestBody ConsentDto consentDto);
 
-    @RequestMapping(value = "/consents/{consentId}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.DELETE)
     void deleteConsent(@PathVariable("patientId") Long patientId,
                        @PathVariable("consentId") Long consentId);
 
-    @RequestMapping(value = "/consents/{consentId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.PUT)
     void updateConsent(@PathVariable("patientId") Long patientId,
                        @PathVariable("consentId") Long consentId,
                        @Valid @RequestBody ConsentDto consentDto);
 
-    @RequestMapping(value = "/consents/{consentId}/attestation", method = RequestMethod.PUT)
+    @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/attestation", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     void attestConsent(@PathVariable("patientId") Long patientId,
                        @PathVariable("consentId") Long consentId,
                        @Valid @RequestBody ConsentAttestationDto consentAttestationDto);
 
-    @RequestMapping(value = "/consents/{consentId}/revocation", method = RequestMethod.PUT)
+    @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/revocation", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
     void revokeConsent(@PathVariable("patientId") Long patientId,
                        @PathVariable("consentId") Long consentId,
                        @Valid @RequestBody ConsentRevocationDto consentRevocationDto);
+
+    @RequestMapping(value = "/purposes", method = RequestMethod.GET)
+    List<PurposeDto> getPurposes();
 }

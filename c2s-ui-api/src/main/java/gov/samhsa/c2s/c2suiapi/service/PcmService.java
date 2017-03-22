@@ -20,4 +20,6 @@ public interface PcmService {
     void attestConsent(Long consentId, ConsentAttestationDto consentAttestationDto);
 
     void revokeConsent(Long consentId, ConsentRevocationDto consentRevocationDto);
+
+    List<PurposeDto> getPurposes();
 }

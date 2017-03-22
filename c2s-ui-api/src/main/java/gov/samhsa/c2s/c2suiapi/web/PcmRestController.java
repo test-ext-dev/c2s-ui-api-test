@@ -10,58 +10,63 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/pcm/patients")
+@RequestMapping("/pcm")
 public class PcmRestController {
 
     @Autowired
     private PcmService pcmService;
 
-    @GetMapping("/providers")
+    @GetMapping("/patients/providers")
     public List<FlattenedSmallProviderDto> getProviders() {
         return pcmService.getProviders();
     }
 
-    @PostMapping("/providers")
+    @PostMapping("/patients/providers")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveProviders(@Valid @RequestBody IdentifiersDto providerIdentifiersDto) {
         pcmService.saveProviders(providerIdentifiersDto);
     }
 
-    @DeleteMapping("/providers/{providerId}")
+    @DeleteMapping("/patients/providers/{providerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteProvider(@PathVariable Long providerId) {
         pcmService.deleteProvider(providerId);
     }
 
-    @PostMapping("/consents")
+    @PostMapping("/patients/consents")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveConsent(@Valid @RequestBody ConsentDto consentDto) {
         pcmService.saveConsent(consentDto);
     }
 
-    @DeleteMapping("/consents/{consentId}")
+    @DeleteMapping("/patients/consents/{consentId}")
     public void deleteConsent(@PathVariable Long consentId) {
         pcmService.deleteConsent(consentId);
     }
 
-    @PutMapping("/consents/{consentId}")
+    @PutMapping("/patients/consents/{consentId}")
     @ResponseStatus(HttpStatus.OK)
     public void updateConsent(@PathVariable Long consentId,
                               @Valid @RequestBody ConsentDto consentDto) {
         pcmService.updateConsent(consentId, consentDto);
     }
 
-    @PutMapping("/consents/{consentId}/attestation")
+    @PutMapping("/patients/consents/{consentId}/attestation")
     @ResponseStatus(HttpStatus.OK)
     public void attestConsent(@PathVariable Long consentId,
                               @Valid @RequestBody ConsentAttestationDto consentAttestationDto) {
         pcmService.attestConsent(consentId, consentAttestationDto);
     }
 
-    @PutMapping("/consents/{consentId}/revocation")
+    @PutMapping("/patients/consents/{consentId}/revocation")
     @ResponseStatus(HttpStatus.OK)
     public void revokeConsent(@PathVariable Long consentId,
                               @Valid @RequestBody ConsentRevocationDto consentRevocationDto) {
         pcmService.revokeConsent(consentId, consentRevocationDto);
+    }
+
+    @GetMapping("/purposes")
+    public List<PurposeDto> getPurposes() {
+        return pcmService.getPurposes();
     }
 }
