@@ -53,4 +53,10 @@ public class PcmServiceImpl implements PcmService {
         Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         pcmClient.deleteConsent(patientId, consentId);
     }
+
+    @Override
+    public void updateConsent(Long consentId, ConsentDto consentDto) {
+        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        pcmClient.updateConsent(patientId, consentId, consentDto);
+    }
 }

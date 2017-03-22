@@ -33,6 +33,8 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.GET, "/**").access(hasScopes("c2sUiApi.read"))
                         .antMatchers(HttpMethod.POST, "/**").access(hasScopes("c2sUiApi.write"))
                         .antMatchers(HttpMethod.DELETE, "/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.PUT, "/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.OPTIONS, "/**").access(hasScopes("c2sUiApi.write"))
                         .anyRequest().denyAll();
             }
         };

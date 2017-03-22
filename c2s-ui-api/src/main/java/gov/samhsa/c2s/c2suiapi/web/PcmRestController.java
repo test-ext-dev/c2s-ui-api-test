@@ -45,4 +45,11 @@ public class PcmRestController {
     public void deleteConsent(@PathVariable Long consentId) {
         pcmService.deleteConsent(consentId);
     }
+
+    @PutMapping("/consents/{consentId}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateConsent(@PathVariable Long consentId,
+                              @Valid @RequestBody ConsentDto consentDto) {
+        pcmService.updateConsent(consentId, consentDto);
+    }
 }

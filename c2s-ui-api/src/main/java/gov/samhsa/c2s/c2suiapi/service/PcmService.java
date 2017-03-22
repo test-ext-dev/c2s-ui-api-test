@@ -16,4 +16,6 @@ public interface PcmService {
     void saveConsent(ConsentDto consentDto);
 
     void deleteConsent(Long consentId);
+
+    void updateConsent(Long consentId, ConsentDto consentDto);
 }
