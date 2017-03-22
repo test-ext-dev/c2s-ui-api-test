@@ -40,4 +40,9 @@ public class PcmRestController {
     public void saveConsent(@Valid @RequestBody ConsentDto consentDto) {
         pcmService.saveConsent(consentDto);
     }
+
+    @DeleteMapping("/consents/{consentId}")
+    public void deleteConsent(@PathVariable Long consentId) {
+        pcmService.deleteConsent(consentId);
+    }
 }

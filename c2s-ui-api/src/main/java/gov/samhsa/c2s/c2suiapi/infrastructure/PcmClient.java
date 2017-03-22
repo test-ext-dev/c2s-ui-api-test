@@ -30,4 +30,8 @@ public interface PcmClient {
     @RequestMapping(value = "/consents", method = RequestMethod.POST)
     void saveConsent(@PathVariable("patientId") Long patientId,
                      @Valid @RequestBody ConsentDto consentDto);
+
+    @RequestMapping(value = "/consents/{consentId}", method = RequestMethod.DELETE)
+    void deleteConsent(@PathVariable("patientId") Long patientId,
+                       @PathVariable("consentId") Long consentId);
 }

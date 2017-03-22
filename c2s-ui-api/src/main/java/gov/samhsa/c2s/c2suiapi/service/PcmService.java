@@ -14,4 +14,6 @@ public interface PcmService {
     void deleteProvider(Long providerId);
 
     void saveConsent(ConsentDto consentDto);
+
+    void deleteConsent(Long consentId);
 }
