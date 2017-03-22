@@ -6,14 +6,12 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class PurposeDto {
+    private String description;
     private String display;
-
     @NotNull
     private Long id;
-
     @NotNull
     private String system;
-
     @NotNull
     private String value;
 }
