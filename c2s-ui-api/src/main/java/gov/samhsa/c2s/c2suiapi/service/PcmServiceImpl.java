@@ -2,10 +2,7 @@ package gov.samhsa.c2s.c2suiapi.service;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.PatientUserClient;
 import gov.samhsa.c2s.c2suiapi.infrastructure.PcmClient;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,5 +62,11 @@ public class PcmServiceImpl implements PcmService {
     public void attestConsent(Long consentId, ConsentAttestationDto consentAttestationDto) {
         Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         pcmClient.attestConsent(patientId, consentId, consentAttestationDto);
+    }
+
+    @Override
+    public void revokeConsent(Long consentId, ConsentRevocationDto consentRevocationDto) {
+        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        pcmClient.revokeConsent(patientId, consentId, consentRevocationDto);
     }
 }

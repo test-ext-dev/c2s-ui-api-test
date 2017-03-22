@@ -1,9 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.infrastructure;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.*;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -44,4 +41,10 @@ public interface PcmClient {
     void attestConsent(@PathVariable("patientId") Long patientId,
                        @PathVariable("consentId") Long consentId,
                        @Valid @RequestBody ConsentAttestationDto consentAttestationDto);
+
+    @RequestMapping(value = "/consents/{consentId}/revocation", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    void revokeConsent(@PathVariable("patientId") Long patientId,
+                       @PathVariable("consentId") Long consentId,
+                       @Valid @RequestBody ConsentRevocationDto consentRevocationDto);
 }

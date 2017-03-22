@@ -1,9 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.web;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.*;
 import gov.samhsa.c2s.c2suiapi.service.PcmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -59,5 +56,12 @@ public class PcmRestController {
     public void attestConsent(@PathVariable Long consentId,
                               @Valid @RequestBody ConsentAttestationDto consentAttestationDto) {
         pcmService.attestConsent(consentId, consentAttestationDto);
+    }
+
+    @PutMapping("/consents/{consentId}/revocation")
+    @ResponseStatus(HttpStatus.OK)
+    public void revokeConsent(@PathVariable Long consentId,
+                              @Valid @RequestBody ConsentRevocationDto consentRevocationDto) {
+        pcmService.revokeConsent(consentId, consentRevocationDto);
     }
 }

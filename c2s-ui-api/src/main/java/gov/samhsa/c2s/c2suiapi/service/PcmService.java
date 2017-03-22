@@ -1,9 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.*;
 
 import java.util.List;
 
@@ -21,4 +18,6 @@ public interface PcmService {
     void updateConsent(Long consentId, ConsentDto consentDto);
 
     void attestConsent(Long consentId, ConsentAttestationDto consentAttestationDto);
+
+    void revokeConsent(Long consentId, ConsentRevocationDto consentRevocationDto);
 }
