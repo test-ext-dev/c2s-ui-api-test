@@ -34,7 +34,7 @@ public class PcmRestController {
     }
 
     @GetMapping("/patients/consents")
-    public DetailedConsentPageableDto getConsents(@RequestParam(value = "page", required = false) Integer page,
+    public PageableDto<DetailedConsentDto> getConsents(@RequestParam(value = "page", required = false) Integer page,
                                                   @RequestParam(value = "size", required = false) Integer size) {
         return pcmService.getConsents(page, size);
     }

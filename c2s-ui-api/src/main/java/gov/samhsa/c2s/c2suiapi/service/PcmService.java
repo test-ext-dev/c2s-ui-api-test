@@ -11,7 +11,7 @@ public interface PcmService {
 
     void deleteProvider(Long providerId);
 
-    DetailedConsentPageableDto getConsents(Integer page, Integer size);
+    PageableDto<DetailedConsentDto> getConsents(Integer page, Integer size);
 
     void saveConsent(ConsentDto consentDto);
 
