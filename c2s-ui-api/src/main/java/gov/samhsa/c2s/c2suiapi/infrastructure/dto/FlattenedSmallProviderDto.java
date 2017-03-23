@@ -4,24 +4,25 @@ import lombok.Data;
 
 @Data
 public class FlattenedSmallProviderDto {
-    private String entityTypeCode;
-    private String entityTypeDisplayName;
-    private String enumerationDate;
-    private String firstLinePracticeLocationAddress;
-    private String firstName;
-    private String genderCode;
     private Long id;
-    private String lastName;
-    private String lastUpdateDate;
-    private String middleName;
     private String npi;
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private String genderCode;
     private String organizationName;
-    private String practiceLocationAddressCityName;
-    private String practiceLocationAddressCountryCode;
+    private String enumerationDate;
+    private String lastUpdateDate;
+    private String entityTypeDisplayName;
+    private String entityTypeCode;
     private String practiceLocationAddressFaxNumber;
-    private String practiceLocationAddressPostalCode;
-    private String practiceLocationAddressStateName;
     private String practiceLocationAddressTelephoneNumber;
+    private String firstLinePracticeLocationAddress;
     private String secondLinePracticeLocationAddress;
+    private String practiceLocationAddressCityName;
+    private String practiceLocationAddressStateName;
+    private String practiceLocationAddressPostalCode;
+    private String practiceLocationAddressCountryCode;
     private String system;
+    private Boolean deletable;
 }

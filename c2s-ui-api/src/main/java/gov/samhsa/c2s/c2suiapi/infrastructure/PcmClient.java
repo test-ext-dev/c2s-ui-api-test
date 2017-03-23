@@ -12,7 +12,7 @@ import java.util.List;
 public interface PcmClient {
 
     @RequestMapping(value = "/patients/{patientId}/providers", method = RequestMethod.GET)
-    List<FlattenedSmallProviderDto> getProviders(@PathVariable("patientId") Long patientId);
+    List<AbstractProviderDto> getProviders(@PathVariable("patientId") Long patientId);
 
     @RequestMapping(value = "/patients/{patientId}/providers", method = RequestMethod.POST)
     void saveProviders(@PathVariable("patientId") Long patientId,

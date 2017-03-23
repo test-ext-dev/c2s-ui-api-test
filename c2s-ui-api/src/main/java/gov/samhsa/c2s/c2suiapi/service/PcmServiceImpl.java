@@ -23,7 +23,7 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public List<FlattenedSmallProviderDto> getProviders() {
+    public List<AbstractProviderDto> getProviders() {
         Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         return pcmClient.getProviders(patientId);
     }

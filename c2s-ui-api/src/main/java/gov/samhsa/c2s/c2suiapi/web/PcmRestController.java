@@ -17,7 +17,7 @@ public class PcmRestController {
     private PcmService pcmService;
 
     @GetMapping("/patients/providers")
-    public List<FlattenedSmallProviderDto> getProviders() {
+    public List<AbstractProviderDto> getProviders() {
         return pcmService.getProviders();
     }
 
@@ -35,7 +35,7 @@ public class PcmRestController {
 
     @GetMapping("/patients/consents")
     public PageableDto<DetailedConsentDto> getConsents(@RequestParam(value = "page", required = false) Integer page,
-                                                  @RequestParam(value = "size", required = false) Integer size) {
+                                                       @RequestParam(value = "size", required = false) Integer size) {
         return pcmService.getConsents(page, size);
     }
 

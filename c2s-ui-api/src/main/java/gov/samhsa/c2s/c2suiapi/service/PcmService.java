@@ -5,7 +5,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.*;
 import java.util.List;
 
 public interface PcmService {
-    List<FlattenedSmallProviderDto> getProviders();
+    List<AbstractProviderDto> getProviders();
 
     void saveProviders(IdentifiersDto providerIdentifiersDto);
 
