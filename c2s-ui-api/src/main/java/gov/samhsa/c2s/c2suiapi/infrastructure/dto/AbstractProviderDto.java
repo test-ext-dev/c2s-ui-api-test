@@ -17,6 +17,10 @@ public class AbstractProviderDto {
     @Valid
     protected AddressDto address;
     protected ProviderType providerType;
+    private String firstName;
+    private String middleName;
+    private String lastName;
+    private String name;
 
     enum ProviderType {
         PRACTITIONER, ORGANIZATION
