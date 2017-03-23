@@ -1,38 +1,53 @@
 package gov.samhsa.c2s.c2suiapi.infrastructure.dto;
 
 import gov.samhsa.c2s.common.validator.constraint.PresentOrFuture;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.ScriptAssert;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @ScriptAssert(
         lang = "javascript",
         alias = "_",
         script = "_.startDate != null && _.endDate != null && _.startDate < _.endDate",
         message = "consent end date must be after consent start date")
-public class ConsentDto {
+public class DetailedConsentDto {
+
     private Long id;
-    @NotNull
-    @Future
-    private LocalDate endDate;
+
     @Valid
     @NotNull
-    private IdentifiersDto fromProviders;
+    private List<AbstractProviderDto> fromProviders = new ArrayList<>();
+
     @Valid
     @NotNull
-    private IdentifiersDto sharePurposes;
+    private List<AbstractProviderDto> toProviders = new ArrayList<>();
+
     @Valid
     @NotNull
     private IdentifiersDto shareSensitivityCategories;
+
+    @Valid
+    @NotNull
+    private IdentifiersDto sharePurposes;
+
     @NotNull
     @PresentOrFuture
     private LocalDate startDate;
-    @Valid
+
     @NotNull
-    private IdentifiersDto toProviders;
+    @Future
+    private LocalDate endDate;
 }

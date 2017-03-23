@@ -22,6 +22,11 @@ public interface PcmClient {
     void deleteProvider(@PathVariable("patientId") Long patientId,
                         @PathVariable("providerId") Long providerId);
 
+    @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.GET)
+    DetailedConsentPageableDto getConsents(@PathVariable("patientId") Long patientId,
+                                           @RequestParam(value = "page", required = false) Integer page,
+                                           @RequestParam(value = "size", required = false) Integer size);
+
     @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.POST)
     void saveConsent(@PathVariable("patientId") Long patientId,
                      @Valid @RequestBody ConsentDto consentDto);
