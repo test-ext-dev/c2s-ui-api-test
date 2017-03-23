@@ -24,8 +24,13 @@ public interface PcmClient {
 
     @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.GET)
     PageableDto<DetailedConsentDto> getConsents(@PathVariable("patientId") Long patientId,
-                                           @RequestParam(value = "page", required = false) Integer page,
-                                           @RequestParam(value = "size", required = false) Integer size);
+                                                @RequestParam(value = "page", required = false) Integer page,
+                                                @RequestParam(value = "size", required = false) Integer size);
+
+    @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.GET)
+    Object getConsent(@PathVariable("patientId") Long patientId,
+                      @PathVariable("consentId") Long consentId,
+                      @RequestParam(value = "format", required = false) String format);
 
     @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.POST)
     void saveConsent(@PathVariable("patientId") Long patientId,

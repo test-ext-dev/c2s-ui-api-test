@@ -39,6 +39,12 @@ public class PcmRestController {
         return pcmService.getConsents(page, size);
     }
 
+    @GetMapping("/patients/consents/{consentId}")
+    public Object getConsent(@PathVariable Long consentId,
+                             @RequestParam(value = "format", required = false) String format) {
+        return pcmService.getConsent(consentId, format);
+    }
+
     @PostMapping("/patients/consents")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveConsent(@Valid @RequestBody ConsentDto consentDto) {
