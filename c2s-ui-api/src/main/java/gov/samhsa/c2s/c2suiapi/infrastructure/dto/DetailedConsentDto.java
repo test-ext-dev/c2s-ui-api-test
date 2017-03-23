@@ -37,11 +37,11 @@ public class DetailedConsentDto {
 
     @Valid
     @NotNull
-    private IdentifiersDto shareSensitivityCategories;
+    private List<SensitivityCategoryDto> shareSensitivityCategories;
 
     @Valid
     @NotNull
-    private IdentifiersDto sharePurposes;
+    private List<PurposeDto> sharePurposes;
 
     @NotNull
     @PresentOrFuture

@@ -7,11 +7,11 @@ import java.util.List;
 @Data
 public class PageableDto<T> {
     List<T> content;
-    private int totalPages;
-    private long totalElements;
     boolean last;
+    private long totalElements;
+    private int totalPages;
     private int size;
     int number;
-    private int numberOfElements;
     boolean first;
+    private int numberOfElements;
 }

@@ -6,7 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class PurposeDto {
+public class SensitivityCategoryDto {
     private String description;
     private String display;
     @NotNull
