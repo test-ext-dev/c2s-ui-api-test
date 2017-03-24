@@ -32,12 +32,12 @@ public interface PcmClient {
                       @PathVariable("consentId") Long consentId,
                       @RequestParam(value = "format", required = false) String format);
 
-    @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/attestation", method = RequestMethod.GET)
     Object getAttestedConsent(@PathVariable("patientId") Long patientId,
                       @PathVariable("consentId") Long consentId,
                       @RequestParam(value = "format", required = false) String format);
 
-    @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/revocation", method = RequestMethod.GET)
     Object getRevokedConsent(@PathVariable("patientId") Long patientId,
                       @PathVariable("consentId") Long consentId,
                       @RequestParam(value = "format", required = false) String format);
