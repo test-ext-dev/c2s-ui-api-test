@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Data
 @AllArgsConstructor
-public class AbstractProviderDto {
+public class ConsentProviderDto {
     protected Long id;
     @Valid
     @NotEmpty
@@ -23,6 +23,7 @@ public class AbstractProviderDto {
     private String middleName;
     private String lastName;
     private String name;
+    private String phoneNumber;
 
     enum ProviderType {
         PRACTITIONER, ORGANIZATION

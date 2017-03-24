@@ -29,11 +29,11 @@ public class DetailedConsentDto {
 
     @Valid
     @NotNull
-    private List<AbstractProviderDto> fromProviders = new ArrayList<>();
+    private List<ConsentProviderDto> fromProviders = new ArrayList<>();
 
     @Valid
     @NotNull
-    private List<AbstractProviderDto> toProviders = new ArrayList<>();
+    private List<ConsentProviderDto> toProviders = new ArrayList<>();
 
     @Valid
     @NotNull
