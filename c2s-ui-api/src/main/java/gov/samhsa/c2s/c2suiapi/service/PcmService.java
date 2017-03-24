@@ -13,6 +13,10 @@ public interface PcmService {
 
     Object getConsent(Long consentId, String format);
 
+    Object getAttestedConsent(Long consentId, String format);
+
+    Object getRevokedConsent(Long consentId, String format);
+
     PageableDto<DetailedConsentDto> getConsents(Integer page, Integer size);
 
     void saveConsent(ConsentDto consentDto);

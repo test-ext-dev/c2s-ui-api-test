@@ -47,6 +47,18 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
+    public Object getAttestedConsent(Long consentId, String format) {
+        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        return pcmClient.getAttestedConsent(patientId, consentId, format);
+    }
+
+    @Override
+    public Object getRevokedConsent(Long consentId, String format) {
+        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        return pcmClient.getRevokedConsent(patientId, consentId, format);
+    }
+
+    @Override
     public PageableDto<DetailedConsentDto> getConsents(Integer page, Integer size) {
         Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         return pcmClient.getConsents(patientId, page, size);

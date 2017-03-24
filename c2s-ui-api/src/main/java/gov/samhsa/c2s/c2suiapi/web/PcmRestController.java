@@ -45,6 +45,18 @@ public class PcmRestController {
         return pcmService.getConsent(consentId, format);
     }
 
+    @GetMapping("/patients/consents/{consentId}/attestation")
+    public Object getAttestedConsent(@PathVariable Long consentId,
+                                     @RequestParam(required = false)  String format) {
+        return pcmService.getAttestedConsent(consentId, format);
+    }
+
+    @GetMapping("/patients/consents/{consentId}/revocation")
+    public Object getRevokedConsent(@PathVariable Long consentId,
+                                    @RequestParam(required = false)  String format) {
+        return pcmService.getRevokedConsent(consentId, format);
+    }
+
     @PostMapping("/patients/consents")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveConsent(@Valid @RequestBody ConsentDto consentDto) {
@@ -91,4 +103,5 @@ public class PcmRestController {
     public ConsentTermDto getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id) {
         return pcmService.getConsentRevocationTerm(id);
     }
+
 }
