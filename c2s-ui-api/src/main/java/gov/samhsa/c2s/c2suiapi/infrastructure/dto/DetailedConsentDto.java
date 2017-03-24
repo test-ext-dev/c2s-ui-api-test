@@ -50,4 +50,7 @@ public class DetailedConsentDto {
     @NotNull
     @Future
     private LocalDate endDate;
+
+    @NotNull
+    private ConsentStage consentStage;
 }
