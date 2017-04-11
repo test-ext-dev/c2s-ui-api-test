@@ -103,5 +103,4 @@ public class PcmRestController {
     public ConsentTermDto getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id) {
         return pcmService.getConsentRevocationTerm(id);
     }
-
 }

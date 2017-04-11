@@ -7,6 +7,10 @@ info:
 ribbon:
   ReadTimeout: 50000
 hystrix.command.default.execution.timeout.enabled: false
+c2s:
+  ums:
+    supported-locales: ["en", "es"]
+    default-locale: en
 security:
   basic:
     enabled: false
