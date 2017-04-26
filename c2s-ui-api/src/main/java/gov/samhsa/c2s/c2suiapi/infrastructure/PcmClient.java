@@ -12,58 +12,58 @@ import java.util.List;
 public interface PcmClient {
 
     @RequestMapping(value = "/patients/{patientId}/providers", method = RequestMethod.GET)
-    List<ConsentProviderDto> getProviders(@PathVariable("patientId") Long patientId);
+    List<ConsentProviderDto> getProviders(@PathVariable("patientId") String patientId);
 
     @RequestMapping(value = "/patients/{patientId}/providers", method = RequestMethod.POST)
-    void saveProviders(@PathVariable("patientId") Long patientId,
+    void saveProviders(@PathVariable("patientId") String patientId,
                        @Valid @RequestBody IdentifiersDto providerIdentifiersDto);
 
     @RequestMapping(value = "/patients/{patientId}/providers/{providerId}", method = RequestMethod.DELETE)
-    void deleteProvider(@PathVariable("patientId") Long patientId,
+    void deleteProvider(@PathVariable("patientId") String patientId,
                         @PathVariable("providerId") Long providerId);
 
     @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.GET)
-    PageableDto<DetailedConsentDto> getConsents(@PathVariable("patientId") Long patientId,
+    PageableDto<DetailedConsentDto> getConsents(@PathVariable("patientId") String patientId,
                                                 @RequestParam(value = "page", required = false) Integer page,
                                                 @RequestParam(value = "size", required = false) Integer size);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.GET)
-    Object getConsent(@PathVariable("patientId") Long patientId,
+    Object getConsent(@PathVariable("patientId") String patientId,
                       @PathVariable("consentId") Long consentId,
                       @RequestParam(value = "format", required = false) String format);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/attestation", method = RequestMethod.GET)
-    Object getAttestedConsent(@PathVariable("patientId") Long patientId,
+    Object getAttestedConsent(@PathVariable("patientId") String patientId,
                       @PathVariable("consentId") Long consentId,
                       @RequestParam(value = "format", required = false) String format);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/revocation", method = RequestMethod.GET)
-    Object getRevokedConsent(@PathVariable("patientId") Long patientId,
+    Object getRevokedConsent(@PathVariable("patientId") String patientId,
                       @PathVariable("consentId") Long consentId,
                       @RequestParam(value = "format", required = false) String format);
 
     @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.POST)
-    void saveConsent(@PathVariable("patientId") Long patientId,
+    void saveConsent(@PathVariable("patientId") String patientId,
                      @Valid @RequestBody ConsentDto consentDto);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.DELETE)
-    void deleteConsent(@PathVariable("patientId") Long patientId,
+    void deleteConsent(@PathVariable("patientId") String patientId,
                        @PathVariable("consentId") Long consentId);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.PUT)
-    void updateConsent(@PathVariable("patientId") Long patientId,
+    void updateConsent(@PathVariable("patientId") String patientId,
                        @PathVariable("consentId") Long consentId,
                        @Valid @RequestBody ConsentDto consentDto);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/attestation", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    void attestConsent(@PathVariable("patientId") Long patientId,
+    void attestConsent(@PathVariable("patientId") String patientId,
                        @PathVariable("consentId") Long consentId,
                        @Valid @RequestBody ConsentAttestationDto consentAttestationDto);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/revocation", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    void revokeConsent(@PathVariable("patientId") Long patientId,
+    void revokeConsent(@PathVariable("patientId") String patientId,
                        @PathVariable("consentId") Long consentId,
                        @Valid @RequestBody ConsentRevocationDto consentRevocationDto);
 
