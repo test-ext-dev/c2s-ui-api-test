@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 
 @RestController
 @RequestMapping("/pcm")
@@ -47,13 +48,15 @@ public class PcmRestController {
 
     @GetMapping("/patients/consents/{consentId}/attestation")
     public Object getAttestedConsent(@PathVariable Long consentId,
-                                     @RequestParam(required = false)  String format) {
+                                     @RequestParam(required = false)  String format,
+                                     @RequestHeader("Accept-Language") Locale locale) {
         return pcmService.getAttestedConsent(consentId, format);
     }
 
     @GetMapping("/patients/consents/{consentId}/revocation")
     public Object getRevokedConsent(@PathVariable Long consentId,
-                                    @RequestParam(required = false)  String format) {
+                                    @RequestParam(required = false)  String format,
+                                    @RequestHeader("Accept-Language") Locale locale) {
         return pcmService.getRevokedConsent(consentId, format);
     }
 
@@ -90,17 +93,19 @@ public class PcmRestController {
     }
 
     @GetMapping("/purposes")
-    public List<PurposeDto> getPurposes() {
-        return pcmService.getPurposes();
+    public List<PurposeDto> getPurposes(@RequestHeader("Accept-Language") Locale locale) {
+        return pcmService.getPurposes(locale);
     }
 
     @GetMapping("/consentAttestationTerm")
-    public ConsentTermDto getConsentAttestationTerm(@RequestParam(value = "id", required = false) Long id) {
-        return pcmService.getConsentAttestationTerm(id);
+    public ConsentTermDto getConsentAttestationTerm(@RequestParam(value = "id", required = false) Long id,
+                                                    @RequestHeader("Accept-Language") Locale locale) {
+        return pcmService.getConsentAttestationTerm(id, locale);
     }
 
     @GetMapping("/consentRevocationTerm")
-    public ConsentTermDto getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id) {
-        return pcmService.getConsentRevocationTerm(id);
+    public ConsentTermDto getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id,
+                                                   @RequestHeader("Accept-Language") Locale locale) {
+        return pcmService.getConsentRevocationTerm(id, locale);
     }
 }

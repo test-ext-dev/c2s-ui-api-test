@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class PcmServiceImpl implements PcmService {
@@ -95,17 +96,17 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public List<PurposeDto> getPurposes() {
-        return pcmClient.getPurposes();
+    public List<PurposeDto> getPurposes(Locale locale) {
+        return pcmClient.getPurposes(locale);
     }
 
     @Override
-    public ConsentTermDto getConsentAttestationTerm(Long id) {
-        return pcmClient.getConsentAttestationTerm(id);
+    public ConsentTermDto getConsentAttestationTerm(Long id, Locale locale) {
+        return pcmClient.getConsentAttestationTerm(id, locale);
     }
 
     @Override
-    public ConsentTermDto getConsentRevocationTerm(Long id) {
-        return pcmClient.getConsentRevocationTerm(id);
+    public ConsentTermDto getConsentRevocationTerm(Long id, Locale locale) {
+        return pcmClient.getConsentRevocationTerm(id, locale);
     }
 }

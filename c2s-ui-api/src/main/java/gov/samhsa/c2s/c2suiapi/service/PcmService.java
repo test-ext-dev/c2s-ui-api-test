@@ -1,8 +1,10 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.*;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
+import java.util.Locale;
 
 public interface PcmService {
     List<ConsentProviderDto> getProviders();
@@ -29,9 +31,9 @@ public interface PcmService {
 
     void revokeConsent(Long consentId, ConsentRevocationDto consentRevocationDto);
 
-    List<PurposeDto> getPurposes();
+    List<PurposeDto> getPurposes(@RequestHeader("Accept-Language") Locale locale);
 
-    ConsentTermDto getConsentAttestationTerm(Long id);
+    ConsentTermDto getConsentAttestationTerm(Long id, @RequestHeader("Accept-Language") Locale locale);
 
-    ConsentTermDto getConsentRevocationTerm(Long id);
+    ConsentTermDto getConsentRevocationTerm(Long id, @RequestHeader("Accept-Language") Locale locale);
 }
