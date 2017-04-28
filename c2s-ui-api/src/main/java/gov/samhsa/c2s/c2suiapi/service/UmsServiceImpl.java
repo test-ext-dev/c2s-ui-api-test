@@ -23,6 +23,11 @@ public class UmsServiceImpl implements UmsService {
     }
 
     @Override
+    public Object checkDuplicateUsername(String username) {
+        return umsClient.checkDuplicateUsername(username);
+    }
+
+    @Override
     public Object activateUser(UserActivationRequestDto userActivationRequest, String xForwardedProto, String xForwardedHost, int xForwardedPort) {
         return umsClient.activateUser(userActivationRequest, xForwardedProto, xForwardedHost, xForwardedPort);
     }

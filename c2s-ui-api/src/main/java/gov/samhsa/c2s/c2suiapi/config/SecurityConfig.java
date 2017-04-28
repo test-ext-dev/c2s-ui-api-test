@@ -30,6 +30,7 @@ public class SecurityConfig {
                     http.requiresChannel().anyRequest().requiresSecure();
                 }
                 http.authorizeRequests()
+                        .antMatchers(HttpMethod.GET, "/ums/**").permitAll()
                         .antMatchers(HttpMethod.POST, "/ums/**").permitAll()
                         .antMatchers(HttpMethod.GET, "/**").access(hasScopes("c2sUiApi.read"))
                         .antMatchers(HttpMethod.POST, "/**").access(hasScopes("c2sUiApi.write"))

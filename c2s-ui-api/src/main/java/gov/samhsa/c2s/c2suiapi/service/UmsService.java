@@ -8,6 +8,8 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 public interface UmsService {
     Object verify(UserVerificationRequestDto userVerificationRequest);
 
+    Object checkDuplicateUsername(String username);
+
     Object activateUser(UserActivationRequestDto userActivationRequest,
                         String xForwardedProto,
                         String xForwardedHost,

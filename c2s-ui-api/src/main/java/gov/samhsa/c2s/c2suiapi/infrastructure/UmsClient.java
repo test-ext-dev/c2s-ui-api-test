@@ -3,10 +3,7 @@ package gov.samhsa.c2s.c2suiapi.infrastructure;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -18,6 +15,9 @@ public interface UmsClient {
 
     @RequestMapping(value = "/users/verification", method = RequestMethod.POST)
     Object verify(@Valid @RequestBody UserVerificationRequestDto userVerificationRequest);
+
+    @RequestMapping(value = "/users/activation", method = RequestMethod.GET)
+    Object checkDuplicateUsername(@RequestParam("username") String username);
 
     @RequestMapping(value = "/users/activation", method = RequestMethod.POST)
     Object activateUser(@Valid @RequestBody UserActivationRequestDto userActivationRequest,

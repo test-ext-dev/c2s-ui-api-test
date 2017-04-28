@@ -24,6 +24,11 @@ public class UmsRestController {
         return umsService.verify(userVerificationRequest);
     }
 
+    @GetMapping(value = "/users/activation")
+    public Object checkDuplicateUsername(@RequestParam String username) {
+        return umsService.checkDuplicateUsername(username);
+    }
+
     @PostMapping(value = "/users/activation")
     public Object activateUser(@Valid @RequestBody UserActivationRequestDto userActivationRequest,
                                @RequestHeader(X_FORWARDED_PROTO) String xForwardedProto,
