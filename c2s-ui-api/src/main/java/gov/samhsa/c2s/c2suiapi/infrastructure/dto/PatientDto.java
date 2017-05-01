@@ -30,7 +30,7 @@ public class PatientDto {
     @NotBlank
     private String genderCode;
     @NotNull
-    private Long id;
+    private String id;
     @NotBlank
     private String lastName;
     private String medicalRecordNumber;

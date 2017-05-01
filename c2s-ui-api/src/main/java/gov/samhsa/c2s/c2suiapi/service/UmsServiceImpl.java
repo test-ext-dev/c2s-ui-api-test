@@ -57,4 +57,9 @@ public class UmsServiceImpl implements UmsService {
                 .mrn(currentUser.getMrn())
                 .build();
     }
+
+    @Override
+    public boolean getAccessDecision(String userAuthId,String mrn){
+        return umsClient.getAccessDecision(userAuthId,mrn);
+    }
 }

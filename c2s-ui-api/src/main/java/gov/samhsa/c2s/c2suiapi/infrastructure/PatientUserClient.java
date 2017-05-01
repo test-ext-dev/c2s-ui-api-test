@@ -13,7 +13,7 @@ public interface PatientUserClient {
     @RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
     default PatientDto getPatientProfile(@PathVariable("userId") Long userId) {
         return PatientDto.builder()
-                .id(4L)
+                .id("4")
                 .firstName("alice")
                 .email("alice.recruit@mailinator.com")
                 .build();

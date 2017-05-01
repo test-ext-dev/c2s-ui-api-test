@@ -33,4 +33,7 @@ public interface UmsClient {
 
     @RequestMapping(value = "/users/authId/{userAuthId}", method = RequestMethod.GET)
     UmsUserDto getUserByAuthId(@RequestParam("userAuthId") String userAuthId);
+
+    @RequestMapping(value = "/users/accessDecision", method = RequestMethod.GET)
+    boolean getAccessDecision(@RequestParam String userAuthId, @RequestParam String patientMRN);
 }
