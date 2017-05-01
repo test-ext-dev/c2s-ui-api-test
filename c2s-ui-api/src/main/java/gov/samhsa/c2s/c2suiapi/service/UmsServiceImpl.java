@@ -39,4 +39,9 @@ public class UmsServiceImpl implements UmsService {
         profile.setLocales(umsProperties.getSupportedLocales());
         return profile;
     }
+
+    @Override
+    public boolean getAccessDecision(String userAuthId,String mrn){
+        return umsClient.getAccessDecision(userAuthId,mrn);
+    }
 }

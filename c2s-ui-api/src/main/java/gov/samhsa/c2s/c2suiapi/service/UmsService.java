@@ -16,4 +16,6 @@ public interface UmsService {
                         int xForwardedPort);
 
     ProfileDto getProfile();
+
+    boolean getAccessDecision(String userAuthId,String mrn);
 }

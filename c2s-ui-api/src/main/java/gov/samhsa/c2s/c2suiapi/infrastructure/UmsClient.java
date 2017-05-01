@@ -24,4 +24,7 @@ public interface UmsClient {
                         @RequestHeader(X_FORWARDED_PROTO) String xForwardedProto,
                         @RequestHeader(X_FORWARDED_HOST) String xForwardedHost,
                         @RequestHeader(X_FORWARDED_PORT) int xForwardedPort);
+
+    @RequestMapping(value = "/users/accessDecision", method = RequestMethod.GET)
+    boolean getAccessDecision(@RequestParam String userAuthId, @RequestParam String patientMRN);
 }
