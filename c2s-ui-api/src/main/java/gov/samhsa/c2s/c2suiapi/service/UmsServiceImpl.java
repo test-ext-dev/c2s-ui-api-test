@@ -1,18 +1,23 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
-import gov.samhsa.c2s.c2suiapi.config.UmsProperties;
 import gov.samhsa.c2s.c2suiapi.infrastructure.UmsClient;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ProfileDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.BaseUmsLookupDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UmsUserDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
+import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UmsServiceImpl implements UmsService {
 
     @Autowired
-    private UmsProperties umsProperties;
+    JwtTokenExtractor jwtTokenExtractor;
 
     @Autowired
     private UmsClient umsClient;
@@ -33,10 +38,23 @@ public class UmsServiceImpl implements UmsService {
     }
 
     @Override
-    public ProfileDto getProfile() {
-        ProfileDto profile = new ProfileDto();
-        profile.setDefaultLocale(umsProperties.getDefaultLocale());
-        profile.setLocales(umsProperties.getSupportedLocales());
-        return profile;
+    public ProfileResponse getProfile(OAuth2Authentication oAuth2Authentication) {
+        //Get system supported Locales
+        List<String> supportedLocales = umsClient.getLocales().stream()
+                .map(BaseUmsLookupDto::getCode)
+                .collect(Collectors.toList());
+        //Get Current user
+        String userAuthId = jwtTokenExtractor.getValueByKey(oAuth2Authentication, JwtTokenExtractor.USER_ID);
+        String currentUsername = jwtTokenExtractor.getValueByKey(oAuth2Authentication, JwtTokenExtractor.USER_NAME);
+        UmsUserDto currentUser = umsClient.getUserByAuthId(userAuthId);
+
+        return ProfileResponse.builder()
+                .userLocale(currentUser.getLocale())
+                .supportedLocales(supportedLocales)
+                .username(currentUsername)
+                .firstName(currentUser.getFirstName())
+                .lastName(currentUser.getLastName())
+                .mrn(currentUser.getMrn())
+                .build();
     }
 }

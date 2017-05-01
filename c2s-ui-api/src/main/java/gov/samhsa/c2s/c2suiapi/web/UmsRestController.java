@@ -1,11 +1,11 @@
 package gov.samhsa.c2s.c2suiapi.web;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ProfileDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 import gov.samhsa.c2s.c2suiapi.service.UmsServiceImpl;
+import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -37,9 +37,8 @@ public class UmsRestController {
         return umsService.activateUser(userActivationRequest, xForwardedProto, xForwardedHost, xForwardedPort);
     }
 
-    @GetMapping("/profile")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ProfileDto setProfile() {
-        return umsService.getProfile();
+    @GetMapping("/users/profile")
+    public ProfileResponse getProfile(OAuth2Authentication oAuth2Authentication) {
+        return umsService.getProfile(oAuth2Authentication);
     }
 }

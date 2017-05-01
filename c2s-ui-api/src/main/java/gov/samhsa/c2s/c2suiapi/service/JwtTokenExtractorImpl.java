@@ -11,13 +11,12 @@ import org.springframework.stereotype.Service;
 import java.util.Map;
 
 @Service
-public class JwtTokenExtractorImpl implements JwtTokenExtractor{
-    public String getValueByKey(OAuth2Authentication oAuth2Authentication, String key){
-        OAuth2AuthenticationDetails oAuth2AuthenticationDetails=(OAuth2AuthenticationDetails)oAuth2Authentication.getDetails();
-       JsonParser objectMapper = JsonParserFactory.create();
-       Jwt jwt = JwtHelper.decode(oAuth2AuthenticationDetails.getTokenValue());
-       String content = jwt.getClaims();
-       Map<String,Object> map = objectMapper.parseMap(jwt.getClaims());
-       return (String)map.get(key);
+public class JwtTokenExtractorImpl implements JwtTokenExtractor {
+    public String getValueByKey(OAuth2Authentication oAuth2Authentication, String key) {
+        OAuth2AuthenticationDetails oAuth2AuthenticationDetails = (OAuth2AuthenticationDetails) oAuth2Authentication.getDetails();
+        JsonParser objectMapper = JsonParserFactory.create();
+        Jwt jwt = JwtHelper.decode(oAuth2AuthenticationDetails.getTokenValue());
+        Map<String, Object> map = objectMapper.parseMap(jwt.getClaims());
+        return (String) map.get(key);
     }
 }
