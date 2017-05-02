@@ -5,6 +5,9 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.web.bind.annotation.RequestHeader;
+
+import java.util.Locale;
 
 public interface UmsService {
     Object verify(UserVerificationRequestDto userVerificationRequest);
@@ -17,6 +20,8 @@ public interface UmsService {
                         int xForwardedPort);
 
     ProfileResponse getProfile(OAuth2Authentication oAuth2Authentication);
+
+    void setDefaultLocale(OAuth2Authentication oAuth2Authentication, @RequestHeader("Accept-Language") Locale locale);
 
     boolean getAccessDecision(String userAuthId,String mrn);
 }

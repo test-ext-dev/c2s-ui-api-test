@@ -9,8 +9,10 @@ import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,4 +64,11 @@ public class UmsServiceImpl implements UmsService {
     public boolean getAccessDecision(String userAuthId,String mrn){
         return umsClient.getAccessDecision(userAuthId,mrn);
     }
+
+    @Override
+    public void setDefaultLocale(OAuth2Authentication oAuth2Authentication, @RequestHeader("Accept-Language") Locale locale){
+        String userAuthId = jwtTokenExtractor.getValueByKey(oAuth2Authentication, JwtTokenExtractor.USER_ID);
+        umsClient.updateUserLocaleByUserAuthId(userAuthId, locale);
+    }
+
 }

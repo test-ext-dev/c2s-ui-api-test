@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 
 @FeignClient("ums")
 public interface UmsClient {
@@ -36,4 +37,7 @@ public interface UmsClient {
 
     @RequestMapping(value = "/users/accessDecision", method = RequestMethod.GET)
     boolean getAccessDecision(@RequestParam("userAuthId") String userAuthId, @RequestParam("patientMRN") String patientMRN);
+
+    @RequestMapping(value = "/users/locale", method = RequestMethod.PUT)
+    boolean updateUserLocaleByUserAuthId(@RequestParam("userAuthId") String userAuthId, @RequestHeader("Accept-Language") Locale locale);
 }
