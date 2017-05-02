@@ -8,7 +8,6 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,14 +38,14 @@ public class UmsServiceImpl implements UmsService {
     }
 
     @Override
-    public ProfileResponse getProfile(OAuth2Authentication oAuth2Authentication) {
+    public ProfileResponse getProfile() {
         //Get system supported Locales
         List<String> supportedLocales = umsClient.getLocales().stream()
                 .map(BaseUmsLookupDto::getCode)
                 .collect(Collectors.toList());
         //Get Current user
-        String userAuthId = jwtTokenExtractor.getValueByKey(oAuth2Authentication, JwtTokenKey.USER_ID);
-        String currentUsername = jwtTokenExtractor.getValueByKey(oAuth2Authentication, JwtTokenKey.USER_NAME);
+        String userAuthId = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        String currentUsername = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_NAME);
         UmsUserDto currentUser = umsClient.getUserByAuthId(userAuthId);
 
         return ProfileResponse.builder()
@@ -57,10 +56,5 @@ public class UmsServiceImpl implements UmsService {
                 .lastName(currentUser.getLastName())
                 .mrn(currentUser.getMrn())
                 .build();
-    }
-
-    @Override
-    public boolean getAccessDecision(String userAuthId, String mrn) {
-        return umsClient.getAccessDecision(userAuthId, mrn);
     }
 }

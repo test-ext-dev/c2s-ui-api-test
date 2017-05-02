@@ -16,77 +16,84 @@ public class PcmRestController {
     @Autowired
     private PcmService pcmService;
 
-    @GetMapping("/patients/providers")
-    public List<ConsentProviderDto> getProviders() {
-        return pcmService.getProviders();
+    @GetMapping("/patients/{mrn}/providers")
+    public List<ConsentProviderDto> getProviders(@PathVariable String mrn) {
+        return pcmService.getProviders(mrn);
     }
 
-    @PostMapping("/patients/providers")
+    @PostMapping("/patients/{mrn}/providers")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveProviders(@Valid @RequestBody IdentifiersDto providerIdentifiersDto) {
-        pcmService.saveProviders(providerIdentifiersDto);
+    public void saveProviders(@PathVariable String mrn,
+                              @Valid @RequestBody IdentifiersDto providerIdentifiersDto) {
+        pcmService.saveProviders(mrn, providerIdentifiersDto);
     }
 
-    @DeleteMapping("/patients/providers/{providerId}")
+    @DeleteMapping("/patients/{mrn}/providers/{providerId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProvider(@PathVariable Long providerId) {
-        pcmService.deleteProvider(providerId);
+    public void deleteProvider(@PathVariable String mrn,
+                               @PathVariable Long providerId) {
+        pcmService.deleteProvider(mrn, providerId);
     }
 
-    @GetMapping("/patients/consents")
-    public PageableDto<DetailedConsentDto> getConsents(@RequestParam(value = "page", required = false) Integer page,
+    @GetMapping("/patients/{mrn}/consents")
+    public PageableDto<DetailedConsentDto> getConsents(@PathVariable String mrn,
+                                                       @RequestParam(value = "page", required = false) Integer page,
                                                        @RequestParam(value = "size", required = false) Integer size) {
-        return pcmService.getConsents(page, size);
+        return pcmService.getConsents(mrn, page, size);
     }
 
-    @GetMapping("/patients/consents/{consentId}")
-    public Object getConsent(@PathVariable Long consentId,
+    @GetMapping("/patients/{mrn}/consents/{consentId}")
+    public Object getConsent(@PathVariable String mrn,
+                             @PathVariable Long consentId,
                              @RequestParam(value = "format", required = false) String format) {
-        return pcmService.getConsent(consentId, format);
+        return pcmService.getConsent(mrn, consentId, format);
     }
 
-    @GetMapping("/patients/consents/{consentId}/attestation")
-    public Object getAttestedConsent(@PathVariable Long consentId,
-                                     @RequestParam(required = false)  String format) {
-        return pcmService.getAttestedConsent(consentId, format);
+    @GetMapping("/patients/{mrn}/consents/{consentId}/attestation")
+    public Object getAttestedConsent(@PathVariable String mrn,
+                                     @PathVariable Long consentId,
+                                     @RequestParam(required = false) String format) {
+        return pcmService.getAttestedConsent(mrn, consentId, format);
     }
 
-    @GetMapping("/patients/consents/{consentId}/revocation")
-    public Object getRevokedConsent(@PathVariable Long consentId,
-                                    @RequestParam(required = false)  String format) {
-        return pcmService.getRevokedConsent(consentId, format);
+    @GetMapping("/patients/{mrn}/consents/{consentId}/revocation")
+    public Object getRevokedConsent(@PathVariable String mrn,
+                                    @PathVariable Long consentId,
+                                    @RequestParam(required = false) String format) {
+        return pcmService.getRevokedConsent(mrn, consentId, format);
     }
 
-    @PostMapping("/patients/consents")
+    @PostMapping("/patients/{mrn}/consents")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveConsent(@Valid @RequestBody ConsentDto consentDto) {
-        pcmService.saveConsent(consentDto);
+    public void saveConsent(@PathVariable String mrn,
+                            @Valid @RequestBody ConsentDto consentDto) {
+        pcmService.saveConsent(mrn, consentDto);
     }
 
-    @DeleteMapping("/patients/consents/{consentId}")
-    public void deleteConsent(@PathVariable Long consentId) {
-        pcmService.deleteConsent(consentId);
+    @DeleteMapping("/patients/{mrn}/consents/{consentId}")
+    public void deleteConsent(@PathVariable String mrn, @PathVariable Long consentId) {
+        pcmService.deleteConsent(mrn, consentId);
     }
 
-    @PutMapping("/patients/consents/{consentId}")
+    @PutMapping("/patients/{mrn}/consents/{consentId}")
     @ResponseStatus(HttpStatus.OK)
-    public void updateConsent(@PathVariable Long consentId,
+    public void updateConsent(@PathVariable String mrn, @PathVariable Long consentId,
                               @Valid @RequestBody ConsentDto consentDto) {
-        pcmService.updateConsent(consentId, consentDto);
+        pcmService.updateConsent(mrn, consentId, consentDto);
     }
 
-    @PutMapping("/patients/consents/{consentId}/attestation")
+    @PutMapping("/patients/{mrn}/consents/{consentId}/attestation")
     @ResponseStatus(HttpStatus.OK)
-    public void attestConsent(@PathVariable Long consentId,
+    public void attestConsent(@PathVariable String mrn, @PathVariable Long consentId,
                               @Valid @RequestBody ConsentAttestationDto consentAttestationDto) {
-        pcmService.attestConsent(consentId, consentAttestationDto);
+        pcmService.attestConsent(mrn, consentId, consentAttestationDto);
     }
 
-    @PutMapping("/patients/consents/{consentId}/revocation")
+    @PutMapping("/patients/{mrn}/consents/{consentId}/revocation")
     @ResponseStatus(HttpStatus.OK)
-    public void revokeConsent(@PathVariable Long consentId,
+    public void revokeConsent(@PathVariable String mrn, @PathVariable Long consentId,
                               @Valid @RequestBody ConsentRevocationDto consentRevocationDto) {
-        pcmService.revokeConsent(consentId, consentRevocationDto);
+        pcmService.revokeConsent(mrn, consentId, consentRevocationDto);
     }
 
     @GetMapping("/purposes")
