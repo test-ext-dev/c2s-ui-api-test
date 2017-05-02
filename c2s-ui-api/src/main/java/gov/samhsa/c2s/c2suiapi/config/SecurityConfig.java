@@ -30,11 +30,17 @@ public class SecurityConfig {
                     http.requiresChannel().anyRequest().requiresSecure();
                 }
                 http.authorizeRequests()
-                        .antMatchers(HttpMethod.GET, "/**").access(hasScopes("c2sUiApi.read"))
-                        .antMatchers(HttpMethod.POST, "/**").access(hasScopes("c2sUiApi.write"))
-                        .antMatchers(HttpMethod.DELETE, "/**").access(hasScopes("c2sUiApi.write"))
-                        .antMatchers(HttpMethod.PUT, "/**").access(hasScopes("c2sUiApi.write"))
-                        .antMatchers(HttpMethod.OPTIONS, "/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.GET, "/ums/users/profile/**").access(hasScopes("c2sUiApi.read"))
+                        .antMatchers(HttpMethod.GET, "/pcm/**").access(hasScopes("c2sUiApi.read"))
+                        .antMatchers(HttpMethod.GET, "/vss/**").access(hasScopes("c2sUiApi.read"))
+                        .antMatchers(HttpMethod.GET, "/pls/**").access(hasScopes("c2sUiApi.read"))
+                        .antMatchers(HttpMethod.POST, "/pcm/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.DELETE, "/pcm/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.PUT, "/pcm/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.POST, "/ums/users/verification/**").permitAll()
+                        .antMatchers(HttpMethod.GET, "/ums/users/activation/**").permitAll()
+                        .antMatchers(HttpMethod.POST, "/ums/users/activation/**").permitAll()
+                        .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().denyAll();
             }
         };
