@@ -130,7 +130,7 @@ public class PcmServiceImpl implements PcmService {
         // Get current user authId
         String userAuthId = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
 
-        if (!umsClient.getAccessDecision(userAuthId, mrn)) {
+        if (!umsClient.getAccessDecision(userAuthId, mrn).isVerified()) {
             throw new PatientNotBelongToCurrentUserException();
         }
     }
