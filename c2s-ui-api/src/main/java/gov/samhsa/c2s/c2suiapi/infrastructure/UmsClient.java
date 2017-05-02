@@ -32,7 +32,7 @@ public interface UmsClient {
     List<BaseUmsLookupDto> getLocales();
 
     @RequestMapping(value = "/users/authId/{userAuthId}", method = RequestMethod.GET)
-    UmsUserDto getUserByAuthId(@RequestParam("userAuthId") String userAuthId);
+    UmsUserDto getUserByAuthId(@PathVariable("userAuthId") String userAuthId);
 
     @RequestMapping(value = "/users/accessDecision", method = RequestMethod.GET)
     boolean getAccessDecision(@RequestParam("userAuthId") String userAuthId, @RequestParam("patientMRN") String patientMRN);

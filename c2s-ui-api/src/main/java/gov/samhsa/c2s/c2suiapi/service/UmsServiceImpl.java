@@ -5,6 +5,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.BaseUmsLookupDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UmsUserDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
+import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -44,8 +45,8 @@ public class UmsServiceImpl implements UmsService {
                 .map(BaseUmsLookupDto::getCode)
                 .collect(Collectors.toList());
         //Get Current user
-        String userAuthId = jwtTokenExtractor.getValueByKey(oAuth2Authentication, JwtTokenExtractor.USER_ID);
-        String currentUsername = jwtTokenExtractor.getValueByKey(oAuth2Authentication, JwtTokenExtractor.USER_NAME);
+        String userAuthId = jwtTokenExtractor.getValueByKey(oAuth2Authentication, JwtTokenKey.USER_ID);
+        String currentUsername = jwtTokenExtractor.getValueByKey(oAuth2Authentication, JwtTokenKey.USER_NAME);
         UmsUserDto currentUser = umsClient.getUserByAuthId(userAuthId);
 
         return ProfileResponse.builder()
@@ -59,7 +60,7 @@ public class UmsServiceImpl implements UmsService {
     }
 
     @Override
-    public boolean getAccessDecision(String userAuthId,String mrn){
-        return umsClient.getAccessDecision(userAuthId,mrn);
+    public boolean getAccessDecision(String userAuthId, String mrn) {
+        return umsClient.getAccessDecision(userAuthId, mrn);
     }
 }
