@@ -25,73 +25,73 @@ public class PcmServiceImpl implements PcmService {
 
     @Override
     public List<ConsentProviderDto> getProviders() {
-        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         return pcmClient.getProviders(patientId);
     }
 
     @Override
     public void saveProviders(IdentifiersDto providerIdentifiersDto) {
-        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         pcmClient.saveProviders(patientId, providerIdentifiersDto);
     }
 
     @Override
     public void deleteProvider(Long providerId) {
-        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         pcmClient.deleteProvider(patientId, providerId);
     }
 
     @Override
     public Object getConsent(Long consentId, String format) {
-        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         return pcmClient.getConsent(patientId, consentId, format);
     }
 
     @Override
     public Object getAttestedConsent(Long consentId, String format) {
-        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         return pcmClient.getAttestedConsent(patientId, consentId, format);
     }
 
     @Override
     public Object getRevokedConsent(Long consentId, String format) {
-        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         return pcmClient.getRevokedConsent(patientId, consentId, format);
     }
 
     @Override
     public PageableDto<DetailedConsentDto> getConsents(Integer page, Integer size) {
-        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         return pcmClient.getConsents(patientId, page, size);
     }
 
     @Override
     public void saveConsent(ConsentDto consentDto) {
-        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         pcmClient.saveConsent(patientId, consentDto);
     }
 
     @Override
     public void deleteConsent(Long consentId) {
-        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         pcmClient.deleteConsent(patientId, consentId);
     }
 
     @Override
     public void updateConsent(Long consentId, ConsentDto consentDto) {
-        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         pcmClient.updateConsent(patientId, consentId, consentDto);
     }
 
     @Override
     public void attestConsent(Long consentId, ConsentAttestationDto consentAttestationDto) {
-        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         pcmClient.attestConsent(patientId, consentId, consentAttestationDto);
     }
 
     @Override
     public void revokeConsent(Long consentId, ConsentRevocationDto consentRevocationDto) {
-        Long patientId = patientUserClient.getPatientProfile(USER_ID).getId();
+        String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
         pcmClient.revokeConsent(patientId, consentId, consentRevocationDto);
     }
 
