@@ -41,8 +41,8 @@ public class UmsRestController {
     }
 
     @GetMapping("/users/profile")
-    public ProfileResponse getProfile(OAuth2Authentication oAuth2Authentication) {
-        return umsService.getProfile(oAuth2Authentication);
+    public ProfileResponse getProfile() {
+        return umsService.getProfile();
     }
 
     @PutMapping("/users/locale")

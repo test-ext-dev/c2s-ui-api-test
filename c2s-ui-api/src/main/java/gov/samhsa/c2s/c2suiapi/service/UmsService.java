@@ -19,9 +19,7 @@ public interface UmsService {
                         String xForwardedHost,
                         int xForwardedPort);
 
-    ProfileResponse getProfile(OAuth2Authentication oAuth2Authentication);
+    ProfileResponse getProfile();
 
     void setDefaultLocale(OAuth2Authentication oAuth2Authentication, @RequestHeader("Accept-Language") Locale locale);
-
-    boolean getAccessDecision(String userAuthId,String mrn);
 }

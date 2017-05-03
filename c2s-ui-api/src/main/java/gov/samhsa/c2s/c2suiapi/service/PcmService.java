@@ -7,29 +7,29 @@ import java.util.List;
 import java.util.Locale;
 
 public interface PcmService {
-    List<ConsentProviderDto> getProviders();
+    List<ConsentProviderDto> getProviders(String mrn);
 
-    void saveProviders(IdentifiersDto providerIdentifiersDto);
+    void saveProviders(String mrn, IdentifiersDto providerIdentifiersDto);
 
-    void deleteProvider(Long providerId);
+    void deleteProvider(String mrn, Long providerId);
 
-    Object getConsent(Long consentId, String format);
+    Object getConsent(String mrn, Long consentId, String format);
 
-    Object getAttestedConsent(Long consentId, String format);
+    Object getAttestedConsent(String mrn, Long consentId, String format);
 
-    Object getRevokedConsent(Long consentId, String format);
+    Object getRevokedConsent(String mrn, Long consentId, String format);
 
-    PageableDto<DetailedConsentDto> getConsents(Integer page, Integer size);
+    PageableDto<DetailedConsentDto> getConsents(String mrn, Integer page, Integer size);
 
-    void saveConsent(ConsentDto consentDto, Locale locale);
+    void saveConsent(String mrn, ConsentDto consentDto, Locale locale);
 
-    void deleteConsent(Long consentId);
+    void deleteConsent(String mrn, Long consentId);
 
-    void updateConsent(Long consentId, ConsentDto consentDto);
+    void updateConsent(String mrn, Long consentId, ConsentDto consentDto);
 
-    void attestConsent(Long consentId, ConsentAttestationDto consentAttestationDto);
+    void attestConsent(String mrn, Long consentId, ConsentAttestationDto consentAttestationDto);
 
-    void revokeConsent(Long consentId, ConsentRevocationDto consentRevocationDto);
+    void revokeConsent(String mrn, Long consentId, ConsentRevocationDto consentRevocationDto);
 
     List<PurposeDto> getPurposes(@RequestHeader("Accept-Language") Locale locale);
 

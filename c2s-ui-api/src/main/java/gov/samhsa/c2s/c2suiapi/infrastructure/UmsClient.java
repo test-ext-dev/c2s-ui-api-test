@@ -1,9 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.infrastructure;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.BaseUmsLookupDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UmsUserDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.*;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,11 +30,8 @@ public interface UmsClient {
     List<BaseUmsLookupDto> getLocales();
 
     @RequestMapping(value = "/users/authId/{userAuthId}", method = RequestMethod.GET)
-    UmsUserDto getUserByAuthId(@RequestParam("userAuthId") String userAuthId);
+    UmsUserDto getUserByAuthId(@PathVariable("userAuthId") String userAuthId);
 
     @RequestMapping(value = "/users/accessDecision", method = RequestMethod.GET)
-    boolean getAccessDecision(@RequestParam("userAuthId") String userAuthId, @RequestParam("patientMRN") String patientMRN);
-
-    @RequestMapping(value = "/users/locale", method = RequestMethod.PUT)
-    boolean updateUserLocaleByUserAuthId(@RequestParam("userAuthId") String userAuthId, @RequestHeader("Accept-Language") Locale locale);
+    AccessDecisionDto getAccessDecision(@RequestParam("userAuthId") String userAuthId, @RequestParam("patientMRN") String patientMRN, @RequestHeader("Accept-Language") Locale locale);
 }
