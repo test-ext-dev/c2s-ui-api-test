@@ -62,8 +62,8 @@ public class PcmRestController {
 
     @PostMapping("/patients/consents")
     @ResponseStatus(HttpStatus.CREATED)
-    public void saveConsent(@Valid @RequestBody ConsentDto consentDto) {
-        pcmService.saveConsent(consentDto);
+    public void saveConsent(@Valid @RequestBody ConsentDto consentDto, @RequestHeader("Accept-Language") Locale locale) {
+        pcmService.saveConsent(consentDto, locale);
     }
 
     @DeleteMapping("/patients/consents/{consentId}")

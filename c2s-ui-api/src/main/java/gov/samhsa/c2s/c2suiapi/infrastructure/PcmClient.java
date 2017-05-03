@@ -45,7 +45,7 @@ public interface PcmClient {
 
     @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.POST)
     void saveConsent(@PathVariable("patientId") String patientId,
-                     @Valid @RequestBody ConsentDto consentDto);
+                     @Valid @RequestBody ConsentDto consentDto, @RequestHeader("Accept-Language") Locale locale);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.DELETE)
     void deleteConsent(@PathVariable("patientId") String patientId,

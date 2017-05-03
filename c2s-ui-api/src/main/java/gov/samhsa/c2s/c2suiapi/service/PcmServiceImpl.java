@@ -5,6 +5,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.PcmClient;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 import java.util.Locale;
@@ -66,9 +67,9 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public void saveConsent(ConsentDto consentDto) {
+    public void saveConsent(ConsentDto consentDto, Locale locale) {
         String patientId = patientUserClient.getPatientProfile(USER_ID).getId();
-        pcmClient.saveConsent(patientId, consentDto);
+        pcmClient.saveConsent(patientId, consentDto, locale);
     }
 
     @Override

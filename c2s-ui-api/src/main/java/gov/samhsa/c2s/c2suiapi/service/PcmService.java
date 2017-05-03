@@ -21,7 +21,7 @@ public interface PcmService {
 
     PageableDto<DetailedConsentDto> getConsents(Integer page, Integer size);
 
-    void saveConsent(ConsentDto consentDto);
+    void saveConsent(ConsentDto consentDto, Locale locale);
 
     void deleteConsent(Long consentId);
 
