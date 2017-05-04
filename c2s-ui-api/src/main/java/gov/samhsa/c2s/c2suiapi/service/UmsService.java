@@ -21,5 +21,5 @@ public interface UmsService {
 
     ProfileResponse getProfile();
 
-    void setDefaultLocale(OAuth2Authentication oAuth2Authentication, @RequestHeader("Accept-Language") Locale locale);
+    void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale);
 }

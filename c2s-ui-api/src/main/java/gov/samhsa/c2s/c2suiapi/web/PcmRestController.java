@@ -98,17 +98,17 @@ public class PcmRestController {
     }
 
     @GetMapping("/purposes")
-    public List<PurposeDto> getPurposes() {
-        return pcmService.getPurposes();
+    public List<PurposeDto> getPurposes(@RequestHeader("Accept-Language") Locale locale) {
+        return pcmService.getPurposes(locale);
     }
 
     @GetMapping("/consentAttestationTerm")
-    public ConsentTermDto getConsentAttestationTerm(@RequestParam(value = "id", required = false) Long id) {
-        return pcmService.getConsentAttestationTerm(id);
+    public ConsentTermDto getConsentAttestationTerm(@RequestParam(value = "id", required = false) Long id, @RequestHeader("Accept-Language") Locale locale) {
+        return pcmService.getConsentAttestationTerm(id,locale);
     }
 
     @GetMapping("/consentRevocationTerm")
-    public ConsentTermDto getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id) {
-        return pcmService.getConsentRevocationTerm(id);
+    public ConsentTermDto getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id, @RequestHeader("Accept-Language") Locale locale) {
+        return pcmService.getConsentRevocationTerm(id,locale);
     }
 }

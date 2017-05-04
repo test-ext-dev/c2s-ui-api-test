@@ -47,7 +47,7 @@ public class UmsRestController {
 
     @PutMapping("/users/locale")
     @ResponseStatus(HttpStatus.OK)
-    public void setDefaultLocale(OAuth2Authentication oAuth2Authentication, @RequestHeader("Accept-Language") Locale locale) {
-        umsService.setDefaultLocale(oAuth2Authentication, locale);
+    public void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale) {
+        umsService.setDefaultLocale(locale);
     }
 }

@@ -1,6 +1,5 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.PatientUserClient;
 import gov.samhsa.c2s.c2suiapi.infrastructure.PcmClient;
 import gov.samhsa.c2s.c2suiapi.infrastructure.UmsClient;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.*;

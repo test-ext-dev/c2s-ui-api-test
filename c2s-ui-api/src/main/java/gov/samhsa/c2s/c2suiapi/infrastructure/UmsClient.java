@@ -33,5 +33,9 @@ public interface UmsClient {
     UmsUserDto getUserByAuthId(@PathVariable("userAuthId") String userAuthId);
 
     @RequestMapping(value = "/users/accessDecision", method = RequestMethod.GET)
-    AccessDecisionDto getAccessDecision(@RequestParam("userAuthId") String userAuthId, @RequestParam("patientMRN") String patientMRN, @RequestHeader("Accept-Language") Locale locale);
+    AccessDecisionDto getAccessDecision(@RequestParam("userAuthId") String userAuthId, @RequestParam("patientMRN") String patientMRN);
+
+    @RequestMapping(value = "/users/locale", method = RequestMethod.PUT)
+    boolean updateUserLocaleByUserAuthId(@RequestParam("userAuthId") String userAuthId, @RequestHeader("Accept-Language") Locale locale);
+
 }

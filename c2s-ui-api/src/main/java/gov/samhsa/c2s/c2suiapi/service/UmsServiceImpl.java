@@ -61,10 +61,8 @@ public class UmsServiceImpl implements UmsService {
                 .build();
     }
 
-    @Override
-    public boolean getAccessDecision(String userAuthId,String mrn){
-        return umsClient.getAccessDecision(userAuthId,mrn);
+    public void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale){
+        String userAuthId = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        umsClient.updateUserLocaleByUserAuthId(userAuthId, locale);
     }
-
-    void setDefaultLocale(OAuth2Authentication oAuth2Authentication, @RequestHeader("Accept-Language") Locale locale);
 }
