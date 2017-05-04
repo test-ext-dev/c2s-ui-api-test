@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UmsServiceImpl implements UmsService {
@@ -40,9 +39,7 @@ public class UmsServiceImpl implements UmsService {
     @Override
     public ProfileResponse getProfile() {
         //Get system supported Locales
-        List<String> supportedLocales = umsClient.getLocales().stream()
-                .map(BaseUmsLookupDto::getCode)
-                .collect(Collectors.toList());
+        List<BaseUmsLookupDto> supportedLocales = umsClient.getLocales();
         //Get Current user
         String userAuthId = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
         String currentUsername = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_NAME);
