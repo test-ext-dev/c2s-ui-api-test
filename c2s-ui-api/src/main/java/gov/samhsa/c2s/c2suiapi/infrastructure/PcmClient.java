@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Locale;
 
 @FeignClient("pcm")
 public interface PcmClient {
@@ -44,7 +45,7 @@ public interface PcmClient {
 
     @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.POST)
     void saveConsent(@PathVariable("patientId") String patientId,
-                     @Valid @RequestBody ConsentDto consentDto);
+                     @Valid @RequestBody ConsentDto consentDto, @RequestHeader("Accept-Language") Locale locale);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.DELETE)
     void deleteConsent(@PathVariable("patientId") String patientId,
@@ -68,11 +69,13 @@ public interface PcmClient {
                        @Valid @RequestBody ConsentRevocationDto consentRevocationDto);
 
     @RequestMapping(value = "/purposes", method = RequestMethod.GET)
-    List<PurposeDto> getPurposes();
+    List<PurposeDto> getPurposes(@RequestHeader("Accept-Language") Locale locale);
 
     @RequestMapping(value = "/consentAttestationTerm", method = RequestMethod.GET)
-    ConsentTermDto getConsentAttestationTerm(@RequestParam(value = "id", required = false) Long id);
+    ConsentTermDto getConsentAttestationTerm(@RequestParam(value = "id", required = false) Long id,
+                                             @RequestHeader("Accept-Language") Locale locale);
 
     @RequestMapping(value = "/consentRevocationTerm", method = RequestMethod.GET)
-    ConsentTermDto getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id);
+    ConsentTermDto getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id,
+                                            @RequestHeader("Accept-Language") Locale locale);
 }

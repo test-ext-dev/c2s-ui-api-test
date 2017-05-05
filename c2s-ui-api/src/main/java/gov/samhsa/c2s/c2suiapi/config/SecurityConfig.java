@@ -37,6 +37,7 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.POST, "/pcm/**").access(hasScopes("c2sUiApi.write"))
                         .antMatchers(HttpMethod.DELETE, "/pcm/**").access(hasScopes("c2sUiApi.write"))
                         .antMatchers(HttpMethod.PUT, "/pcm/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.PUT, "/ums/users/locale/**").access(hasScopes("c2sUiApi.write"))
                         .antMatchers(HttpMethod.POST, "/ums/users/verification/**").permitAll()
                         .antMatchers(HttpMethod.GET, "/ums/users/activation/**").permitAll()
                         .antMatchers(HttpMethod.POST, "/ums/users/activation/**").permitAll()

@@ -8,9 +8,12 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
+import java.util.Locale;
 
 @Service
 public class UmsServiceImpl implements UmsService {
@@ -53,5 +56,10 @@ public class UmsServiceImpl implements UmsService {
                 .lastName(currentUser.getLastName())
                 .mrn(currentUser.getMrn())
                 .build();
+    }
+
+    public void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale){
+        String userAuthId = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        umsClient.updateUserLocaleByUserAuthId(userAuthId, locale);
     }
 }

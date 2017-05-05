@@ -5,9 +5,13 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 import gov.samhsa.c2s.c2suiapi.service.UmsServiceImpl;
 import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import java.util.Locale;
 
 import static gov.samhsa.c2s.c2suiapi.infrastructure.UmsClient.*;
 
@@ -39,5 +43,11 @@ public class UmsRestController {
     @GetMapping("/users/profile")
     public ProfileResponse getProfile() {
         return umsService.getProfile();
+    }
+
+    @PutMapping("/users/locale")
+    @ResponseStatus(HttpStatus.OK)
+    public void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale) {
+        umsService.setDefaultLocale(locale);
     }
 }
