@@ -31,7 +31,7 @@ public interface PcmService {
 
     void revokeConsent(String mrn, Long consentId, ConsentRevocationDto consentRevocationDto);
 
-    List<PurposeDto> getPurposes(Locale locale);
+    List<PurposeDto> getPurposes();
 
     ConsentTermDto getConsentAttestationTerm(Long id,Locale locale);
 
