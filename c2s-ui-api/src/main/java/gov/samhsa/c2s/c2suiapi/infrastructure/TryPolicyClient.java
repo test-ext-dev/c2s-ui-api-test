@@ -1,16 +1,20 @@
 package gov.samhsa.c2s.c2suiapi.infrastructure;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.TryPolicyDto;
-import org.springframework.cloud.netflix.feign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+        import gov.samhsa.c2s.c2suiapi.infrastructure.dto.TryPolicyResponse;
+        import org.springframework.cloud.netflix.feign.FeignClient;
+        import org.springframework.web.bind.annotation.RequestHeader;
+        import org.springframework.web.bind.annotation.RequestMapping;
+        import org.springframework.web.bind.annotation.RequestMethod;
+        import org.springframework.web.bind.annotation.RequestParam;
+
+        import java.util.Locale;
 
 @FeignClient("tryPolicy")
 public interface TryPolicyClient {
     @RequestMapping(value = "/tryPolicyXHTML", method = RequestMethod.GET)
-    public TryPolicyDto tryPolicyByConsentIdXHTML(@RequestParam("documentId") String documentId,
-                                                  @RequestParam("consentId") String consentId,
-                                                  @RequestParam("patientId") String patientId,
-                                                  @RequestParam("purposeOfUseCode") String purposeOfUseCode);
+    TryPolicyResponse tryPolicyByConsentIdXHTML(@RequestParam("documentId") String documentId,
+                                                       @RequestParam("consentId") String consentId,
+                                                       @RequestParam("patientId") String patientId,
+                                                       @RequestParam("purposeOfUseCode") String purposeOfUseCode,
+                                                       @RequestHeader("Accept-Language") Locale locale);
 }
