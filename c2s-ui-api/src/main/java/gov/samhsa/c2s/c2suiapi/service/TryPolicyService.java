@@ -1,7 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.TryPolicyResponse;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Locale;
 
@@ -15,5 +14,5 @@ public interface TryPolicyService {
      * @param locale **The Patient's preferred Locale**
      * @return **Try-Policy response in XHTML**
      */
-    TryPolicyResponse getSegmentDocXHTML(String documentId, String consentId, String patientId, String purposeOfUse, @RequestHeader("Accept-Language") Locale locale);
+    TryPolicyResponse getSegmentDocXHTML(String documentId, String consentId, String patientId, String purposeOfUse, Locale locale);
 }
