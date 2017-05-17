@@ -1,4 +1,4 @@
-package gov.samhsa.c2s.c2suiapi.infrastructure.dto;
+package gov.samhsa.c2s.c2suiapi.service.dto;
 
 import lombok.Data;
 

@@ -1,6 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.infrastructure;
 
-        import gov.samhsa.c2s.c2suiapi.infrastructure.dto.TryPolicyResponse;
+        import gov.samhsa.c2s.c2suiapi.service.dto.TryPolicyResponse;
         import org.springframework.cloud.netflix.feign.FeignClient;
         import org.springframework.web.bind.annotation.RequestHeader;
         import org.springframework.web.bind.annotation.RequestMapping;

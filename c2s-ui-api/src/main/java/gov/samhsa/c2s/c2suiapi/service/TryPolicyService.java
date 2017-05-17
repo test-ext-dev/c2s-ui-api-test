@@ -1,6 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.TryPolicyResponse;
+import gov.samhsa.c2s.c2suiapi.service.dto.TryPolicyResponse;
 
 import java.util.Locale;
 
