@@ -30,17 +30,26 @@ public class SecurityConfig {
                     http.requiresChannel().anyRequest().requiresSecure();
                 }
                 http.authorizeRequests()
-                        .antMatchers(HttpMethod.GET, "/ums/users/profile/**").access(hasScopes("c2sUiApi.read"))
                         .antMatchers(HttpMethod.GET, "/pcm/**").access(hasScopes("c2sUiApi.read"))
-                        .antMatchers(HttpMethod.GET, "/vss/**").access(hasScopes("c2sUiApi.read"))
-                        .antMatchers(HttpMethod.GET, "/pls/**").access(hasScopes("c2sUiApi.read"))
                         .antMatchers(HttpMethod.POST, "/pcm/**").access(hasScopes("c2sUiApi.write"))
                         .antMatchers(HttpMethod.DELETE, "/pcm/**").access(hasScopes("c2sUiApi.write"))
                         .antMatchers(HttpMethod.PUT, "/pcm/**").access(hasScopes("c2sUiApi.write"))
+
+                        .antMatchers(HttpMethod.GET, "/ums/users/profile/**").access(hasScopes("c2sUiApi.read"))
                         .antMatchers(HttpMethod.PUT, "/ums/users/locale/**").access(hasScopes("c2sUiApi.write"))
                         .antMatchers(HttpMethod.POST, "/ums/users/verification/**").permitAll()
                         .antMatchers(HttpMethod.GET, "/ums/users/activation/**").permitAll()
                         .antMatchers(HttpMethod.POST, "/ums/users/activation/**").permitAll()
+
+                        .antMatchers(HttpMethod.GET, "/phr/**").access(hasScopes("c2sUiApi.read"))
+                        .antMatchers(HttpMethod.POST, "/phr/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.DELETE, "/phr/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.PUT, "/phr/**").access(hasScopes("c2sUiApi.write"))
+
+                        .antMatchers(HttpMethod.GET, "/vss/**").access(hasScopes("c2sUiApi.read"))
+                        .antMatchers(HttpMethod.GET, "/pls/**").access(hasScopes("c2sUiApi.read"))
+                        .antMatchers(HttpMethod.GET, "/tryPolicy/**").access(hasScopes("c2sUiApi.read"))
+
                         .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().denyAll();
             }
