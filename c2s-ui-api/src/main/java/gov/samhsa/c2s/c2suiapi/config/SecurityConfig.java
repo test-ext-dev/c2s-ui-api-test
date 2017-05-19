@@ -44,6 +44,11 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.GET, "/vss/**").access(hasScopes("c2sUiApi.read"))
                         .antMatchers(HttpMethod.GET, "/pls/**").access(hasScopes("c2sUiApi.read"))
 
+                        .antMatchers(HttpMethod.GET, "/phr/uploadedDocuments/**").access(hasScopes("c2sUiApi.read"))
+                        .antMatchers(HttpMethod.POST, "/phr/uploadedDocuments/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.DELETE, "/phr/uploadedDocuments/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.PUT, "/phr/uploadedDocuments/**").access(hasScopes("c2sUiApi.write"))
+
                         .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().denyAll();
             }
