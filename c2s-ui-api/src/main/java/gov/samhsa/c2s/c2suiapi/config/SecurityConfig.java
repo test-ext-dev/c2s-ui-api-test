@@ -41,14 +41,14 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.GET, "/ums/users/activation/**").permitAll()
                         .antMatchers(HttpMethod.POST, "/ums/users/activation/**").permitAll()
 
-                        .antMatchers(HttpMethod.GET, "/phr/**").access(hasScopes("c2sUiApi.read"))
-                        .antMatchers(HttpMethod.POST, "/phr/**").access(hasScopes("c2sUiApi.write"))
-                        .antMatchers(HttpMethod.DELETE, "/phr/**").access(hasScopes("c2sUiApi.write"))
-                        .antMatchers(HttpMethod.PUT, "/phr/**").access(hasScopes("c2sUiApi.write"))
-
                         .antMatchers(HttpMethod.GET, "/vss/**").access(hasScopes("c2sUiApi.read"))
                         .antMatchers(HttpMethod.GET, "/pls/**").access(hasScopes("c2sUiApi.read"))
                         .antMatchers(HttpMethod.GET, "/tryPolicy/**").access(hasScopes("c2sUiApi.read"))
+
+                        .antMatchers(HttpMethod.GET, "/phr/uploadedDocuments/**").access(hasScopes("c2sUiApi.read"))
+                        .antMatchers(HttpMethod.POST, "/phr/uploadedDocuments/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.DELETE, "/phr/uploadedDocuments/**").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.PUT, "/phr/uploadedDocuments/**").access(hasScopes("c2sUiApi.write"))
 
                         .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .anyRequest().denyAll();
