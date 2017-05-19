@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Locale;
 
-@FeignClient("tryPolicy")
+@FeignClient("try-policy")
 public interface TryPolicyClient {
     @RequestMapping(value = "/tryPolicyXHTML", method = RequestMethod.GET)
     TryPolicyResponse tryPolicyByConsentIdXHTML(@RequestParam("documentId") String documentId,
