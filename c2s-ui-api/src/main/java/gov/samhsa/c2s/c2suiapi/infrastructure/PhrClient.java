@@ -1,6 +1,5 @@
 package gov.samhsa.c2s.c2suiapi.infrastructure;
 
-import gov.samhsa.c2s.c2suiapi.service.dto.UploadedDocumentInfoDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +13,6 @@ import java.util.List;
 public interface PhrClient {
 
     @RequestMapping(value = "/uploadedDocuments/patients/{patientMrn}/documents", method = RequestMethod.GET)
-    List<UploadedDocumentInfoDto> getPatientDocumentInfoList(@PathVariable("patientMrn") String patientId);
+    List<Object> getPatientDocumentInfoList(@PathVariable("patientMrn") String patientId);
 
 }

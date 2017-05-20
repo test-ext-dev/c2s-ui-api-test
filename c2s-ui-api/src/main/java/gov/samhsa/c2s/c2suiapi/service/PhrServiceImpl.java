@@ -1,7 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.PhrClient;
-import gov.samhsa.c2s.c2suiapi.service.dto.UploadedDocumentInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +18,7 @@ public class PhrServiceImpl implements PhrService{
     }
 
     @Override
-    public List<UploadedDocumentInfoDto> getPatientDocumentInfoList(String patientMrn){
+    public List<Object> getPatientDocumentInfoList(String patientMrn){
         return phrClient.getPatientDocumentInfoList(patientMrn);
     }
 
