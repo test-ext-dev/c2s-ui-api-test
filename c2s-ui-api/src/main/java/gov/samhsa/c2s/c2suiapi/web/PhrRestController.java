@@ -15,6 +15,11 @@ public class PhrRestController {
     @Autowired
     private PhrService phrService;
 
+    @GetMapping("/uploadedDocuments/documentTypeCodes")
+    public List<Object> getAllDocumentTypeCodesList(){
+        return phrService.getAllDocumentTypeCodesList();
+    }
+
     @GetMapping("/uploadedDocuments/patients/{patientMrn}/documents")
     public List<Object> getPatientDocumentsList(@PathVariable String patientMrn){
         return phrService.getPatientDocumentInfoList(patientMrn);

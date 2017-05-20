@@ -18,6 +18,11 @@ public class PhrServiceImpl implements PhrService{
     }
 
     @Override
+    public List<Object> getAllDocumentTypeCodesList(){
+        return phrClient.getAllDocumentTypeCodesList();
+    }
+
+    @Override
     public List<Object> getPatientDocumentInfoList(String patientMrn){
         return phrClient.getPatientDocumentInfoList(patientMrn);
     }

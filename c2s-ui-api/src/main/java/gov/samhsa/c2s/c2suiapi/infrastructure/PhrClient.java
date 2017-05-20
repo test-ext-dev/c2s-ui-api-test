@@ -12,6 +12,9 @@ import java.util.List;
 @Service
 public interface PhrClient {
 
+    @RequestMapping(value = "/uploadedDocuments/documentTypeCodes", method = RequestMethod.GET)
+    List<Object> getAllDocumentTypeCodesList();
+
     @RequestMapping(value = "/uploadedDocuments/patients/{patientMrn}/documents", method = RequestMethod.GET)
     List<Object> getPatientDocumentInfoList(@PathVariable("patientMrn") String patientId);
 
