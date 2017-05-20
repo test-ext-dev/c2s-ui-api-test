@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public interface PhrClient {
 
-    @RequestMapping(value = "/uploadedDocuments/patient/{patientMrn}/documentsList", method = RequestMethod.GET)
+    @RequestMapping(value = "/uploadedDocuments/patients/{patientMrn}/documents", method = RequestMethod.GET)
     List<UploadedDocumentInfoDto> getPatientDocumentInfoList(@PathVariable("patientMrn") String patientId);
 
 }

@@ -16,7 +16,7 @@ public class PhrRestController {
     @Autowired
     private PhrService phrService;
 
-    @GetMapping("/uploadedDocuments/patient/{patientMrn}/documentsList")
+    @GetMapping("/uploadedDocuments/patients/{patientMrn}/documents")
     public List<UploadedDocumentInfoDto> getPatientDocumentsList(@PathVariable String patientMrn){
         return phrService.getPatientDocumentInfoList(patientMrn);
     }
