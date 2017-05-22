@@ -1,7 +1,5 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
-import gov.samhsa.c2s.c2suiapi.service.dto.TryPolicyResponse;
-
 import java.util.Locale;
 
 public interface TryPolicyService {
@@ -14,5 +12,5 @@ public interface TryPolicyService {
      * @param locale **The Patient's preferred Locale**
      * @return **Try-Policy response in XHTML**
      */
-    TryPolicyResponse getSegmentDocXHTML(String documentId, String consentId, String patientId, String purposeOfUse, Locale locale);
+    Object getSegmentDocXHTML(String documentId, String consentId, String patientId, String purposeOfUse, Locale locale);
 }

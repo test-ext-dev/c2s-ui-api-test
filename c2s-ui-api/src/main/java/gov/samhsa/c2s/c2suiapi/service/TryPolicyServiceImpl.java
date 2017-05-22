@@ -1,7 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.TryPolicyClient;
-import gov.samhsa.c2s.c2suiapi.service.dto.TryPolicyResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
@@ -15,7 +14,7 @@ public class TryPolicyServiceImpl implements TryPolicyService {
     }
 
     @Override
-    public TryPolicyResponse getSegmentDocXHTML(String documentId, String consentId, String patientId, String purposeOfUse, Locale locale) {
+    public Object getSegmentDocXHTML(String documentId, String consentId, String patientId, String purposeOfUse, Locale locale) {
           return tryPolicyClient.tryPolicyByConsentIdXHTML(documentId, consentId, patientId, purposeOfUse, locale);
     }
 }

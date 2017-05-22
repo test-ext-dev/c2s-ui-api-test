@@ -1,6 +1,5 @@
 package gov.samhsa.c2s.c2suiapi.web;
 
-import gov.samhsa.c2s.c2suiapi.service.dto.TryPolicyResponse;
 import gov.samhsa.c2s.c2suiapi.service.TryPolicyService;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,7 +20,7 @@ public class TryPolicyRestController {
     }
 
     @RequestMapping(value = "/tryPolicyXHTML", method = RequestMethod.GET)
-    public TryPolicyResponse tryPolicyByConsentIdXHTML(@RequestParam("documentId") String documentId,
+    public Object tryPolicyByConsentIdXHTML(@RequestParam("documentId") String documentId,
                                                        @RequestParam("consentId") String consentId,
                                                        @RequestParam("patientId") String patientId,
                                                        @RequestParam("purposeOfUseCode") String purposeOfUseCode,

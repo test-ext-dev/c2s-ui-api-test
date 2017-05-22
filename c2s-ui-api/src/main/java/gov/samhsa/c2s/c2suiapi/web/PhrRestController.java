@@ -1,7 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.web;
 
 import gov.samhsa.c2s.c2suiapi.service.PhrService;
-import gov.samhsa.c2s.c2suiapi.service.dto.UploadedDocumentInfoDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,11 +12,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/phr")
 public class PhrRestController {
+    private final PhrService phrService;
+
     @Autowired
-    private PhrService phrService;
+    public PhrRestController(PhrService phrService) {
+        this.phrService = phrService;
+    }
 
     @GetMapping("/uploadedDocuments/patient/{patientMrn}/documentsList")
-    public List<UploadedDocumentInfoDto> getPatientDocumentsList(@PathVariable String patientMrn){
+    public List<Object> getPatientDocumentsList(@PathVariable String patientMrn){
         return phrService.getPatientDocumentInfoList(patientMrn);
     }
 }
