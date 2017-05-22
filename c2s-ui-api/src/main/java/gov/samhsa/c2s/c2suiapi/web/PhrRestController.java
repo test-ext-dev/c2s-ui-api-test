@@ -19,7 +19,7 @@ public class PhrRestController {
         this.phrService = phrService;
     }
 
-    @GetMapping("/uploadedDocuments/patient/{patientMrn}/documentsList")
+    @GetMapping("/uploadedDocuments/patients/{patientMrn}/documents")
     public List<Object> getPatientDocumentsList(@PathVariable String patientMrn){
         return phrService.getPatientDocumentInfoList(patientMrn);
     }
