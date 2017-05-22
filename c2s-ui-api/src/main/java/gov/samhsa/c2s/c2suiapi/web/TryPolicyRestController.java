@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Locale;
 
 @RestController
-@RequestMapping("/try-Policy")
+@RequestMapping("/try-policy")
 public class TryPolicyRestController {
 
     private final TryPolicyService tryPolicyService;
