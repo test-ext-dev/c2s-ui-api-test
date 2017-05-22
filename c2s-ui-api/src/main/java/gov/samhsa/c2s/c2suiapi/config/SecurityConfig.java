@@ -43,7 +43,7 @@ public class SecurityConfig {
 
                         .antMatchers(HttpMethod.GET, "/vss/**").access(hasScopes("c2sUiApi.read"))
                         .antMatchers(HttpMethod.GET, "/pls/**").access(hasScopes("c2sUiApi.read"))
-                        .antMatchers(HttpMethod.GET, "/tryPolicy/**").access(hasScopes("c2sUiApi.read"))
+                        .antMatchers(HttpMethod.GET, "/try-Policy/**").access(hasScopes("c2sUiApi.read"))
 
                         .antMatchers(HttpMethod.GET, "/phr/uploadedDocuments/**").access(hasScopes("c2sUiApi.read"))
                         .antMatchers(HttpMethod.POST, "/phr/uploadedDocuments/**").access(hasScopes("c2sUiApi.write"))
