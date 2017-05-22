@@ -12,8 +12,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/phr")
 public class PhrRestController {
+    private final PhrService phrService;
+
     @Autowired
-    private PhrService phrService;
+    public PhrRestController(PhrService phrService) {
+        this.phrService = phrService;
+    }
 
     @GetMapping("/uploadedDocuments/documentTypeCodes")
     public List<Object> getAllDocumentTypeCodesList(){
