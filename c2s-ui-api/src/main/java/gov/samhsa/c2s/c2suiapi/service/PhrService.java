@@ -7,4 +7,6 @@ public interface PhrService {
     List<Object> getAllDocumentTypeCodesList();
 
     List<Object> getPatientDocumentInfoList(String patientMrn);
+
+    Object getPatientDocumentByDocId(String patientMrn, Long id);
 }

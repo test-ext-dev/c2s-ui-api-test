@@ -36,4 +36,8 @@ public class PhrServiceImpl implements PhrService{
         return null;
     }
 
+    @Override
+    public Object getPatientDocumentByDocId(String patientMrn, Long id) {
+        return phrClient.getPatientDocumentByDocId(patientMrn, id);
+    }
 }

@@ -18,4 +18,6 @@ public interface PhrClient {
     @RequestMapping(value = "/uploadedDocuments/patients/{patientMrn}/documents", method = RequestMethod.GET)
     List<Object> getPatientDocumentInfoList(@PathVariable("patientMrn") String patientId);
 
+    @RequestMapping(value = "/uploadedDocuments/patients/{patientMrn}/documents/{id}", method = RequestMethod.GET)
+    Object getPatientDocumentByDocId(@PathVariable("patientMrn") String patientMrn, @PathVariable("id") Long id);
 }

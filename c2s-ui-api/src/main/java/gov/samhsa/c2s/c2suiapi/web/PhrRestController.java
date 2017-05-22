@@ -28,4 +28,9 @@ public class PhrRestController {
     public List<Object> getPatientDocumentsList(@PathVariable String patientMrn){
         return phrService.getPatientDocumentInfoList(patientMrn);
     }
+
+    @GetMapping("/uploadedDocuments/patients/{patientMrn}/documents/{id}")
+    public Object getPatientDocumentByDocId(@PathVariable("patientMrn") String patientMrn, @PathVariable("id") Long id){
+        return phrService.getPatientDocumentByDocId(patientMrn, id);
+    }
 }
