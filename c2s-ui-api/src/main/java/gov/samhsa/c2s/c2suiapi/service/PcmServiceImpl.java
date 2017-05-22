@@ -7,7 +7,6 @@ import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.c2suiapi.service.exception.PatientNotBelongToCurrentUserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 import java.util.Locale;
@@ -32,84 +31,84 @@ public class PcmServiceImpl implements PcmService {
     @Override
     public List<ConsentProviderDto> getProviders(String mrn) {
         //Assert mrn belong to current user
-        assertMrnBelongToCurrentUser(mrn);
+        assertCurrentUserAuthorizedForMrn(mrn);
         return pcmClient.getProviders(mrn);
     }
 
     @Override
     public void saveProviders(String mrn, IdentifiersDto providerIdentifiersDto) {
         //Assert mrn belong to current user
-        assertMrnBelongToCurrentUser(mrn);
+        assertCurrentUserAuthorizedForMrn(mrn);
         pcmClient.saveProviders(mrn, providerIdentifiersDto);
     }
 
     @Override
     public void deleteProvider(String mrn, Long providerId) {
         //Assert mrn belong to current user
-        assertMrnBelongToCurrentUser(mrn);
+        assertCurrentUserAuthorizedForMrn(mrn);
         pcmClient.deleteProvider(mrn, providerId);
     }
 
     @Override
     public Object getConsent(String mrn, Long consentId, String format) {
         //Assert mrn belong to current user
-        assertMrnBelongToCurrentUser(mrn);
+        assertCurrentUserAuthorizedForMrn(mrn);
         return pcmClient.getConsent(mrn, consentId, format);
     }
 
     @Override
     public Object getAttestedConsent(String mrn, Long consentId, String format) {
         //Assert mrn belong to current user
-        assertMrnBelongToCurrentUser(mrn);
+        assertCurrentUserAuthorizedForMrn(mrn);
         return pcmClient.getAttestedConsent(mrn, consentId, format);
     }
 
     @Override
     public Object getRevokedConsent(String mrn, Long consentId, String format) {
         //Assert mrn belong to current user
-        assertMrnBelongToCurrentUser(mrn);
+        assertCurrentUserAuthorizedForMrn(mrn);
         return pcmClient.getRevokedConsent(mrn, consentId, format);
     }
 
     @Override
     public PageableDto<DetailedConsentDto> getConsents(String mrn, Integer page, Integer size) {
         //Assert mrn belong to current user
-        assertMrnBelongToCurrentUser(mrn);
+        assertCurrentUserAuthorizedForMrn(mrn);
         return pcmClient.getConsents(mrn, page, size);
     }
 
     @Override
     public void saveConsent(String mrn, ConsentDto consentDto, Locale locale) {
         //Assert mrn belong to current user
-        assertMrnBelongToCurrentUser(mrn);
+        assertCurrentUserAuthorizedForMrn(mrn);
         pcmClient.saveConsent(mrn, consentDto, locale);
     }
 
     @Override
     public void deleteConsent(String mrn, Long consentId) {
         //Assert mrn belong to current user
-        assertMrnBelongToCurrentUser(mrn);
+        assertCurrentUserAuthorizedForMrn(mrn);
         pcmClient.deleteConsent(mrn, consentId);
     }
 
     @Override
     public void updateConsent(String mrn, Long consentId, ConsentDto consentDto) {
         //Assert mrn belong to current user
-        assertMrnBelongToCurrentUser(mrn);
+        assertCurrentUserAuthorizedForMrn(mrn);
         pcmClient.updateConsent(mrn, consentId, consentDto);
     }
 
     @Override
     public void attestConsent(String mrn, Long consentId, ConsentAttestationDto consentAttestationDto) {
         //Assert mrn belong to current user
-        assertMrnBelongToCurrentUser(mrn);
+        assertCurrentUserAuthorizedForMrn(mrn);
         pcmClient.attestConsent(mrn, consentId, consentAttestationDto);
     }
 
     @Override
     public void revokeConsent(String mrn, Long consentId, ConsentRevocationDto consentRevocationDto) {
         //Assert mrn belong to current user
-        assertMrnBelongToCurrentUser(mrn);
+        assertCurrentUserAuthorizedForMrn(mrn);
         pcmClient.revokeConsent(mrn, consentId, consentRevocationDto);
     }
 
@@ -128,7 +127,7 @@ public class PcmServiceImpl implements PcmService {
         return pcmClient.getConsentRevocationTerm(id, locale);
     }
 
-    private void assertMrnBelongToCurrentUser(String mrn) {
+    private void assertCurrentUserAuthorizedForMrn(String mrn) {
         // Get current user authId
         String userAuthId = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
 
