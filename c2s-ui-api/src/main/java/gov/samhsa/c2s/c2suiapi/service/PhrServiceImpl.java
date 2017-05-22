@@ -40,4 +40,9 @@ public class PhrServiceImpl implements PhrService{
     public Object getPatientDocumentByDocId(String patientMrn, Long id) {
         return phrClient.getPatientDocumentByDocId(patientMrn, id);
     }
+
+    @Override
+    public void deletePatientDocument(String patientMrn, Long id) {
+        phrClient.deletePatientDocument(patientMrn, id);
+    }
 }

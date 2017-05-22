@@ -20,4 +20,7 @@ public interface PhrClient {
 
     @RequestMapping(value = "/uploadedDocuments/patients/{patientMrn}/documents/{id}", method = RequestMethod.GET)
     Object getPatientDocumentByDocId(@PathVariable("patientMrn") String patientMrn, @PathVariable("id") Long id);
+
+    @RequestMapping(value = "/uploadedDocuments/patients/{patientMrn}/documents/{id}", method = RequestMethod.DELETE)
+    void deletePatientDocument(@PathVariable("patientMrn") String patientMrn, @PathVariable("id") Long id);
 }

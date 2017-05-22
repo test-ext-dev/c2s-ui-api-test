@@ -9,4 +9,6 @@ public interface PhrService {
     List<Object> getPatientDocumentInfoList(String patientMrn);
 
     Object getPatientDocumentByDocId(String patientMrn, Long id);
+
+    void deletePatientDocument(String patientMrn, Long id);
 }
