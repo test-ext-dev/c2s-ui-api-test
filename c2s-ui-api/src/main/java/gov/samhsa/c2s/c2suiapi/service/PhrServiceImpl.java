@@ -4,8 +4,6 @@ import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
 import gov.samhsa.c2s.c2suiapi.infrastructure.PhrClient;
 import gov.samhsa.c2s.c2suiapi.service.exception.NoDocumentsFoundException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,9 +13,6 @@ import java.util.List;
 public class PhrServiceImpl implements PhrService{
 
     private final PhrClient phrClient;
-
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
 
     @Autowired
     public PhrServiceImpl(PhrClient phrClient) {
