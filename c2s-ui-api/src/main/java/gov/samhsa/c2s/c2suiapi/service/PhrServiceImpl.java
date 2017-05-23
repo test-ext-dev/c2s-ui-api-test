@@ -1,8 +1,11 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
 import gov.samhsa.c2s.c2suiapi.infrastructure.PhrClient;
 import gov.samhsa.c2s.c2suiapi.service.exception.NoDocumentsFoundException;
+import gov.samhsa.c2s.c2suiapi.service.exception.PhrClientInterfaceException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -10,10 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Service
-public class PhrServiceImpl implements PhrService{
+@Slf4j
+public class PhrServiceImpl implements PhrService {
 
     private final PhrClient phrClient;
-
 
     @Autowired
     public PhrServiceImpl(PhrClient phrClient) {
@@ -21,20 +24,26 @@ public class PhrServiceImpl implements PhrService{
     }
 
     @Override
-    public List<Object> getAllDocumentTypeCodesList(){
+    public List<Object> getAllDocumentTypeCodesList() {
         return phrClient.getAllDocumentTypeCodesList();
     }
 
     @Override
-    public List<Object> getPatientDocumentInfoList(String patientMrn){
-        try{
-            return phrClient.getPatientDocumentInfoList(patientMrn);
-        }catch (FeignException fe){
-            if(fe.status() == 404){
-                throw new NoDocumentsFoundException(fe.getMessage());
+    public List<Object> getPatientDocumentInfoList(String patientMrn) {
+        List<Object> uploadedDocuments;
+        try {
+            uploadedDocuments = phrClient.getPatientDocumentInfoList(patientMrn);
+        } catch (HystrixRuntimeException err) {
+            Throwable t = err.getCause();
+            if (t instanceof FeignException && ((FeignException) t).status() == 404) {
+                log.debug("PHR client returned a 404 - NOT FOUND status, indicating no documents were found for the specified patientMrn: ", t);
+                throw new NoDocumentsFoundException("No documents were found");
+            } else {
+                log.error("Unexpected instance of HystrixRuntimeException has occurred: ", err);
+                throw new PhrClientInterfaceException("An unknown error occurred while attempting to communicate with PHR service");
             }
         }
-        return null;
+        return uploadedDocuments;
     }
 
     @Override
