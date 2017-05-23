@@ -1,5 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.infrastructure;
 
+import gov.samhsa.c2s.c2suiapi.config.MultipartSupportConfig;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
 
-@FeignClient("phr")
+@FeignClient(value = "phr", configuration = MultipartSupportConfig.class)
 @Service
 public interface PhrClient {
 
