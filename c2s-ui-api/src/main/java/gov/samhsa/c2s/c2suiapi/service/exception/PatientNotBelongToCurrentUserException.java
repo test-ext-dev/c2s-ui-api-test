@@ -12,16 +12,4 @@ public class PatientNotBelongToCurrentUserException extends RuntimeException {
     public PatientNotBelongToCurrentUserException(String message) {
         super(message);
     }
-
-    public PatientNotBelongToCurrentUserException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public PatientNotBelongToCurrentUserException(Throwable cause) {
-        super(cause);
-    }
-
-    protected PatientNotBelongToCurrentUserException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

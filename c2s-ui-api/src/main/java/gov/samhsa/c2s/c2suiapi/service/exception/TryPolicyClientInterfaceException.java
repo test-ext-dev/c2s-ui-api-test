@@ -11,16 +11,4 @@ public class TryPolicyClientInterfaceException extends RuntimeException {
     public TryPolicyClientInterfaceException(String message) {
         super(message);
     }
-
-    public TryPolicyClientInterfaceException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public TryPolicyClientInterfaceException(Throwable cause) {
-        super(cause);
-    }
-
-    public TryPolicyClientInterfaceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

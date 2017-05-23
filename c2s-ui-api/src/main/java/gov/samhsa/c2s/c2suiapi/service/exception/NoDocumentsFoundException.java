@@ -11,16 +11,4 @@ public class NoDocumentsFoundException extends RuntimeException {
     public NoDocumentsFoundException(String message) {
         super(message);
     }
-
-    public NoDocumentsFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public NoDocumentsFoundException(Throwable cause) {
-        super(cause);
-    }
-
-    public NoDocumentsFoundException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }

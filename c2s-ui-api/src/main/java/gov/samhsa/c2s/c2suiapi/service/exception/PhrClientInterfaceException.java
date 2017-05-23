@@ -11,16 +11,4 @@ public class PhrClientInterfaceException extends RuntimeException{
     public PhrClientInterfaceException(String message) {
         super(message);
     }
-
-    public PhrClientInterfaceException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public PhrClientInterfaceException(Throwable cause) {
-        super(cause);
-    }
-
-    public PhrClientInterfaceException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
 }
