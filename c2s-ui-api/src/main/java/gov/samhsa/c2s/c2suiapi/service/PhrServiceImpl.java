@@ -35,10 +35,11 @@ public class PhrServiceImpl implements PhrService {
         } catch (HystrixRuntimeException err) {
             Throwable t = err.getCause();
             if (t instanceof FeignException && ((FeignException) t).status() == 404) {
-                throw new NoDocumentsFoundException(t.getMessage());
+                log.debug("PHR client returned a 404 - NOT FOUND status, indicating no documents were found for the specified patientMrn: ", t);
+                throw new NoDocumentsFoundException("No documents were found");
             } else {
                 log.error("Unexpected instance of HystrixRuntimeException has occurred: ", err);
-                throw new PhrClientInterfaceException(err.getCause().getMessage());
+                throw new PhrClientInterfaceException("An unknown error occurred while attempting to communicate with PHR service");
             }
         }
         return uploadedDocuments;

@@ -24,7 +24,7 @@ public class TryPolicyServiceImpl implements TryPolicyService {
             tryPolicyResponse = tryPolicyClient.tryPolicyByConsentIdXHTML(documentId, consentId, patientId, purposeOfUse, locale);
         } catch (HystrixRuntimeException err) {
             log.error("Unexpected instance of HystrixRuntimeException has occurred: ", err);
-            throw new TryPolicyClientInterfaceException(err.getCause().getMessage());
+            throw new TryPolicyClientInterfaceException("An unknown error occurred while attempting to communicate with try-policy service");
         }
         return tryPolicyResponse;
     }
