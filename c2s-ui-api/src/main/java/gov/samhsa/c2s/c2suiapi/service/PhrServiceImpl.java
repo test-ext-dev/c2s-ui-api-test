@@ -1,8 +1,11 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
+import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
 import gov.samhsa.c2s.c2suiapi.infrastructure.PhrClient;
 import gov.samhsa.c2s.c2suiapi.service.exception.NoDocumentsFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +15,8 @@ import java.util.List;
 public class PhrServiceImpl implements PhrService{
 
     private final PhrClient phrClient;
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     @Autowired
@@ -28,9 +33,10 @@ public class PhrServiceImpl implements PhrService{
     public List<Object> getPatientDocumentInfoList(String patientMrn){
         try{
             return phrClient.getPatientDocumentInfoList(patientMrn);
-        }catch (FeignException fe){
-            if(fe.status() == 404){
-                throw new NoDocumentsFoundException(fe.getMessage());
+        }catch(HystrixRuntimeException err) {
+            Throwable t = err.getCause();
+            if(t instanceof FeignException && ((FeignException) t).status() == 404){
+                throw new NoDocumentsFoundException(t.getMessage());
             }
         }
         return null;
