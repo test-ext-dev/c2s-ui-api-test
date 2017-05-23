@@ -5,6 +5,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.PhrClient;
 import gov.samhsa.c2s.c2suiapi.service.exception.NoDocumentsFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -39,6 +40,11 @@ public class PhrServiceImpl implements PhrService{
     @Override
     public Object getPatientDocumentByDocId(String patientMrn, Long id) {
         return phrClient.getPatientDocumentByDocId(patientMrn, id);
+    }
+
+    @Override
+    public Object saveNewPatientDocument(String patientMrn, MultipartFile file, String documentName, String description, Long documentTypeCodeId) {
+        return phrClient.saveNewPatientDocument(patientMrn, file, documentName, description, documentTypeCodeId);
     }
 
     @Override
