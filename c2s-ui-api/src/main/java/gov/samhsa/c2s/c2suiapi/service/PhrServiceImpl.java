@@ -26,15 +26,16 @@ public class PhrServiceImpl implements PhrService{
 
     @Override
     public List<Object> getPatientDocumentInfoList(String patientMrn){
+        List<Object> uploadedDocuments = null;
         try{
-            return phrClient.getPatientDocumentInfoList(patientMrn);
+            uploadedDocuments = phrClient.getPatientDocumentInfoList(patientMrn);
         }catch(HystrixRuntimeException err) {
             Throwable t = err.getCause();
             if(t instanceof FeignException && ((FeignException) t).status() == 404){
                 throw new NoDocumentsFoundException(t.getMessage());
             }
         }
-        return null;
+        return uploadedDocuments;
     }
 
 }
