@@ -5,13 +5,15 @@ import feign.FeignException;
 import gov.samhsa.c2s.c2suiapi.infrastructure.PhrClient;
 import gov.samhsa.c2s.c2suiapi.service.exception.NoDocumentsFoundException;
 import gov.samhsa.c2s.c2suiapi.service.exception.PhrClientInterfaceException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class PhrServiceImpl implements PhrService{
+@Slf4j
+public class PhrServiceImpl implements PhrService {
 
     private final PhrClient phrClient;
 
@@ -21,22 +23,23 @@ public class PhrServiceImpl implements PhrService{
     }
 
     @Override
-    public List<Object> getAllDocumentTypeCodesList(){
+    public List<Object> getAllDocumentTypeCodesList() {
         return phrClient.getAllDocumentTypeCodesList();
     }
 
     @Override
-    public List<Object> getPatientDocumentInfoList(String patientMrn){
+    public List<Object> getPatientDocumentInfoList(String patientMrn) {
         List<Object> uploadedDocuments;
-        try{
+        try {
             uploadedDocuments = phrClient.getPatientDocumentInfoList(patientMrn);
-        }catch(HystrixRuntimeException err) {
+        } catch (HystrixRuntimeException err) {
             Throwable t = err.getCause();
-            if(t instanceof FeignException && ((FeignException) t).status() == 404){
+            if (t instanceof FeignException && ((FeignException) t).status() == 404) {
                 throw new NoDocumentsFoundException(t.getMessage());
-            } else throw new PhrClientInterfaceException(err.getCause().getMessage());
-        }catch (Exception e){
-            throw new PhrClientInterfaceException(e.getMessage());
+            } else {
+                log.error("Unexpected instance of HystrixRuntimeException has occurred: ", err);
+                throw new PhrClientInterfaceException(err.getCause().getMessage());
+            }
         }
         return uploadedDocuments;
     }
