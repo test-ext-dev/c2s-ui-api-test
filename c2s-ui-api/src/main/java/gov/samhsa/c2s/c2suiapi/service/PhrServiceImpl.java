@@ -4,6 +4,7 @@ import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
 import gov.samhsa.c2s.c2suiapi.infrastructure.PhrClient;
 import gov.samhsa.c2s.c2suiapi.service.exception.NoDocumentsFoundException;
+import gov.samhsa.c2s.c2suiapi.service.exception.PhrClientInterfaceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,14 +27,16 @@ public class PhrServiceImpl implements PhrService{
 
     @Override
     public List<Object> getPatientDocumentInfoList(String patientMrn){
-        List<Object> uploadedDocuments = null;
+        List<Object> uploadedDocuments;
         try{
             uploadedDocuments = phrClient.getPatientDocumentInfoList(patientMrn);
         }catch(HystrixRuntimeException err) {
             Throwable t = err.getCause();
             if(t instanceof FeignException && ((FeignException) t).status() == 404){
                 throw new NoDocumentsFoundException(t.getMessage());
-            }
+            } else throw new PhrClientInterfaceException(err.getCause().getMessage());
+        }catch (Exception e){
+            throw new PhrClientInterfaceException(e.getMessage());
         }
         return uploadedDocuments;
     }
