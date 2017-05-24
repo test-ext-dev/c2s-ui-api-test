@@ -1,14 +1,14 @@
-package gov.samhsa.c2s.c2suiapi.service;
+package gov.samhsa.c2s.c2suiapi.service.phr;
 
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
-import gov.samhsa.c2s.c2suiapi.infrastructure.PhrClient;
-import gov.samhsa.c2s.c2suiapi.service.exception.DocumentDeleteException;
-import gov.samhsa.c2s.c2suiapi.service.exception.DocumentNameExistsException;
-import gov.samhsa.c2s.c2suiapi.service.exception.DocumentSaveException;
-import gov.samhsa.c2s.c2suiapi.service.exception.InvalidInputException;
-import gov.samhsa.c2s.c2suiapi.service.exception.NoDocumentsFoundException;
-import gov.samhsa.c2s.c2suiapi.service.exception.PhrClientInterfaceException;
+import gov.samhsa.c2s.c2suiapi.infrastructure.phr.PhrUploadedDocumentsClient;
+import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentDeleteException;
+import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentNameExistsException;
+import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentSaveException;
+import gov.samhsa.c2s.c2suiapi.service.exception.phr.InvalidInputException;
+import gov.samhsa.c2s.c2suiapi.service.exception.phr.NoDocumentsFoundException;
+import gov.samhsa.c2s.c2suiapi.service.exception.phr.PhrClientInterfaceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +18,13 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class PhrServiceImpl implements PhrService {
+public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsService {
 
-    private final PhrClient phrClient;
+    private final PhrUploadedDocumentsClient phrUploadedDocumentsClient;
 
     @Autowired
-    public PhrServiceImpl(PhrClient phrClient) {
-        this.phrClient = phrClient;
+    public PhrUploadedDocumentsServiceImpl(PhrUploadedDocumentsClient phrUploadedDocumentsClient) {
+        this.phrUploadedDocumentsClient = phrUploadedDocumentsClient;
     }
 
 
@@ -33,7 +33,7 @@ public class PhrServiceImpl implements PhrService {
         List<Object> documentTypeCodes;
 
         try {
-            documentTypeCodes = phrClient.getAllDocumentTypeCodesList();
+            documentTypeCodes = phrUploadedDocumentsClient.getAllDocumentTypeCodesList();
         } catch (HystrixRuntimeException hystrixErr) {
             log.error("Unexpected instance of HystrixRuntimeException has occurred: ", hystrixErr);
             throw new PhrClientInterfaceException("An unknown error occurred while attempting to communicate with PHR service");
@@ -47,7 +47,7 @@ public class PhrServiceImpl implements PhrService {
         List<Object> uploadedDocuments;
 
         try {
-            uploadedDocuments = phrClient.getPatientDocumentInfoList(patientMrn);
+            uploadedDocuments = phrUploadedDocumentsClient.getPatientDocumentInfoList(patientMrn);
         } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
@@ -76,7 +76,7 @@ public class PhrServiceImpl implements PhrService {
         Object returnedDocument;
 
         try {
-            returnedDocument = phrClient.getPatientDocumentByDocId(patientMrn, id);
+            returnedDocument = phrUploadedDocumentsClient.getPatientDocumentByDocId(patientMrn, id);
         } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
@@ -109,7 +109,7 @@ public class PhrServiceImpl implements PhrService {
         Object returnedSavedDocument;
 
         try{
-            returnedSavedDocument = phrClient.saveNewPatientDocument(patientMrn, file, documentName, description, documentTypeCodeId);
+            returnedSavedDocument = phrUploadedDocumentsClient.saveNewPatientDocument(patientMrn, file, documentName, description, documentTypeCodeId);
         } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
@@ -142,7 +142,7 @@ public class PhrServiceImpl implements PhrService {
     @Override
     public void deletePatientDocument(String patientMrn, Long id) {
         try {
-            phrClient.deletePatientDocument(patientMrn, id);
+            phrUploadedDocumentsClient.deletePatientDocument(patientMrn, id);
         } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 

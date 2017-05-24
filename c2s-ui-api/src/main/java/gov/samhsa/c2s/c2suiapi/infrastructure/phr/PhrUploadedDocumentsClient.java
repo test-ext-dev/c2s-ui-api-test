@@ -1,8 +1,8 @@
-package gov.samhsa.c2s.c2suiapi.infrastructure;
+package gov.samhsa.c2s.c2suiapi.infrastructure.phr;
 
 import feign.Headers;
 import feign.Param;
-import gov.samhsa.c2s.c2suiapi.config.MultipartSupportConfig;
+import gov.samhsa.c2s.c2suiapi.config.phr.uploadedDocuments.MultipartSupportConfig;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +15,7 @@ import java.util.List;
 
 @FeignClient(value = "phr", configuration = MultipartSupportConfig.class)
 @Service
-public interface PhrClient {
+public interface PhrUploadedDocumentsClient {
 
     @RequestMapping(value = "/uploadedDocuments/documentTypeCodes", method = RequestMethod.GET)
     List<Object> getAllDocumentTypeCodesList();

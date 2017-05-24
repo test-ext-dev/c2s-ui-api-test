@@ -1,4 +1,4 @@
-package gov.samhsa.c2s.c2suiapi.config;
+package gov.samhsa.c2s.c2suiapi.config.phr.uploadedDocuments;
 
 import feign.codec.Encoder;
 import feign.form.spring.SpringFormEncoder;

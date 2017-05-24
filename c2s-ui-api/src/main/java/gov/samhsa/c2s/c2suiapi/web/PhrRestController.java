@@ -1,6 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.web;
 
-import gov.samhsa.c2s.c2suiapi.service.PhrService;
+import gov.samhsa.c2s.c2suiapi.service.phr.PhrUploadedDocumentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,26 +16,27 @@ import java.util.List;
 @RestController
 @RequestMapping("/phr")
 public class PhrRestController {
-    private final PhrService phrService;
+    private final PhrUploadedDocumentsService phrUploadedDocumentsService;
 
     @Autowired
-    public PhrRestController(PhrService phrService) {
-        this.phrService = phrService;
+    public PhrRestController(PhrUploadedDocumentsService phrUploadedDocumentsService) {
+        this.phrUploadedDocumentsService = phrUploadedDocumentsService;
     }
+
 
     @GetMapping("/uploadedDocuments/documentTypeCodes")
     public List<Object> getAllDocumentTypeCodesList(){
-        return phrService.getAllDocumentTypeCodesList();
+        return phrUploadedDocumentsService.getAllDocumentTypeCodesList();
     }
 
     @GetMapping("/uploadedDocuments/patients/{patientMrn}/documents")
     public List<Object> getPatientDocumentsList(@PathVariable String patientMrn){
-        return phrService.getPatientDocumentInfoList(patientMrn);
+        return phrUploadedDocumentsService.getPatientDocumentInfoList(patientMrn);
     }
 
     @GetMapping("/uploadedDocuments/patients/{patientMrn}/documents/{id}")
     public Object getPatientDocumentByDocId(@PathVariable("patientMrn") String patientMrn, @PathVariable("id") Long id){
-        return phrService.getPatientDocumentByDocId(patientMrn, id);
+        return phrUploadedDocumentsService.getPatientDocumentByDocId(patientMrn, id);
     }
 
     @PostMapping("/uploadedDocuments/patients/{patientMrn}/documents")
@@ -44,11 +45,11 @@ public class PhrRestController {
                                          @RequestParam(value = "documentName") String documentName,
                                          @RequestParam(value = "description", required = false) String description,
                                          @RequestParam(value = "documentTypeCodeId") Long documentTypeCodeId){
-        return phrService.saveNewPatientDocument(patientMrn, file, documentName, description, documentTypeCodeId);
+        return phrUploadedDocumentsService.saveNewPatientDocument(patientMrn, file, documentName, description, documentTypeCodeId);
     }
 
     @DeleteMapping("/uploadedDocuments/patients/{patientMrn}/documents/{id}")
     public void deletePatientDocument(@PathVariable("patientMrn") String patientMrn, @PathVariable("id") Long id){
-        phrService.deletePatientDocument(patientMrn, id);
+        phrUploadedDocumentsService.deletePatientDocument(patientMrn, id);
     }
 }
