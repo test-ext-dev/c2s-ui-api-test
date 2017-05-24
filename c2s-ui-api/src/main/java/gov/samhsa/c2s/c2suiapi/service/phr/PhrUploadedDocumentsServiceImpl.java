@@ -3,6 +3,7 @@ package gov.samhsa.c2s.c2suiapi.service.phr;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
 import gov.samhsa.c2s.c2suiapi.infrastructure.phr.PhrUploadedDocumentsClient;
+import gov.samhsa.c2s.c2suiapi.service.EnforceUserAuthForMrnService;
 import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentDeleteException;
 import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentNameExistsException;
 import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentSaveException;
@@ -19,12 +20,13 @@ import java.util.List;
 @Service
 @Slf4j
 public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsService {
-
     private final PhrUploadedDocumentsClient phrUploadedDocumentsClient;
+    private final EnforceUserAuthForMrnService enforceUserAuthForMrnService;
 
     @Autowired
-    public PhrUploadedDocumentsServiceImpl(PhrUploadedDocumentsClient phrUploadedDocumentsClient) {
+    public PhrUploadedDocumentsServiceImpl(PhrUploadedDocumentsClient phrUploadedDocumentsClient, EnforceUserAuthForMrnService enforceUserAuthForMrnService) {
         this.phrUploadedDocumentsClient = phrUploadedDocumentsClient;
+        this.enforceUserAuthForMrnService = enforceUserAuthForMrnService;
     }
 
 
@@ -45,6 +47,9 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
     @Override
     public List<Object> getPatientDocumentInfoList(String patientMrn) {
         List<Object> uploadedDocuments;
+
+        // Assert mrn belong to current user
+        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(patientMrn);
 
         try {
             uploadedDocuments = phrUploadedDocumentsClient.getPatientDocumentInfoList(patientMrn);
@@ -74,6 +79,9 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
     @Override
     public Object getPatientDocumentByDocId(String patientMrn, Long id) {
         Object returnedDocument;
+
+        // Assert mrn belong to current user
+        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(patientMrn);
 
         try {
             returnedDocument = phrUploadedDocumentsClient.getPatientDocumentByDocId(patientMrn, id);
@@ -108,6 +116,9 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
     public Object saveNewPatientDocument(String patientMrn, MultipartFile file, String documentName, String description, Long documentTypeCodeId) {
         Object returnedSavedDocument;
 
+        // Assert mrn belong to current user
+        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(patientMrn);
+
         try{
             returnedSavedDocument = phrUploadedDocumentsClient.saveNewPatientDocument(patientMrn, file, documentName, description, documentTypeCodeId);
         } catch (HystrixRuntimeException hystrixErr) {
@@ -141,6 +152,9 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
 
     @Override
     public void deletePatientDocument(String patientMrn, Long id) {
+        // Assert mrn belong to current user
+        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(patientMrn);
+
         try {
             phrUploadedDocumentsClient.deletePatientDocument(patientMrn, id);
         } catch (HystrixRuntimeException hystrixErr) {
