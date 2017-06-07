@@ -1,7 +1,16 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.PcmClient;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.*;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentProviderDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentRevocationDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentTermDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.DetailedConsentDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PurposeDto;
+import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +21,13 @@ import java.util.Locale;
 public class PcmServiceImpl implements PcmService {
     private final PcmClient pcmClient;
     private final EnforceUserAuthForMrnService enforceUserAuthForMrnService;
+    private final JwtTokenExtractor jwtTokenExtractor;
 
     @Autowired
-    public PcmServiceImpl(PcmClient pcmClient, EnforceUserAuthForMrnService enforceUserAuthForMrnService) {
+    public PcmServiceImpl(PcmClient pcmClient, EnforceUserAuthForMrnService enforceUserAuthForMrnService, JwtTokenExtractor jwtTokenExtractor) {
         this.pcmClient = pcmClient;
         this.enforceUserAuthForMrnService = enforceUserAuthForMrnService;
+        this.jwtTokenExtractor = jwtTokenExtractor;
     }
 
     @Override
@@ -72,7 +83,12 @@ public class PcmServiceImpl implements PcmService {
     public void saveConsent(String mrn, ConsentDto consentDto, Locale locale) {
         //Assert mrn belong to current user
         enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
-        pcmClient.saveConsent(mrn, consentDto, locale);
+
+        // Get current user authId
+        String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        String lastUpdatedBy = createdBy;
+
+        pcmClient.saveConsent(mrn, consentDto, locale, createdBy, lastUpdatedBy);
     }
 
     @Override
