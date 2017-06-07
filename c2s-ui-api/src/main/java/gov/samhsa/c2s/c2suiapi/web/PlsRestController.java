@@ -2,9 +2,7 @@ package gov.samhsa.c2s.c2suiapi.web;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.PlsClient;
 import gov.samhsa.c2s.c2suiapi.infrastructure.PlsService;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +16,7 @@ public class PlsRestController implements PlsService {
     private PlsClient plsClient;
 
     @Override
-    public PagedResources<FlattenedSmallProviderDto> searchProviders(
+    public Object searchProviders(
             @RequestParam(value = "state", required = false) String state,
             @RequestParam(value = "city", required = false) String city,
             @RequestParam(value = "zipcode", required = false) String zipCode,

@@ -1,7 +1,5 @@
 package gov.samhsa.c2s.c2suiapi.infrastructure;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.FlattenedSmallProviderDto;
-import org.springframework.hateoas.PagedResources;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -14,7 +12,7 @@ public interface PlsService {
     String X_FORWARDED_PREFIX = "X-Forwarded-Prefix";
 
     @RequestMapping(value = "/providers/search/query", method = RequestMethod.GET)
-    PagedResources<FlattenedSmallProviderDto> searchProviders(
+    Object searchProviders(
             @RequestParam(value = "state", required = false) String state,
             @RequestParam(value = "city", required = false) String city,
             @RequestParam(value = "zipcode", required = false) String zipCode,
