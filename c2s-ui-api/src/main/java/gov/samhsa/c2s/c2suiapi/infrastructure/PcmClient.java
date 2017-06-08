@@ -66,7 +66,8 @@ public interface PcmClient {
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.DELETE)
     void deleteConsent(@PathVariable("patientId") String patientId,
-                       @PathVariable("consentId") Long consentId);
+                       @PathVariable("consentId") Long consentId,
+                       @RequestParam(value = "lastUpdatedBy") String lastUpdatedBy);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.PUT)
     void updateConsent(@PathVariable("patientId") String patientId,
