@@ -1,4 +1,4 @@
-package gov.samhsa.c2s.c2suiapi.infrastructure.dto;
+package gov.samhsa.c2s.c2suiapi.service.dto;
 
 import lombok.Data;
 
@@ -14,9 +14,9 @@ public class ValueSetCategoryDto {
      */
     private String description;
     /**
-     * The name.
+     * The display name.
      */
-    private String name;
+    private String displayName;
     /**
      * The displayOrder.
      */
