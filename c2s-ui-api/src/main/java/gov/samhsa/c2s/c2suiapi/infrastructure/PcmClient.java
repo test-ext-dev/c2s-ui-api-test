@@ -71,7 +71,8 @@ public interface PcmClient {
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}", method = RequestMethod.PUT)
     void updateConsent(@PathVariable("patientId") String patientId,
                        @PathVariable("consentId") Long consentId,
-                       @Valid @RequestBody ConsentDto consentDto);
+                       @Valid @RequestBody ConsentDto consentDto,
+                       @RequestParam(value = "lastUpdatedBy") String lastUpdatedBy);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/attestation", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)

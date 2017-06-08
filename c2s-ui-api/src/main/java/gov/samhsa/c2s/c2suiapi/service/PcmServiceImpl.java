@@ -101,7 +101,11 @@ public class PcmServiceImpl implements PcmService {
     public void updateConsent(String mrn, Long consentId, ConsentDto consentDto) {
         //Assert mrn belong to current user
         enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
-        pcmClient.updateConsent(mrn, consentId, consentDto);
+
+        // Get current user authId
+        String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+
+        pcmClient.updateConsent(mrn, consentId, consentDto, lastUpdatedBy);
     }
 
     @Override
