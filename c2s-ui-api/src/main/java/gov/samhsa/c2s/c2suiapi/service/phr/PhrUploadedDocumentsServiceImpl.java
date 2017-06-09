@@ -5,6 +5,7 @@ import feign.FeignException;
 import gov.samhsa.c2s.c2suiapi.infrastructure.phr.PhrUploadedDocumentsClient;
 import gov.samhsa.c2s.c2suiapi.service.EnforceUserAuthForMrnService;
 import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentDeleteException;
+import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentInvalidException;
 import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentNameExistsException;
 import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentSaveException;
 import gov.samhsa.c2s.c2suiapi.service.exception.phr.InvalidInputException;
@@ -135,6 +136,9 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
                 case 400:
                     log.error("PHR client returned a 400 - BAD REQUEST status, indicating invalid input was passed to PHR client", causedBy);
                     throw new InvalidInputException("Invalid input was passed to PHR client");
+                case 412:
+                    log.info("Document is invalid");
+                    throw new DocumentInvalidException();
                 case 409:
                     log.info("The specified patient already has a document with the same document name", causedBy);
                     throw new DocumentNameExistsException("The specified patient already has a document with the same document name");
