@@ -29,7 +29,7 @@ public interface PhrUploadedDocumentsClient {
     @RequestMapping(value = "/uploadedDocuments/patients/{patientMrn}/documents", method = RequestMethod.POST)
     @Headers("Content-Type: multipart/form-data")
     Object saveNewPatientDocument(@PathVariable("patientMrn") String patientMrn,
-                                  @Param(value = "file") MultipartFile file,
+                                  @Param(value = "documentFile") MultipartFile documentFile,
                                   @RequestParam(value = "documentName") String documentName,
                                   @RequestParam(value = "description", required = false) String description,
                                   @RequestParam(value = "documentTypeCodeId") Long documentTypeCodeId);

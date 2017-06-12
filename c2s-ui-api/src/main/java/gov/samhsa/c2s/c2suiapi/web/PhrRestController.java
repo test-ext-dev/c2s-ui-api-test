@@ -41,11 +41,11 @@ public class PhrRestController {
 
     @PostMapping("/uploadedDocuments/patients/{patientMrn}/documents")
     public Object saveNewPatientDocument(@PathVariable String patientMrn,
-                                         @RequestParam(value = "file") MultipartFile file,
+                                         @RequestParam(value = "documentFile") MultipartFile documentFile,
                                          @RequestParam(value = "documentName") String documentName,
                                          @RequestParam(value = "description", required = false) String description,
                                          @RequestParam(value = "documentTypeCodeId") Long documentTypeCodeId){
-        return phrUploadedDocumentsService.saveNewPatientDocument(patientMrn, file, documentName, description, documentTypeCodeId);
+        return phrUploadedDocumentsService.saveNewPatientDocument(patientMrn, documentFile, documentName, description, documentTypeCodeId);
     }
 
     @DeleteMapping("/uploadedDocuments/patients/{patientMrn}/documents/{id}")
