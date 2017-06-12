@@ -79,7 +79,9 @@ public interface PcmClient {
     @ResponseStatus(HttpStatus.OK)
     void attestConsent(@PathVariable("patientId") String patientId,
                        @PathVariable("consentId") Long consentId,
-                       @Valid @RequestBody ConsentAttestationDto consentAttestationDto);
+                       @Valid @RequestBody ConsentAttestationDto consentAttestationDto,
+                       @RequestParam(value = "attestedBy") String attestedBy,
+                       @RequestParam(value = "attestedByPatient") boolean attestedByPatient);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/revocation", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)

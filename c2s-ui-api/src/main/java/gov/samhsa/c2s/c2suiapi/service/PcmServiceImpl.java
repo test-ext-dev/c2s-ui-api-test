@@ -116,7 +116,10 @@ public class PcmServiceImpl implements PcmService {
     public void attestConsent(String mrn, Long consentId, ConsentAttestationDto consentAttestationDto) {
         //Assert mrn belong to current user
         enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
-        pcmClient.attestConsent(mrn, consentId, consentAttestationDto);
+
+        // Get current user authId
+        String attestedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        pcmClient.attestConsent(mrn, consentId, consentAttestationDto, attestedBy, true);
     }
 
     @Override
