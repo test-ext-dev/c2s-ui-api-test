@@ -87,7 +87,9 @@ public interface PcmClient {
     @ResponseStatus(HttpStatus.OK)
     void revokeConsent(@PathVariable("patientId") String patientId,
                        @PathVariable("consentId") Long consentId,
-                       @Valid @RequestBody ConsentRevocationDto consentRevocationDto);
+                       @Valid @RequestBody ConsentRevocationDto consentRevocationDto,
+                       @RequestParam(value = "revokedBy") String revokedBy,
+                       @RequestParam(value = "revokedByPatient") boolean revokedByPatient);
 
     @RequestMapping(value = "/purposes", method = RequestMethod.GET)
     List<PurposeDto> getPurposes();

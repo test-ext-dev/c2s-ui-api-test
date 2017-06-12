@@ -126,7 +126,10 @@ public class PcmServiceImpl implements PcmService {
     public void revokeConsent(String mrn, Long consentId, ConsentRevocationDto consentRevocationDto) {
         //Assert mrn belong to current user
         enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
-        pcmClient.revokeConsent(mrn, consentId, consentRevocationDto);
+
+        // Get current user authId
+        String revokedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        pcmClient.revokeConsent(mrn, consentId, consentRevocationDto, revokedBy, true);
     }
 
     @Override
