@@ -1,7 +1,16 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.PcmClient;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.*;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentProviderDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentRevocationDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentTermDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.DetailedConsentDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PurposeDto;
+import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +21,13 @@ import java.util.Locale;
 public class PcmServiceImpl implements PcmService {
     private final PcmClient pcmClient;
     private final EnforceUserAuthForMrnService enforceUserAuthForMrnService;
+    private final JwtTokenExtractor jwtTokenExtractor;
 
     @Autowired
-    public PcmServiceImpl(PcmClient pcmClient, EnforceUserAuthForMrnService enforceUserAuthForMrnService) {
+    public PcmServiceImpl(PcmClient pcmClient, EnforceUserAuthForMrnService enforceUserAuthForMrnService, JwtTokenExtractor jwtTokenExtractor) {
         this.pcmClient = pcmClient;
         this.enforceUserAuthForMrnService = enforceUserAuthForMrnService;
+        this.jwtTokenExtractor = jwtTokenExtractor;
     }
 
     @Override
@@ -72,35 +83,53 @@ public class PcmServiceImpl implements PcmService {
     public void saveConsent(String mrn, ConsentDto consentDto, Locale locale) {
         //Assert mrn belong to current user
         enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
-        pcmClient.saveConsent(mrn, consentDto, locale);
+
+        // Get current user authId
+        String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+
+        pcmClient.saveConsent(mrn, consentDto, locale, createdBy);
     }
 
     @Override
     public void deleteConsent(String mrn, Long consentId) {
         //Assert mrn belong to current user
         enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
-        pcmClient.deleteConsent(mrn, consentId);
+
+        // Get current user authId
+        String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+
+        pcmClient.deleteConsent(mrn, consentId, lastUpdatedBy);
     }
 
     @Override
     public void updateConsent(String mrn, Long consentId, ConsentDto consentDto) {
         //Assert mrn belong to current user
         enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
-        pcmClient.updateConsent(mrn, consentId, consentDto);
+
+        // Get current user authId
+        String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+
+        pcmClient.updateConsent(mrn, consentId, consentDto, lastUpdatedBy);
     }
 
     @Override
     public void attestConsent(String mrn, Long consentId, ConsentAttestationDto consentAttestationDto) {
         //Assert mrn belong to current user
         enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
-        pcmClient.attestConsent(mrn, consentId, consentAttestationDto);
+
+        // Get current user authId
+        String attestedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        pcmClient.attestConsent(mrn, consentId, consentAttestationDto, attestedBy, true);
     }
 
     @Override
     public void revokeConsent(String mrn, Long consentId, ConsentRevocationDto consentRevocationDto) {
         //Assert mrn belong to current user
         enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
-        pcmClient.revokeConsent(mrn, consentId, consentRevocationDto);
+
+        // Get current user authId
+        String revokedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        pcmClient.revokeConsent(mrn, consentId, consentRevocationDto, revokedBy, true);
     }
 
     @Override
