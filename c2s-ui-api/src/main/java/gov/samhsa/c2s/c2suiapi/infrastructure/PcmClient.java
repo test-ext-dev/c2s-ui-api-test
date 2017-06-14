@@ -11,7 +11,6 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PurposeDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -25,7 +24,6 @@ import java.util.List;
 import java.util.Locale;
 
 @FeignClient("pcm")
-@Service
 public interface PcmClient {
 
     @RequestMapping(value = "/patients/{patientId}/providers", method = RequestMethod.GET)
