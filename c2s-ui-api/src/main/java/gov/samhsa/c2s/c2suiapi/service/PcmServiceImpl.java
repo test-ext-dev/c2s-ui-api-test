@@ -86,8 +86,9 @@ public class PcmServiceImpl implements PcmService {
 
         // Get current user authId
         String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        boolean createdByPatient = true;
 
-        pcmClient.saveConsent(mrn, consentDto, locale, createdBy, true);
+        pcmClient.saveConsent(mrn, consentDto, locale, createdBy, createdByPatient);
     }
 
     @Override
@@ -119,7 +120,9 @@ public class PcmServiceImpl implements PcmService {
 
         // Get current user authId
         String attestedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-        pcmClient.attestConsent(mrn, consentId, consentAttestationDto, attestedBy, true);
+        boolean attestedByPatient = true;
+
+        pcmClient.attestConsent(mrn, consentId, consentAttestationDto, attestedBy, attestedByPatient);
     }
 
     @Override
@@ -129,7 +132,9 @@ public class PcmServiceImpl implements PcmService {
 
         // Get current user authId
         String revokedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-        pcmClient.revokeConsent(mrn, consentId, consentRevocationDto, revokedBy, true);
+        boolean revokedByPatient = true;
+
+        pcmClient.revokeConsent(mrn, consentId, consentRevocationDto, revokedBy, revokedByPatient);
     }
 
     @Override
