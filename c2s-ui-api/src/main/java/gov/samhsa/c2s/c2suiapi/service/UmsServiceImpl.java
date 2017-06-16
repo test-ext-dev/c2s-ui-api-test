@@ -8,7 +8,6 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
 
@@ -18,11 +17,15 @@ import java.util.Locale;
 @Service
 public class UmsServiceImpl implements UmsService {
 
-    @Autowired
-    JwtTokenExtractor jwtTokenExtractor;
+    private final JwtTokenExtractor jwtTokenExtractor;
+
+    private final UmsClient umsClient;
 
     @Autowired
-    private UmsClient umsClient;
+    public UmsServiceImpl(JwtTokenExtractor jwtTokenExtractor, UmsClient umsClient) {
+        this.jwtTokenExtractor = jwtTokenExtractor;
+        this.umsClient = umsClient;
+    }
 
     @Override
     public Object verify(UserVerificationRequestDto userVerificationRequest) {
@@ -54,11 +57,12 @@ public class UmsServiceImpl implements UmsService {
                 .username(currentUsername)
                 .firstName(currentUser.getFirstName())
                 .lastName(currentUser.getLastName())
+                .birthDate(currentUser.getBirthDate())
                 .mrn(currentUser.getMrn())
                 .build();
     }
 
-    public void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale){
+    public void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale) {
         String userAuthId = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
         umsClient.updateUserLocaleByUserAuthId(userAuthId, locale);
     }
