@@ -6,7 +6,8 @@ The Consent2Share User Interface API (c2s-ui-api) is a Backend For Frontends(BFF
 
 # Supported Source Code Tags and Current `Dockerfile` Link
 
-[`0.3.0 (latest)`](https://github.com/bhits-dev/c2s-ui-api/releases/tag/0.3.0), [`0.1.0`](https://github.com/bhits-dev/c2s-ui-api/releases/tag/0.1.0)
+ [`0.3.0 (latest)`](https://github.com/bhits-dev/c2s-ui-api/releases/tag/0.4.0),[`0.3.0`](https://github
+.com/bhits-dev/c2s-ui-api/releases/tag/0.3.0), [`0.1.0`](https://github.com/bhits-dev/c2s-ui-api/releases/tag/0.1.0)
 
 [`Current Dockerfile`](https://github.com/bhits-dev/c2s-ui-api/blob/master/c2s-ui-api/src/main/docker/Dockerfile)
 
@@ -16,7 +17,7 @@ For more information about this image, the source code, and its history, please 
 
 The Consent2Share User Interface API (c2s-ui-api) is a Backend For Frontends(BFF) component of Consent2Share (C2S)
 
-For more information and related downloads for Consent2Share, please visit [Consent2Share](https://bhits.github.io/consent2share/).
+For more information and related downloads for Consent2Share, please visit [Consent2Share](https://bhits-dev.github.io/consent2share/).
 
 # How to Use This Image
 
