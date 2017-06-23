@@ -58,6 +58,14 @@ public class UmsServiceImpl implements UmsService {
     }
 
     @Override
+    public void updateUser(Long userId, UserDto userDto) {
+        //Assert user ID belongs to current user
+        enforceUserAuthService.assertCurrentUserMatchesUserId(userId);
+
+        umsClient.updateUser(userId, modelMapper.map(userDto, UmsUserDto.class));
+    }
+
+    @Override
     public ProfileResponse getProfile() {
         //Get system supported Locales
         List<BaseUmsLookupDto> supportedLocales = umsClient.getLocales();

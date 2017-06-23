@@ -4,6 +4,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 import gov.samhsa.c2s.c2suiapi.service.UmsServiceImpl;
 import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
+import gov.samhsa.c2s.c2suiapi.service.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,6 +49,11 @@ public class UmsRestController {
     @GetMapping("/users/{userId}")
     public Object getUser(@PathVariable Long userId) {
         return umsService.getUser(userId);
+    }
+
+    @PutMapping("/users/{userId}")
+    public void editUser(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
+        umsService.updateUser(userId, userDto);
     }
 
     @PostMapping(value = "/users/activation")
