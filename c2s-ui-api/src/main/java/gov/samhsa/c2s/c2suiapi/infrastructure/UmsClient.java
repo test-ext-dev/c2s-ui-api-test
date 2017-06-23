@@ -10,9 +10,9 @@ import java.util.Locale;
 
 @FeignClient("ums")
 public interface UmsClient {
-    public static final String X_FORWARDED_PROTO = "X-Forwarded-Proto";
-    public static final String X_FORWARDED_HOST = "X-Forwarded-Host";
-    public static final String X_FORWARDED_PORT = "X-Forwarded-Port";
+    String X_FORWARDED_PROTO = "X-Forwarded-Proto";
+    String X_FORWARDED_HOST = "X-Forwarded-Host";
+    String X_FORWARDED_PORT = "X-Forwarded-Port";
 
     @RequestMapping(value = "/users/verification", method = RequestMethod.POST)
     Object verify(@Valid @RequestBody UserVerificationRequestDto userVerificationRequest);
