@@ -7,6 +7,9 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
+import gov.samhsa.c2s.c2suiapi.service.dto.UserDto;
+import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,16 +18,20 @@ import java.util.List;
 import java.util.Locale;
 
 @Service
+@Slf4j
 public class UmsServiceImpl implements UmsService {
 
     private final JwtTokenExtractor jwtTokenExtractor;
-
     private final UmsClient umsClient;
+    private final ModelMapper modelMapper;
+    private final EnforceUserAuthService enforceUserAuthService;
 
     @Autowired
-    public UmsServiceImpl(JwtTokenExtractor jwtTokenExtractor, UmsClient umsClient) {
+    public UmsServiceImpl(JwtTokenExtractor jwtTokenExtractor, UmsClient umsClient, ModelMapper modelMapper, EnforceUserAuthService enforceUserAuthService) {
         this.jwtTokenExtractor = jwtTokenExtractor;
         this.umsClient = umsClient;
+        this.modelMapper = modelMapper;
+        this.enforceUserAuthService = enforceUserAuthService;
     }
 
     @Override
@@ -40,6 +47,14 @@ public class UmsServiceImpl implements UmsService {
     @Override
     public Object activateUser(UserActivationRequestDto userActivationRequest, String xForwardedProto, String xForwardedHost, int xForwardedPort) {
         return umsClient.activateUser(userActivationRequest, xForwardedProto, xForwardedHost, xForwardedPort);
+    }
+
+    @Override
+    public Object getUser(Long userId) {
+        //Assert user ID belongs to current user
+        enforceUserAuthService.assertCurrentUserMatchesUserId(userId);
+
+        return modelMapper.map(umsClient.getUser(userId), UserDto.class);
     }
 
     @Override

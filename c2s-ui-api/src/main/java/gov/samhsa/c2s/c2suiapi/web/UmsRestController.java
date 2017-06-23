@@ -7,6 +7,7 @@ import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +43,11 @@ public class UmsRestController {
     @GetMapping(value = "/users/activation")
     public Object checkDuplicateUsername(@RequestParam String username) {
         return umsService.checkDuplicateUsername(username);
+    }
+
+    @GetMapping("/users/{userId}")
+    public Object getUser(@PathVariable Long userId) {
+        return umsService.getUser(userId);
     }
 
     @PostMapping(value = "/users/activation")

@@ -26,6 +26,9 @@ public interface UmsClient {
                         @RequestHeader(X_FORWARDED_HOST) String xForwardedHost,
                         @RequestHeader(X_FORWARDED_PORT) int xForwardedPort);
 
+    @RequestMapping(value = "/users/{userId}", method = RequestMethod.GET)
+    UmsUserDto getUser(@PathVariable("userId") Long userId);
+
     @RequestMapping(value = "/locales", method = RequestMethod.GET)
     List<BaseUmsLookupDto> getLocales();
 
