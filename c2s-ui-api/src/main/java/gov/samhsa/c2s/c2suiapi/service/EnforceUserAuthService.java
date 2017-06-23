@@ -1,6 +1,6 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
-public interface EnforceUserAuthForMrnService {
+public interface EnforceUserAuthService {
 
     /**
      * Enforces only granting access to users who are authorized

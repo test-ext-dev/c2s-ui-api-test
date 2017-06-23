@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
-public class EnforceUserAuthForMrnServiceImpl implements EnforceUserAuthForMrnService {
+public class EnforceUserAuthServiceImpl implements EnforceUserAuthService {
     private final UmsClient umsClient;
     private final JwtTokenExtractor jwtTokenExtractor;
 
     @Autowired
-    public EnforceUserAuthForMrnServiceImpl(UmsClient umsClient, JwtTokenExtractor jwtTokenExtractor) {
+    public EnforceUserAuthServiceImpl(UmsClient umsClient, JwtTokenExtractor jwtTokenExtractor) {
         this.umsClient = umsClient;
         this.jwtTokenExtractor = jwtTokenExtractor;
     }
