@@ -116,9 +116,9 @@ public class PcmRestController {
         return pcmService.getPurposes();
     }
 
-    @GetMapping("/consents/shareSensitivityCategoriesConfig")
-    public ShareSensitivityCategoriesDto getShareSensitivityCategoriesConfig() {
-        return pcmService.getShareSensitivityCategoriesConfig();
+    @GetMapping("/consents/consentTypeConfiguration")
+    public ConsentTypeConfigurationDto getConsentTypeConfiguration() {
+        return pcmService.getConsentTypeConfiguration();
     }
 
     @GetMapping("/consentAttestationTerm")

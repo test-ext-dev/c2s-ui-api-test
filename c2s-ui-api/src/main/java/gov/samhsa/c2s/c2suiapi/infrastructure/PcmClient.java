@@ -85,8 +85,8 @@ public interface PcmClient {
     @RequestMapping(value = "/purposes", method = RequestMethod.GET)
     List<PurposeDto> getPurposes();
 
-    @RequestMapping(value = "/consents/shareSensitivityCategoriesConfig", method = RequestMethod.GET)
-    ShareSensitivityCategoriesDto getShareSensitivityCategoriesConfig();
+    @RequestMapping(value = "/consents/consentTypeConfiguration", method = RequestMethod.GET)
+    ConsentTypeConfigurationDto getConsentTypeConfiguration();
 
 
     @RequestMapping(value = "/consentAttestationTerm", method = RequestMethod.GET)

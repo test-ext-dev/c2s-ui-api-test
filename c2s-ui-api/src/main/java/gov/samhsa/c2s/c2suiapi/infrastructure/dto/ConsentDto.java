@@ -37,5 +37,5 @@ public class ConsentDto {
     private IdentifiersDto toProviders;
 
     @NotNull
-    private boolean shareSensitivityCategoriesEnabled;
+    private boolean shareConsentTypeConfigured;
 }

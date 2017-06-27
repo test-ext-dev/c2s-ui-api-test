@@ -141,7 +141,7 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public ShareSensitivityCategoriesDto getShareSensitivityCategoriesConfig() {
-        return pcmClient.getShareSensitivityCategoriesConfig();
+    public ConsentTypeConfigurationDto getConsentTypeConfiguration() {
+        return pcmClient.getConsentTypeConfiguration();
     }
 }

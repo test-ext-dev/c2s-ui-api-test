@@ -36,5 +36,5 @@ public interface PcmService {
 
     ConsentTermDto getConsentRevocationTerm(Long id, Locale locale);
 
-    ShareSensitivityCategoriesDto getShareSensitivityCategoriesConfig();
+    ConsentTypeConfigurationDto getConsentTypeConfiguration();
 }
