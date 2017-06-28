@@ -1,14 +1,15 @@
 package gov.samhsa.c2s.c2suiapi.infrastructure;
 
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentProviderDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentRevocationDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentTermDto;
-import gov.samhsa.c2s.c2suiapi.infrastructure.dto.DetailedConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.DetailedConsentDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentRevocationDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentTypeConfigurationDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PurposeDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentTermDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -92,6 +93,10 @@ public interface PcmClient {
 
     @RequestMapping(value = "/purposes", method = RequestMethod.GET)
     List<PurposeDto> getPurposes();
+
+    @RequestMapping(value = "/consents/consentTypeConfiguration", method = RequestMethod.GET)
+    ConsentTypeConfigurationDto getConsentTypeConfiguration();
+
 
     @RequestMapping(value = "/consentAttestationTerm", method = RequestMethod.GET)
     ConsentTermDto getConsentAttestationTerm(@RequestParam(value = "id", required = false) Long id,
