@@ -42,6 +42,7 @@ public class SecurityConfig {
                         .antMatchers(HttpMethod.POST, "/ums/users/activation/**").permitAll()
                         .antMatchers(HttpMethod.GET, "/ums/users/*").access(hasScopes("c2sUiApi.read"))
                         .antMatchers(HttpMethod.PUT, "/ums/users/*").access(hasScopes("c2sUiApi.write"))
+                        .antMatchers(HttpMethod.GET, "/ums/userCreationLookupInfo").access(hasScopes("c2sUiApi.read"))
 
                         .antMatchers(HttpMethod.GET, "/vss/**").access(hasScopes("c2sUiApi.read"))
                         .antMatchers(HttpMethod.GET, "/pls/**").access(hasScopes("c2sUiApi.read"))
