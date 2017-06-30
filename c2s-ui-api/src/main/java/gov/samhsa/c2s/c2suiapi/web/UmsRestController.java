@@ -3,7 +3,7 @@ package gov.samhsa.c2s.c2suiapi.web;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 import gov.samhsa.c2s.c2suiapi.service.UmsServiceImpl;
-import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
+import gov.samhsa.c2s.c2suiapi.service.dto.LimitedProfileResponse;
 import gov.samhsa.c2s.c2suiapi.service.dto.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -65,7 +65,7 @@ public class UmsRestController {
     }
 
     @GetMapping("/users/profile")
-    public ProfileResponse getProfile() {
+    public LimitedProfileResponse getLimitedProfile() {
         return umsService.getProfile();
     }
 

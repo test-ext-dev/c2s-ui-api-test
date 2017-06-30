@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProfileResponse {
+public class LimitedProfileResponse {
     private String userLocale;
     private List<BaseUmsLookupDto> supportedLocales;
     private String username;

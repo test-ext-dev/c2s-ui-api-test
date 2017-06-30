@@ -6,7 +6,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UmsUserDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
-import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
+import gov.samhsa.c2s.c2suiapi.service.dto.LimitedProfileResponse;
 import gov.samhsa.c2s.c2suiapi.service.dto.UserDto;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -66,7 +66,7 @@ public class UmsServiceImpl implements UmsService {
     }
 
     @Override
-    public ProfileResponse getProfile() {
+    public LimitedProfileResponse getProfile() {
         //Get system supported Locales
         List<BaseUmsLookupDto> supportedLocales = umsClient.getLocales();
         //Get Current user
@@ -74,7 +74,7 @@ public class UmsServiceImpl implements UmsService {
         String currentUsername = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_NAME);
         UmsUserDto currentUser = umsClient.getUserByAuthId(userAuthId);
 
-        return ProfileResponse.builder()
+        return LimitedProfileResponse.builder()
                 .userLocale(currentUser.getLocale())
                 .supportedLocales(supportedLocales)
                 .username(currentUsername)
