@@ -3,6 +3,7 @@ package gov.samhsa.c2s.c2suiapi.service;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
+import gov.samhsa.c2s.c2suiapi.service.dto.FullProfileResponse;
 import gov.samhsa.c2s.c2suiapi.service.dto.LimitedProfileResponse;
 import gov.samhsa.c2s.c2suiapi.service.dto.UserDto;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -24,6 +25,8 @@ public interface UmsService {
     void updateUser(Long userId, UserDto userDto);
 
     LimitedProfileResponse getProfile();
+
+    FullProfileResponse getFullProfile();
 
     void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale);
 }

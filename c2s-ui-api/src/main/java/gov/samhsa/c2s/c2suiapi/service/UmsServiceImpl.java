@@ -5,6 +5,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.BaseUmsLookupDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UmsUserDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
+import gov.samhsa.c2s.c2suiapi.service.dto.FullProfileResponse;
 import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.c2suiapi.service.dto.LimitedProfileResponse;
 import gov.samhsa.c2s.c2suiapi.service.dto.UserDto;
@@ -82,6 +83,37 @@ public class UmsServiceImpl implements UmsService {
                 .lastName(currentUser.getLastName())
                 .birthDate(currentUser.getBirthDate())
                 .mrn(currentUser.getMrn())
+                .build();
+    }
+
+    @Override
+    public FullProfileResponse getFullProfile() {
+        //Get system supported Locales
+        List<BaseUmsLookupDto> supportedLocales = umsClient.getLocales();
+        //Get Current user
+        String userAuthId = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        String currentUsername = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_NAME);
+        UmsUserDto currentUser = umsClient.getUserByAuthId(userAuthId);
+
+        UserDto userDto = modelMapper.map(currentUser, UserDto.class);
+
+        return FullProfileResponse.builder()
+                .userLocale(userDto.getLocale())
+                .supportedLocales(supportedLocales)
+                .username(currentUsername)
+                .firstName(userDto.getFirstName())
+                .middleName(userDto.getMiddleName())
+                .lastName(userDto.getLastName())
+                .birthDate(userDto.getBirthDate())
+                .genderCode(userDto.getGenderCode())
+                .socialSecurityNumber(userDto.getSocialSecurityNumber())
+                .homeAddress(userDto.getHomeAddress())
+                .homeEmail(userDto.getHomeEmail())
+                .homePhone(userDto.getHomePhone())
+                .roles(userDto.getRoles())
+                .identifiers(userDto.getIdentifiers())
+                .registrationPurposeEmail(userDto.getRegistrationPurposeEmail())
+                .mrn(userDto.getMrn())
                 .build();
     }
 
