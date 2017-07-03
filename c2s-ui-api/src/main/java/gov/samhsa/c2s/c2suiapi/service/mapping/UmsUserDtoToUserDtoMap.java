@@ -36,6 +36,8 @@ public class UmsUserDtoToUserDtoMap extends PropertyMap<UmsUserDto, UserDto> {
 
     @Override
     protected void configure() {
+        map().setId(source.getId());
+        map().setUserAuthId(source.getUserAuthId());
         using(telecomsToHomeEmailConverter).map(source).setHomeEmail(null);
         using(telecomsToWorkEmailConverter).map(source).setWorkEmail(null);
         using(telecomsToHomePhoneConverter).map(source).setHomePhone(null);

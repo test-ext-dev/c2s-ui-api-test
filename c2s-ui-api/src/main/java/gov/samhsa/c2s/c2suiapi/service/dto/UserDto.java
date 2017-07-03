@@ -15,6 +15,8 @@ import java.util.List;
 public class UserDto {
     private Long id;
 
+    private String userAuthId;
+
     @NotBlank
     private String lastName;
 

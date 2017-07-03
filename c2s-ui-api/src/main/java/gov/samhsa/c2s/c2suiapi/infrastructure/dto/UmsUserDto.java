@@ -9,6 +9,8 @@ import java.util.List;
 public class UmsUserDto {
     private Long id;
 
+    private String userAuthId;
+
     private String lastName;
 
     private String middleName;

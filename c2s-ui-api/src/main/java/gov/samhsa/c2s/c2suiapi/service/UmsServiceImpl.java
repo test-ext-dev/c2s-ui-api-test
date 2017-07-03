@@ -98,6 +98,8 @@ public class UmsServiceImpl implements UmsService {
         UserDto userDto = modelMapper.map(currentUser, UserDto.class);
 
         return FullProfileResponse.builder()
+                .userId(userDto.getId())
+                .userAuthId(userDto.getUserAuthId())
                 .userLocale(userDto.getLocale())
                 .supportedLocales(supportedLocales)
                 .username(currentUsername)
