@@ -20,7 +20,6 @@ public class FullProfileResponse {
     private String userAuthId;
     private String userLocale;
     private List<BaseUmsLookupDto> supportedLocales;
-    private String username;
     private String lastName;
     private String firstName;
     private String middleName;

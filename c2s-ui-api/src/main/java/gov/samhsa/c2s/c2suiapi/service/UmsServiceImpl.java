@@ -118,7 +118,6 @@ public class UmsServiceImpl implements UmsService {
                 .userAuthId(userDto.getUserAuthId())
                 .userLocale(userDto.getLocale())
                 .supportedLocales(supportedLocales)
-                .username(currentUsername)
                 .firstName(userDto.getFirstName())
                 .middleName(userDto.getMiddleName())
                 .lastName(userDto.getLastName())
