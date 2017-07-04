@@ -88,8 +88,6 @@ public class UmsServiceImpl implements UmsService {
 
     @Override
     public FullProfileResponse getFullProfile() {
-        //Get system supported Locales
-        List<BaseUmsLookupDto> supportedLocales = umsClient.getLocales();
         //Get Current user
         String userAuthId = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
         String currentUsername = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_NAME);
