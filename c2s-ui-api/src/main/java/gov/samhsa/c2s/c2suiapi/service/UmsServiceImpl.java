@@ -90,7 +90,6 @@ public class UmsServiceImpl implements UmsService {
     public FullProfileResponse getFullProfile() {
         //Get Current user
         String userAuthId = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-        String currentUsername = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_NAME);
         UmsUserDto currentUser = umsClient.getUserByAuthId(userAuthId);
 
         UserDto userDto = modelMapper.map(currentUser, UserDto.class);
