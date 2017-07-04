@@ -97,6 +97,12 @@ public class UmsServiceImpl implements UmsService {
         return buildFullProfileResponse(userDto);
     }
 
+    @Override
+    public void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale) {
+        String userAuthId = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+        umsClient.updateUserLocaleByUserAuthId(userAuthId, locale);
+    }
+
     /**
      * Builds a FullProfileResponse object from a UserDto
      * <p>
@@ -129,10 +135,5 @@ public class UmsServiceImpl implements UmsService {
                 .registrationPurposeEmail(userDto.getRegistrationPurposeEmail())
                 .mrn(userDto.getMrn())
                 .build();
-    }
-
-    public void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale) {
-        String userAuthId = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-        umsClient.updateUserLocaleByUserAuthId(userAuthId, locale);
     }
 }
