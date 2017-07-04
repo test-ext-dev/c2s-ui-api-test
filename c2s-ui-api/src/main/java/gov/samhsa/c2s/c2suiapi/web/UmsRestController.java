@@ -65,7 +65,7 @@ public class UmsRestController {
         return umsService.activateUser(userActivationRequest, xForwardedProto, xForwardedHost, xForwardedPort);
     }
 
-    @GetMapping("/users/profile")
+    @GetMapping("/user/profile")
     public LimitedProfileResponse getLimitedProfile() {
         return umsService.getProfile();
     }
