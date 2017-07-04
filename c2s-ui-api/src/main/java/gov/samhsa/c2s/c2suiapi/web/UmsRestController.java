@@ -70,7 +70,7 @@ public class UmsRestController {
         return umsService.getProfile();
     }
 
-    @GetMapping("/users/fullProfile")
+    @GetMapping("/user/fullProfile")
     public FullProfileResponse getFullProfile() {
         return umsService.getFullProfile();
     }
