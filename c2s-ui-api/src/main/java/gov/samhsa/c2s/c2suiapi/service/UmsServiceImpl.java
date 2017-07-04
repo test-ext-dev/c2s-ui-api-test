@@ -9,6 +9,7 @@ import gov.samhsa.c2s.c2suiapi.service.dto.FullProfileResponse;
 import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.c2suiapi.service.dto.LimitedProfileResponse;
 import gov.samhsa.c2s.c2suiapi.service.dto.UserDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserProfileSelfServiceEditDto;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,16 @@ public class UmsServiceImpl implements UmsService {
         enforceUserAuthService.assertCurrentUserMatchesUserId(userId);
 
         umsClient.updateUser(userId, modelMapper.map(userDto, UmsUserDto.class));
+    }
+
+    @Override
+    public FullProfileResponse updateUserSelfService(Long userId, UserProfileSelfServiceEditDto editUserDto) {
+        // Assert user ID belongs to current user
+        enforceUserAuthService.assertCurrentUserMatchesUserId(userId);
+
+        UserDto updatedUserDto = modelMapper.map(umsClient.updateUserLimitedFields(userId, editUserDto), UserDto.class);
+
+        return buildFullProfileResponse(updatedUserDto);
     }
 
     @Override

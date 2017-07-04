@@ -6,6 +6,7 @@ import gov.samhsa.c2s.c2suiapi.service.UmsServiceImpl;
 import gov.samhsa.c2s.c2suiapi.service.dto.FullProfileResponse;
 import gov.samhsa.c2s.c2suiapi.service.dto.LimitedProfileResponse;
 import gov.samhsa.c2s.c2suiapi.service.dto.UserDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserProfileSelfServiceEditDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,5 +80,10 @@ public class UmsRestController {
     @ResponseStatus(HttpStatus.OK)
     public void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale) {
         umsService.setDefaultLocale(locale);
+    }
+
+    @PutMapping("/self-service/users/{userId}")
+    public FullProfileResponse selfServiceEditUserProfile(@PathVariable Long userId, @Valid @RequestBody UserProfileSelfServiceEditDto editUserDto) {
+        return umsService.updateUserSelfService(userId, editUserDto);
     }
 }
