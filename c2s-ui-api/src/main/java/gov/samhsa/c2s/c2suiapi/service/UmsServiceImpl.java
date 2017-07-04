@@ -97,6 +97,22 @@ public class UmsServiceImpl implements UmsService {
 
         UserDto userDto = modelMapper.map(currentUser, UserDto.class);
 
+        return buildFullProfileResponse(userDto);
+    }
+
+    /**
+     * Builds a FullProfileResponse object from a UserDto
+     * <p>
+     * NOTE: The FullProfileResponse object is built using lombok's Builder method
+     * @see lombok.Builder
+     *
+     * @param userDto - The UserDto from which to build the FullProfileResponse object
+     * @return The built FullProfileResponse object
+     */
+    private FullProfileResponse buildFullProfileResponse(UserDto userDto) {
+        //Get system supported Locales
+        List<BaseUmsLookupDto> supportedLocales = umsClient.getLocales();
+
         return FullProfileResponse.builder()
                 .userId(userDto.getId())
                 .userAuthId(userDto.getUserAuthId())
