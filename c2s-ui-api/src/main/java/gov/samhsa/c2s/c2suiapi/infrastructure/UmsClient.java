@@ -30,7 +30,7 @@ public interface UmsClient {
     UmsUserDto getUser(@PathVariable("userId") Long userId);
 
     @RequestMapping(value = "/users/{userId}", method = RequestMethod.PUT)
-    void updateUser(@PathVariable("userId") Long userId, @RequestBody UmsUserDto umsUserDto);
+    UmsUserDto updateUser(@PathVariable("userId") Long userId, @RequestBody UmsUserDto umsUserDto);
 
     @RequestMapping(value = "/locales", method = RequestMethod.GET)
     List<BaseUmsLookupDto> getLocales();
