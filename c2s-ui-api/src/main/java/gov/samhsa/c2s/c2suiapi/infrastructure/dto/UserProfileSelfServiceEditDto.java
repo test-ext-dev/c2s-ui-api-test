@@ -7,5 +7,4 @@ public class UserProfileSelfServiceEditDto {
     private UmsAddressDto homeAddress;
     private String homeEmail;
     private String homePhone;
-    private String userLocale;
 }
