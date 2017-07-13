@@ -3,8 +3,10 @@ package gov.samhsa.c2s.c2suiapi.service;
 
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
-import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
-import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import gov.samhsa.c2s.c2suiapi.service.dto.FullProfileResponse;
+import gov.samhsa.c2s.c2suiapi.service.dto.LimitedProfileResponse;
+import gov.samhsa.c2s.c2suiapi.service.dto.UserDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserProfileSelfServiceEditDto;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.Locale;
@@ -19,7 +21,15 @@ public interface UmsService {
                         String xForwardedHost,
                         int xForwardedPort);
 
-    ProfileResponse getProfile();
+    Object getUser(Long userId);
+
+    void updateUser(Long userId, UserDto userDto);
+
+    FullProfileResponse updateUserSelfService(Long userId, UserProfileSelfServiceEditDto editUserDto);
+
+    LimitedProfileResponse getProfile();
+
+    FullProfileResponse getFullProfile();
 
     void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale);
 }

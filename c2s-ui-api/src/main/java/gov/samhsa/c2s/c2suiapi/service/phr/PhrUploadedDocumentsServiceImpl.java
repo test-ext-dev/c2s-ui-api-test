@@ -3,7 +3,7 @@ package gov.samhsa.c2s.c2suiapi.service.phr;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
 import gov.samhsa.c2s.c2suiapi.infrastructure.phr.PhrUploadedDocumentsClient;
-import gov.samhsa.c2s.c2suiapi.service.EnforceUserAuthForMrnService;
+import gov.samhsa.c2s.c2suiapi.service.EnforceUserAuthService;
 import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentDeleteException;
 import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentInvalidException;
 import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentNameExistsException;
@@ -22,12 +22,12 @@ import java.util.List;
 @Slf4j
 public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsService {
     private final PhrUploadedDocumentsClient phrUploadedDocumentsClient;
-    private final EnforceUserAuthForMrnService enforceUserAuthForMrnService;
+    private final EnforceUserAuthService enforceUserAuthService;
 
     @Autowired
-    public PhrUploadedDocumentsServiceImpl(PhrUploadedDocumentsClient phrUploadedDocumentsClient, EnforceUserAuthForMrnService enforceUserAuthForMrnService) {
+    public PhrUploadedDocumentsServiceImpl(PhrUploadedDocumentsClient phrUploadedDocumentsClient, EnforceUserAuthService enforceUserAuthService) {
         this.phrUploadedDocumentsClient = phrUploadedDocumentsClient;
-        this.enforceUserAuthForMrnService = enforceUserAuthForMrnService;
+        this.enforceUserAuthService = enforceUserAuthService;
     }
 
 
@@ -50,7 +50,7 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
         List<Object> uploadedDocuments;
 
         // Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(patientMrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(patientMrn);
 
         try {
             uploadedDocuments = phrUploadedDocumentsClient.getPatientDocumentInfoList(patientMrn);
@@ -82,7 +82,7 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
         Object returnedDocument;
 
         // Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(patientMrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(patientMrn);
 
         try {
             returnedDocument = phrUploadedDocumentsClient.getPatientDocumentByDocId(patientMrn, id);
@@ -118,7 +118,7 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
         Object returnedSavedDocument;
 
         // Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(patientMrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(patientMrn);
 
         try{
             returnedSavedDocument = phrUploadedDocumentsClient.saveNewPatientDocument(patientMrn, file, documentName, description, documentTypeCodeId);
@@ -157,7 +157,7 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
     @Override
     public void deletePatientDocument(String patientMrn, Long id) {
         // Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(patientMrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(patientMrn);
 
         try {
             phrUploadedDocumentsClient.deletePatientDocument(patientMrn, id);
