@@ -3,6 +3,7 @@ package gov.samhsa.c2s.c2suiapi.service;
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
 import gov.samhsa.c2s.c2suiapi.infrastructure.UmsAvatarClient;
+import gov.samhsa.c2s.c2suiapi.service.dto.AvatarBytesAndMetaDto;
 import gov.samhsa.c2s.c2suiapi.service.exception.ums.InvalidAvatarInputException;
 import gov.samhsa.c2s.c2suiapi.service.exception.ums.UmsClientInterfaceException;
 import gov.samhsa.c2s.c2suiapi.service.exception.ums.UserAvatarNotFoundException;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @Service
 @Slf4j
@@ -58,8 +61,19 @@ public class UmsAvatarServiceImpl implements UmsAvatarService {
         //Assert user ID belongs to current user
         enforceUserAuthService.assertCurrentUserMatchesUserId(userId);
 
+        AvatarBytesAndMetaDto avatarBytesAndMetaDto;
+
+        // TODO: Add check for viruses in file via call to ClamAV antivirus scanner service
+
         try {
-            return umsAvatarClient.saveNewUserAvatar(userId, avatarFile, fileWidthPixels, fileHeightPixels);
+            avatarBytesAndMetaDto = extractAvatarFileBytesAndMeta(avatarFile);
+        } catch (IOException e) {
+            log.error("An IOException occurred while attempting to extract the file bytes from the uploaded avatar file", e);
+            throw new UserAvatarSaveException("An error occurred while attempting to save a new user avatar");
+        }
+
+        try {
+            return umsAvatarClient.saveNewUserAvatar(userId, avatarBytesAndMetaDto, fileWidthPixels, fileHeightPixels);
         } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
@@ -85,5 +99,25 @@ public class UmsAvatarServiceImpl implements UmsAvatarService {
                     throw new UmsClientInterfaceException("An unknown error occurred while attempting to communicate with UMS service");
             }
         }
+    }
+
+    private AvatarBytesAndMetaDto extractAvatarFileBytesAndMeta(MultipartFile avatarFile) throws IOException {
+        return AvatarBytesAndMetaDto.builder()
+                .fileContents(avatarFile.getBytes())
+                .fileSizeBytes(avatarFile.getSize())
+                .fileName(avatarFile.getOriginalFilename())
+                .fileExtension(extractExtensionFromFileName(avatarFile.getOriginalFilename()))
+                .build();
+    }
+
+    private String extractExtensionFromFileName(String fileName) {
+        int indexOfLastDot = fileName.lastIndexOf(".");
+
+        if (indexOfLastDot < 0) {
+            log.error("Unable to extract file extension from file name in object in extractExtensionFromFileName method because the index of the '.' character in the file name string could not be located", fileName);
+            throw new InvalidAvatarInputException("Unable to determine the file extension");
+        }
+
+        return fileName.substring(indexOfLastDot + 1);
     }
 }
