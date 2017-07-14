@@ -31,6 +31,5 @@ public class UmsAvatarRestController {
                                     @RequestParam(value = "fileWidthPixels") Long fileWidthPixels,
                                     @RequestParam(value = "fileHeightPixels") Long fileHeightPixels) {
         return umsAvatarService.saveNewUserAvatar(userId, avatarFile, fileWidthPixels, fileHeightPixels);
-
     }
 }
