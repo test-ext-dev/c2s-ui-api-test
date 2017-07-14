@@ -54,8 +54,8 @@ public class UmsRestController {
     }
 
     @PutMapping("/users/{userId}")
-    public void editUser(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
-        umsService.updateUser(userId, userDto);
+    public Object updateUser(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
+        return umsService.updateUser(userId, userDto);
     }
 
     @PostMapping(value = "/users/activation")
