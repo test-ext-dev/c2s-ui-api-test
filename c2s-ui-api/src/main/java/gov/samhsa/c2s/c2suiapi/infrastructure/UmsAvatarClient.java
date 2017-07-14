@@ -21,4 +21,7 @@ public interface UmsAvatarClient {
                              @Param(value = "avatarFile") AvatarBytesAndMetaDto avatarFile,
                              @RequestParam(value = "fileWidthPixels") Long fileWidthPixels,
                              @RequestParam(value = "fileHeightPixels") Long fileHeightPixels);
+
+    @RequestMapping(value = "/user-avatars/user/{userId}/avatar", method = RequestMethod.DELETE)
+    void deleteUserAvatar(@PathVariable("userId") Long userId);
 }

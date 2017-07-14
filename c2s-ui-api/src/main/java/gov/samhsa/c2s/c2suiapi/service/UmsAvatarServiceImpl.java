@@ -6,6 +6,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.UmsAvatarClient;
 import gov.samhsa.c2s.c2suiapi.service.dto.AvatarBytesAndMetaDto;
 import gov.samhsa.c2s.c2suiapi.service.exception.ums.InvalidAvatarInputException;
 import gov.samhsa.c2s.c2suiapi.service.exception.ums.UmsClientInterfaceException;
+import gov.samhsa.c2s.c2suiapi.service.exception.ums.UserAvatarDeleteException;
 import gov.samhsa.c2s.c2suiapi.service.exception.ums.UserAvatarNotFoundException;
 import gov.samhsa.c2s.c2suiapi.service.exception.ums.UserAvatarSaveException;
 import gov.samhsa.c2s.c2suiapi.service.exception.ums.UserNotFoundException;
@@ -94,6 +95,34 @@ public class UmsAvatarServiceImpl implements UmsAvatarService {
                 case 500:
                     log.error("An error occurred while attempting to save a new user avatar", causedBy);
                     throw new UserAvatarSaveException("An error occurred while attempting to save a new user avatar");
+                default:
+                    log.error("UMS client returned an unexpected instance of FeignException", causedBy);
+                    throw new UmsClientInterfaceException("An unknown error occurred while attempting to communicate with UMS service");
+            }
+        }
+    }
+
+    @Override
+    public void deleteUserAvatar(Long userId) {
+        //Assert user ID belongs to current user
+        enforceUserAuthService.assertCurrentUserMatchesUserId(userId);
+
+        try {
+            umsAvatarClient.deleteUserAvatar(userId);
+        } catch (HystrixRuntimeException hystrixErr) {
+            Throwable causedBy = hystrixErr.getCause();
+
+            if(!(causedBy instanceof FeignException)){
+                log.error("Unexpected instance of HystrixRuntimeException has occurred", hystrixErr);
+                throw new UmsClientInterfaceException("An unknown error occurred while attempting to communicate with UMS service");
+            }
+
+            int causedByStatus = ((FeignException) causedBy).status();
+
+            switch(causedByStatus){
+                case 500:
+                    log.error("UMS client returned an Internal Server Error exception while attempting to delete a user's avatar", causedBy);
+                    throw new UserAvatarDeleteException("An error occurred while attempting to delete a user's avatar");
                 default:
                     log.error("UMS client returned an unexpected instance of FeignException", causedBy);
                     throw new UmsClientInterfaceException("An unknown error occurred while attempting to communicate with UMS service");

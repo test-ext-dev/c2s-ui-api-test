@@ -6,4 +6,6 @@ public interface UmsAvatarService {
     Object getUserAvatar(Long userId);
 
     Object saveNewUserAvatar(Long userId, MultipartFile avatarFile, Long fileWidthPixels, Long fileHeightPixels);
+
+    void deleteUserAvatar(Long userId);
 }

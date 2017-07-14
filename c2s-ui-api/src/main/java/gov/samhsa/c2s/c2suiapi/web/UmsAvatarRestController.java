@@ -2,6 +2,7 @@ package gov.samhsa.c2s.c2suiapi.web;
 
 import gov.samhsa.c2s.c2suiapi.service.UmsAvatarService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,5 +32,10 @@ public class UmsAvatarRestController {
                                     @RequestParam(value = "fileWidthPixels") Long fileWidthPixels,
                                     @RequestParam(value = "fileHeightPixels") Long fileHeightPixels) {
         return umsAvatarService.saveNewUserAvatar(userId, avatarFile, fileWidthPixels, fileHeightPixels);
+    }
+
+    @DeleteMapping(value = "/user-avatars/user/{userId}/avatar")
+    public void deleteUserAvatar(@PathVariable("userId") Long userId) {
+        umsAvatarService.deleteUserAvatar(userId);
     }
 }
