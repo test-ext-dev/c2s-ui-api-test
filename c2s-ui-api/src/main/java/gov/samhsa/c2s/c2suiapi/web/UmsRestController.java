@@ -3,10 +3,14 @@ package gov.samhsa.c2s.c2suiapi.web;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserActivationRequestDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserVerificationRequestDto;
 import gov.samhsa.c2s.c2suiapi.service.UmsServiceImpl;
-import gov.samhsa.c2s.c2suiapi.service.dto.ProfileResponse;
+import gov.samhsa.c2s.c2suiapi.service.dto.FullProfileResponse;
+import gov.samhsa.c2s.c2suiapi.service.dto.LimitedProfileResponse;
+import gov.samhsa.c2s.c2suiapi.service.dto.UserDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UserProfileSelfServiceEditDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,6 +48,16 @@ public class UmsRestController {
         return umsService.checkDuplicateUsername(username);
     }
 
+    @GetMapping("/users/{userId}")
+    public Object getUser(@PathVariable Long userId) {
+        return umsService.getUser(userId);
+    }
+
+    @PutMapping("/users/{userId}")
+    public void editUser(@PathVariable Long userId, @Valid @RequestBody UserDto userDto) {
+        umsService.updateUser(userId, userDto);
+    }
+
     @PostMapping(value = "/users/activation")
     public Object activateUser(@Valid @RequestBody UserActivationRequestDto userActivationRequest,
                                @RequestHeader(X_FORWARDED_PROTO) String xForwardedProto,
@@ -52,14 +66,24 @@ public class UmsRestController {
         return umsService.activateUser(userActivationRequest, xForwardedProto, xForwardedHost, xForwardedPort);
     }
 
-    @GetMapping("/users/profile")
-    public ProfileResponse getProfile() {
+    @GetMapping("/user/profile")
+    public LimitedProfileResponse getLimitedProfile() {
         return umsService.getProfile();
+    }
+
+    @GetMapping("/user/fullProfile")
+    public FullProfileResponse getFullProfile() {
+        return umsService.getFullProfile();
     }
 
     @PutMapping("/users/locale")
     @ResponseStatus(HttpStatus.OK)
     public void setDefaultLocale(@RequestHeader("Accept-Language") Locale locale) {
         umsService.setDefaultLocale(locale);
+    }
+
+    @PutMapping("/self-service/users/{userId}")
+    public FullProfileResponse selfServiceEditUserProfile(@PathVariable Long userId, @Valid @RequestBody UserProfileSelfServiceEditDto editUserDto) {
+        return umsService.updateUserSelfService(userId, editUserDto);
     }
 }

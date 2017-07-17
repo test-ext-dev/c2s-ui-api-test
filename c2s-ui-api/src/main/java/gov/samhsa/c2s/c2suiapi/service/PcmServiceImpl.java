@@ -26,7 +26,7 @@ import feign.FeignException;
 @Slf4j
 public class PcmServiceImpl implements PcmService {
     private final PcmClient pcmClient;
-    private final EnforceUserAuthForMrnService enforceUserAuthForMrnService;
+    private final EnforceUserAuthService enforceUserAuthService;
     private final JwtTokenExtractor jwtTokenExtractor;
 
     private static final boolean CREATED_BY_PATIENT = true;
@@ -34,58 +34,58 @@ public class PcmServiceImpl implements PcmService {
     private static final boolean REVOKED_BY_PATIENT = true;
 
     @Autowired
-    public PcmServiceImpl(PcmClient pcmClient, EnforceUserAuthForMrnService enforceUserAuthForMrnService, JwtTokenExtractor jwtTokenExtractor) {
+    public PcmServiceImpl(PcmClient pcmClient, EnforceUserAuthService enforceUserAuthService, JwtTokenExtractor jwtTokenExtractor) {
         this.pcmClient = pcmClient;
-        this.enforceUserAuthForMrnService = enforceUserAuthForMrnService;
+        this.enforceUserAuthService = enforceUserAuthService;
         this.jwtTokenExtractor = jwtTokenExtractor;
     }
 
     @Override
     public List<ConsentProviderDto> getProviders(String mrn) {
         //Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
         return pcmClient.getProviders(mrn);
     }
 
     @Override
     public void saveProviders(String mrn, IdentifiersDto providerIdentifiersDto) {
         //Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
         pcmClient.saveProviders(mrn, providerIdentifiersDto);
     }
 
     @Override
     public void deleteProvider(String mrn, Long providerId) {
         //Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
         pcmClient.deleteProvider(mrn, providerId);
     }
 
     @Override
     public Object getConsent(String mrn, Long consentId, String format) {
         //Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
         return pcmClient.getConsent(mrn, consentId, format);
     }
 
     @Override
     public Object getAttestedConsent(String mrn, Long consentId, String format) {
         //Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
         return pcmClient.getAttestedConsent(mrn, consentId, format);
     }
 
     @Override
     public Object getRevokedConsent(String mrn, Long consentId, String format) {
         //Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
         return pcmClient.getRevokedConsent(mrn, consentId, format);
     }
 
     @Override
     public PageableDto<DetailedConsentDto> getConsents(String mrn, Integer page, Integer size) {
         //Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
         return pcmClient.getConsents(mrn, page, size);
     }
 
@@ -93,7 +93,7 @@ public class PcmServiceImpl implements PcmService {
     public void saveConsent(String mrn, ConsentDto consentDto, Locale locale) {
         try {
             //Assert mrn belong to current user
-            enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
+            enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
 
             // Get current user authId
             String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
@@ -116,7 +116,7 @@ public class PcmServiceImpl implements PcmService {
     @Override
     public void deleteConsent(String mrn, Long consentId) {
         //Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
 
         // Get current user authId
         String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
@@ -126,7 +126,7 @@ public class PcmServiceImpl implements PcmService {
     @Override
     public void updateConsent(String mrn, Long consentId, ConsentDto consentDto) {
         //Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
 
         // Get current user authId
         String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
@@ -136,7 +136,7 @@ public class PcmServiceImpl implements PcmService {
     @Override
     public void attestConsent(String mrn, Long consentId, ConsentAttestationDto consentAttestationDto) {
         //Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
 
         // Get current user authId
         String attestedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
@@ -146,7 +146,7 @@ public class PcmServiceImpl implements PcmService {
     @Override
     public void revokeConsent(String mrn, Long consentId, ConsentRevocationDto consentRevocationDto) {
         //Assert mrn belong to current user
-        enforceUserAuthForMrnService.assertCurrentUserAuthorizedForMrn(mrn);
+        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
 
         // Get current user authId
         String revokedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);

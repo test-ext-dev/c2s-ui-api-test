@@ -7,8 +7,9 @@ import java.util.List;
 
 @Data
 public class UmsUserDto {
-
     private Long id;
+
+    private String userAuthId;
 
     private String lastName;
 
@@ -22,7 +23,7 @@ public class UmsUserDto {
 
     private String socialSecurityNumber;
 
-    private List<AddressDto> addresses;
+    private List<UmsAddressDto> addresses;
 
     private List<TelecomDto> telecoms;
 
@@ -33,4 +34,8 @@ public class UmsUserDto {
     private boolean disabled;
 
     private String mrn;
+
+    private List<IdentifierDto> identifiers;
+
+    private String registrationPurposeEmail;
 }
