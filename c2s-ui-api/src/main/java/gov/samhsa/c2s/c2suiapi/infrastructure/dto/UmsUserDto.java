@@ -3,6 +3,7 @@ package gov.samhsa.c2s.c2suiapi.infrastructure.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -38,4 +39,6 @@ public class UmsUserDto {
     private List<IdentifierDto> identifiers;
 
     private String registrationPurposeEmail;
+
+    private String lastUpdatedBy;
 }
