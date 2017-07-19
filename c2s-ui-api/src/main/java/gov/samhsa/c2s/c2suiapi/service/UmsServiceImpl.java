@@ -71,6 +71,7 @@ public class UmsServiceImpl implements UmsService {
     public FullProfileResponse updateUserSelfService(Long userId, UserProfileSelfServiceEditDto editUserDto) {
         // Assert user ID belongs to current user
         enforceUserAuthService.assertCurrentUserMatchesUserId(userId);
+        editUserDto.setLastUpdatedBy(jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID));
 
         UserDto updatedUserDto = modelMapper.map(umsClient.updateUserLimitedFields(userId, editUserDto), UserDto.class);
 
