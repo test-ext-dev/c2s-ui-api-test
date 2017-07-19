@@ -30,6 +30,7 @@ public class PcmServiceImpl implements PcmService {
     private final JwtTokenExtractor jwtTokenExtractor;
 
     private static final boolean CREATED_BY_PATIENT = true;
+    private static final boolean UPDATED_BY_PATIENT = true;
     private static final boolean ATTESTED_BY_PATIENT = true;
     private static final boolean REVOKED_BY_PATIENT = true;
 
@@ -130,7 +131,7 @@ public class PcmServiceImpl implements PcmService {
 
         // Get current user authId
         String lastUpdatedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-        pcmClient.updateConsent(mrn, consentId, consentDto, lastUpdatedBy);
+        pcmClient.updateConsent(mrn, consentId, consentDto, lastUpdatedBy, UPDATED_BY_PATIENT);
     }
 
     @Override

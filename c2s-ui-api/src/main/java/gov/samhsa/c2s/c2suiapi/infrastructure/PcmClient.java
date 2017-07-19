@@ -49,13 +49,13 @@ public interface PcmClient {
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/attestation", method = RequestMethod.GET)
     Object getAttestedConsent(@PathVariable("patientId") String patientId,
-                      @PathVariable("consentId") Long consentId,
-                      @RequestParam(value = "format", required = false) String format);
+                              @PathVariable("consentId") Long consentId,
+                              @RequestParam(value = "format", required = false) String format);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/revocation", method = RequestMethod.GET)
     Object getRevokedConsent(@PathVariable("patientId") String patientId,
-                      @PathVariable("consentId") Long consentId,
-                      @RequestParam(value = "format", required = false) String format);
+                             @PathVariable("consentId") Long consentId,
+                             @RequestParam(value = "format", required = false) String format);
 
     @RequestMapping(value = "/patients/{patientId}/consents", method = RequestMethod.POST)
     void saveConsent(@PathVariable("patientId") String patientId,
@@ -72,7 +72,8 @@ public interface PcmClient {
     void updateConsent(@PathVariable("patientId") String patientId,
                        @PathVariable("consentId") Long consentId,
                        @Valid @RequestBody ConsentDto consentDto,
-                       @RequestParam(value = "lastUpdatedBy") String lastUpdatedBy);
+                       @RequestParam(value = "lastUpdatedBy") String lastUpdatedBy,
+                       @RequestParam(value = "updatedByPatient") boolean updatedByPatient);
 
     @RequestMapping(value = "/patients/{patientId}/consents/{consentId}/attestation", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
