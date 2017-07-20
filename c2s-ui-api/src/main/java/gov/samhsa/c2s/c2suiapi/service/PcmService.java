@@ -43,4 +43,6 @@ public interface PcmService {
     ConsentTermDto getConsentAttestationTerm(Long id,Locale locale);
 
     ConsentTermDto getConsentRevocationTerm(Long id, Locale locale);
+
+    Object getConsentActivities(String mrn, Integer page, Integer size);
 }

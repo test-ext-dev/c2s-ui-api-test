@@ -101,4 +101,9 @@ public interface PcmClient {
     @RequestMapping(value = "/consentRevocationTerm", method = RequestMethod.GET)
     ConsentTermDto getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id,
                                             @RequestHeader("Accept-Language") Locale locale);
+
+    @RequestMapping(value = "/patients/{patientId}/consent-activities", method = RequestMethod.GET)
+    Object getConsentActivities(@PathVariable("patientId") String patientId,
+                                @RequestParam(value = "page", required = false) Integer page,
+                                @RequestParam(value = "size", required = false) Integer size);
 }

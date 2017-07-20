@@ -1,5 +1,7 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
+import com.netflix.hystrix.exception.HystrixRuntimeException;
+import feign.FeignException;
 import gov.samhsa.c2s.c2suiapi.infrastructure.PcmClient;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
@@ -19,20 +21,17 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Locale;
-import com.netflix.hystrix.exception.HystrixRuntimeException;
-import feign.FeignException;
 
 @Service
 @Slf4j
 public class PcmServiceImpl implements PcmService {
-    private final PcmClient pcmClient;
-    private final EnforceUserAuthService enforceUserAuthService;
-    private final JwtTokenExtractor jwtTokenExtractor;
-
     private static final boolean CREATED_BY_PATIENT = true;
     private static final boolean UPDATED_BY_PATIENT = true;
     private static final boolean ATTESTED_BY_PATIENT = true;
     private static final boolean REVOKED_BY_PATIENT = true;
+    private final PcmClient pcmClient;
+    private final EnforceUserAuthService enforceUserAuthService;
+    private final JwtTokenExtractor jwtTokenExtractor;
 
     @Autowired
     public PcmServiceImpl(PcmClient pcmClient, EnforceUserAuthService enforceUserAuthService, JwtTokenExtractor jwtTokenExtractor) {
@@ -99,15 +98,15 @@ public class PcmServiceImpl implements PcmService {
             // Get current user authId
             String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
             pcmClient.saveConsent(mrn, consentDto, locale, createdBy, CREATED_BY_PATIENT);
-        } catch (HystrixRuntimeException hystrixErr){
+        } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
-            if(!(causedBy instanceof FeignException)){
+            if (!(causedBy instanceof FeignException)) {
                 log.error("Unexpected instance of HystrixRuntimeException has occurred", hystrixErr);
                 throw new PcmInterfaceException("An unknown error occurred while attempting to communicate with PCM service");
             }
 
-            if(((FeignException) causedBy).status() == 409){
+            if (((FeignException) causedBy).status() == 409) {
                 log.info("The specified patient already has this consent", causedBy);
                 throw new DuplicateConsentException("Already created same consent.");
             }
@@ -167,5 +166,10 @@ public class PcmServiceImpl implements PcmService {
     @Override
     public ConsentTermDto getConsentRevocationTerm(Long id, Locale locale) {
         return pcmClient.getConsentRevocationTerm(id, locale);
+    }
+
+    @Override
+    public Object getConsentActivities(String mrn, Integer page, Integer size) {
+        return pcmClient.getConsentActivities(mrn, page, size);
     }
 }
