@@ -12,6 +12,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PurposeDto;
 import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.c2suiapi.service.exception.DuplicateConsentException;
+import gov.samhsa.c2s.c2suiapi.service.exception.InvalidConsentSignDateException;
 import gov.samhsa.c2s.c2suiapi.service.exception.PcmInterfaceException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -116,6 +117,7 @@ public class PcmServiceImpl implements PcmService {
 
     @Override
     public void deleteConsent(String mrn, Long consentId) {
+
         //Assert mrn belong to current user
         enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
 
@@ -136,12 +138,26 @@ public class PcmServiceImpl implements PcmService {
 
     @Override
     public void attestConsent(String mrn, Long consentId, ConsentAttestationDto consentAttestationDto) {
-        //Assert mrn belong to current user
-        enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
+        try{
+            //Assert mrn belong to current user
+            enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
 
-        // Get current user authId
-        String attestedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
-        pcmClient.attestConsent(mrn, consentId, consentAttestationDto, attestedBy, ATTESTED_BY_PATIENT);
+            // Get current user authId
+            String attestedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
+            pcmClient.attestConsent(mrn, consentId, consentAttestationDto, attestedBy, ATTESTED_BY_PATIENT);
+        }catch(HystrixRuntimeException hystrixErr){
+            Throwable causedBy = hystrixErr.getCause();
+
+            if(!(causedBy instanceof FeignException)){
+                log.error("Unexpected instance of HystrixRuntimeException has occurred", hystrixErr);
+                throw new PcmInterfaceException("An unknown error occurred while attempting to communicate with PCM service");
+            }
+
+            if(((FeignException) causedBy).status() == 400) {
+                log.info("Consent start date early than Signing date.", causedBy);
+                throw new InvalidConsentSignDateException("Consent start date early than Signing date.");
+            }
+        }
     }
 
     @Override
