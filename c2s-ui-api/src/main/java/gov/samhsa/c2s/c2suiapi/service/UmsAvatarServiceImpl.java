@@ -4,6 +4,7 @@ import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
 import gov.samhsa.c2s.c2suiapi.infrastructure.UmsAvatarClient;
 import gov.samhsa.c2s.c2suiapi.service.dto.AvatarBytesAndMetaDto;
+import gov.samhsa.c2s.c2suiapi.service.dto.AvatarFileInputDto;
 import gov.samhsa.c2s.c2suiapi.service.exception.ums.InvalidAvatarInputException;
 import gov.samhsa.c2s.c2suiapi.service.exception.ums.UmsClientInterfaceException;
 import gov.samhsa.c2s.c2suiapi.service.exception.ums.UserAvatarDeleteException;
@@ -13,9 +14,8 @@ import gov.samhsa.c2s.c2suiapi.service.exception.ums.UserNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.Base64;
 
 @Service
 @Slf4j
@@ -58,23 +58,23 @@ public class UmsAvatarServiceImpl implements UmsAvatarService {
     }
 
     @Override
-    public Object saveNewUserAvatar(Long userId, MultipartFile avatarFile, Long fileWidthPixels, Long fileHeightPixels) {
+    public Object saveNewUserAvatar(Long userId, AvatarFileInputDto avatarFile) {
         //Assert user ID belongs to current user
         enforceUserAuthService.assertCurrentUserMatchesUserId(userId);
 
-        AvatarBytesAndMetaDto avatarBytesAndMetaDto;
-
         // TODO: Add check for viruses in file via call to ClamAV antivirus scanner service
 
-        try {
-            avatarBytesAndMetaDto = extractAvatarFileBytesAndMeta(avatarFile);
-        } catch (IOException e) {
-            log.error("An IOException occurred while attempting to extract the file bytes from the uploaded avatar file", e);
-            throw new UserAvatarSaveException("An error occurred while attempting to save a new user avatar");
-        }
+        byte[] fileContents = Base64.getDecoder().decode(avatarFile.getFileContents());
+
+        AvatarBytesAndMetaDto avatarBytesAndMetaDto = AvatarBytesAndMetaDto.builder()
+                .fileName(avatarFile.getFileName())
+                .fileExtension(avatarFile.getFileExtension())
+                .fileSizeBytes(avatarFile.getFileSizeBytes())
+                .fileContents(fileContents)
+                .build();
 
         try {
-            return umsAvatarClient.saveNewUserAvatar(userId, avatarBytesAndMetaDto, fileWidthPixels, fileHeightPixels);
+            return umsAvatarClient.saveNewUserAvatar(userId, avatarBytesAndMetaDto, avatarFile.getFileWidthPixels(), avatarFile.getFileHeightPixels());
         } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
@@ -128,25 +128,5 @@ public class UmsAvatarServiceImpl implements UmsAvatarService {
                     throw new UmsClientInterfaceException("An unknown error occurred while attempting to communicate with UMS service");
             }
         }
-    }
-
-    private AvatarBytesAndMetaDto extractAvatarFileBytesAndMeta(MultipartFile avatarFile) throws IOException {
-        return AvatarBytesAndMetaDto.builder()
-                .fileContents(avatarFile.getBytes())
-                .fileSizeBytes(avatarFile.getSize())
-                .fileName(avatarFile.getOriginalFilename())
-                .fileExtension(extractExtensionFromFileName(avatarFile.getOriginalFilename()))
-                .build();
-    }
-
-    private String extractExtensionFromFileName(String fileName) {
-        int indexOfLastDot = fileName.lastIndexOf(".");
-
-        if (indexOfLastDot < 0) {
-            log.error("Unable to extract file extension from file name in object in extractExtensionFromFileName method because the index of the '.' character in the file name string could not be located", fileName);
-            throw new InvalidAvatarInputException("Unable to determine the file extension");
-        }
-
-        return fileName.substring(indexOfLastDot + 1);
     }
 }

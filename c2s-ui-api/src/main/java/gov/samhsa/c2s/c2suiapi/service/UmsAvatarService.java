@@ -1,11 +1,11 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
-import org.springframework.web.multipart.MultipartFile;
+import gov.samhsa.c2s.c2suiapi.service.dto.AvatarFileInputDto;
 
 public interface UmsAvatarService {
     Object getUserAvatar(Long userId);
 
-    Object saveNewUserAvatar(Long userId, MultipartFile avatarFile, Long fileWidthPixels, Long fileHeightPixels);
+    Object saveNewUserAvatar(Long userId, AvatarFileInputDto avatarFile);
 
     void deleteUserAvatar(Long userId);
 }
