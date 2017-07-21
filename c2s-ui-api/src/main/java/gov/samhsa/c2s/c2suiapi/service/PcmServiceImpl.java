@@ -11,16 +11,25 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentTermDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.DetailedConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PcmConsentActivityDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PurposeDto;
+import gov.samhsa.c2s.c2suiapi.service.dto.ConsentActivityDto;
 import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.c2suiapi.service.exception.DuplicateConsentException;
 import gov.samhsa.c2s.c2suiapi.service.exception.PcmInterfaceException;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Slf4j
@@ -29,15 +38,19 @@ public class PcmServiceImpl implements PcmService {
     private static final boolean UPDATED_BY_PATIENT = true;
     private static final boolean ATTESTED_BY_PATIENT = true;
     private static final boolean REVOKED_BY_PATIENT = true;
+    private static final String DATA_SOURCE_DATE_TIME_FORMATTER = "yyyy-MM-dd HH:mm:ss.S";
+    private static final String OUTPUT_DATE_TIME_FORMATTER = "MM/dd/yyyy HH:mm:ss";
     private final PcmClient pcmClient;
     private final EnforceUserAuthService enforceUserAuthService;
     private final JwtTokenExtractor jwtTokenExtractor;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public PcmServiceImpl(PcmClient pcmClient, EnforceUserAuthService enforceUserAuthService, JwtTokenExtractor jwtTokenExtractor) {
+    public PcmServiceImpl(PcmClient pcmClient, EnforceUserAuthService enforceUserAuthService, JwtTokenExtractor jwtTokenExtractor, ModelMapper modelMapper) {
         this.pcmClient = pcmClient;
         this.enforceUserAuthService = enforceUserAuthService;
         this.jwtTokenExtractor = jwtTokenExtractor;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -169,7 +182,34 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public Object getConsentActivities(String mrn, Integer page, Integer size) {
-        return pcmClient.getConsentActivities(mrn, page, size);
+    public PageableDto<ConsentActivityDto> getConsentActivities(String mrn, Integer page, Integer size) {
+        //Mapping of generic parameterized types
+        Type pageableConsentActivityDtoType = new TypeToken<PageableDto<ConsentActivityDto>>() {
+        }.getType();
+
+        PageableDto<PcmConsentActivityDto> pcmConsentActivityDtoPageableDto = pcmClient.getConsentActivities(mrn, page, size);
+        PageableDto<ConsentActivityDto> consentActivityDtoPageableDto = modelMapper.map(pcmConsentActivityDtoPageableDto, pageableConsentActivityDtoType);
+        consentActivityDtoPageableDto.setContent(mapToConsentActivityDtoList(pcmConsentActivityDtoPageableDto));
+
+        return consentActivityDtoPageableDto;
+    }
+
+    private List<ConsentActivityDto> mapToConsentActivityDtoList(PageableDto<PcmConsentActivityDto> pcmConsentActivityDtoPageableDto) {
+        return pcmConsentActivityDtoPageableDto.getContent().stream()
+                .map(pcmConsentActivityDto -> ConsentActivityDto.builder()
+                        .consentReferenceId(pcmConsentActivityDto.getConsentReferenceId())
+                        .actionType(pcmConsentActivityDto.getActionType())
+                        .updatedBy(pcmConsentActivityDto.getUpdatedBy())
+                        .updatedDateTime(formatDateTime(pcmConsentActivityDto.getUpdatedDateTime()))
+                        .role(pcmConsentActivityDto.getRole().getName())
+                        .build())
+                .collect(toList());
+    }
+
+    private String formatDateTime(String updatedDateTime) {
+        DateTimeFormatter dataSourceFormatter = DateTimeFormatter.ofPattern(DATA_SOURCE_DATE_TIME_FORMATTER);
+        LocalDateTime formatterLocalDateTime = LocalDateTime.parse(updatedDateTime, dataSourceFormatter);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(OUTPUT_DATE_TIME_FORMATTER);
+        return formatterLocalDateTime.format(outputFormatter);
     }
 }

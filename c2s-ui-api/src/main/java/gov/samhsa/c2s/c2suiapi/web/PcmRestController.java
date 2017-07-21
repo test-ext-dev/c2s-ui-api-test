@@ -10,6 +10,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PurposeDto;
 import gov.samhsa.c2s.c2suiapi.service.PcmService;
+import gov.samhsa.c2s.c2suiapi.service.dto.ConsentActivityDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -135,9 +136,9 @@ public class PcmRestController {
     }
 
     @GetMapping("/patients/{mrn}/consent-activities")
-    public Object getConsentActivities(@PathVariable String mrn,
-                                       @RequestParam(value = "page", required = false) Integer page,
-                                       @RequestParam(value = "size", required = false) Integer size) {
+    public PageableDto<ConsentActivityDto> getConsentActivities(@PathVariable String mrn,
+                                                                @RequestParam(value = "page", required = false) Integer page,
+                                                                @RequestParam(value = "size", required = false) Integer size) {
         return pcmService.getConsentActivities(mrn, page, size);
     }
 }
