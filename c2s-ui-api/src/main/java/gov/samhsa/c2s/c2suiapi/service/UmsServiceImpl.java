@@ -88,6 +88,7 @@ public class UmsServiceImpl implements UmsService {
         UmsUserDto currentUser = umsClient.getUserByAuthId(userAuthId);
 
         return LimitedProfileResponse.builder()
+                .userId(currentUser.getId())
                 .userLocale(currentUser.getLocale())
                 .supportedLocales(supportedLocales)
                 .username(currentUsername)
