@@ -74,7 +74,7 @@ public class UmsAvatarServiceImpl implements UmsAvatarService {
                 .build();
 
         try {
-            return umsAvatarClient.saveNewUserAvatar(userId, avatarBytesAndMetaDto, avatarFile.getFileWidthPixels(), avatarFile.getFileHeightPixels());
+            return umsAvatarClient.saveNewUserAvatar(userId, avatarBytesAndMetaDto);
         } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
