@@ -150,22 +150,22 @@ public class PcmServiceImpl implements PcmService {
 
     @Override
     public void attestConsent(String mrn, Long consentId, ConsentAttestationDto consentAttestationDto) {
-        try{
+        try {
             //Assert mrn belong to current user
             enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
 
             // Get current user authId
             String attestedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
             pcmClient.attestConsent(mrn, consentId, consentAttestationDto, attestedBy, ATTESTED_BY_PATIENT);
-        }catch(HystrixRuntimeException hystrixErr){
+        } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
-            if(!(causedBy instanceof FeignException)){
+            if (!(causedBy instanceof FeignException)) {
                 log.error("Unexpected instance of HystrixRuntimeException has occurred", hystrixErr);
                 throw new PcmInterfaceException("An unknown error occurred while attempting to communicate with PCM service");
             }
 
-            if(((FeignException) causedBy).status() == 400) {
+            if (((FeignException) causedBy).status() == 400) {
                 log.info("Consent start date early than Signing date.", causedBy);
                 throw new InvalidConsentSignDateException("Consent start date early than Signing date.");
             }
@@ -198,12 +198,12 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public PageableDto<ConsentActivityDto> getConsentActivities(String mrn, Integer page, Integer size) {
+    public PageableDto<ConsentActivityDto> getConsentActivities(String mrn, Integer page, Integer size, Locale locale) {
         //Mapping of generic parameterized types
         Type pageableConsentActivityDtoType = new TypeToken<PageableDto<ConsentActivityDto>>() {
         }.getType();
 
-        PageableDto<PcmConsentActivityDto> pcmConsentActivityDtoPageableDto = pcmClient.getConsentActivities(mrn, page, size);
+        PageableDto<PcmConsentActivityDto> pcmConsentActivityDtoPageableDto = pcmClient.getConsentActivities(mrn, page, size, locale);
         PageableDto<ConsentActivityDto> consentActivityDtoPageableDto = modelMapper.map(pcmConsentActivityDtoPageableDto, pageableConsentActivityDtoType);
         consentActivityDtoPageableDto.setContent(mapToConsentActivityDtoList(pcmConsentActivityDtoPageableDto));
 

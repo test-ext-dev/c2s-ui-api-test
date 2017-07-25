@@ -41,9 +41,9 @@ public interface PcmService {
 
     List<PurposeDto> getPurposes();
 
-    ConsentTermDto getConsentAttestationTerm(Long id,Locale locale);
+    ConsentTermDto getConsentAttestationTerm(Long id, Locale locale);
 
     ConsentTermDto getConsentRevocationTerm(Long id, Locale locale);
 
-    PageableDto<ConsentActivityDto> getConsentActivities(String mrn, Integer page, Integer size);
+    PageableDto<ConsentActivityDto> getConsentActivities(String mrn, Integer page, Integer size, Locale locale);
 }
