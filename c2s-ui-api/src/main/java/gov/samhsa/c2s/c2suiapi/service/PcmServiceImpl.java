@@ -1,5 +1,7 @@
 package gov.samhsa.c2s.c2suiapi.service;
 
+import com.netflix.hystrix.exception.HystrixRuntimeException;
+import feign.FeignException;
 import gov.samhsa.c2s.c2suiapi.infrastructure.PcmClient;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentAttestationDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentDto;
@@ -9,37 +11,47 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentTermDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.DetailedConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PcmConsentActivityDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PurposeDto;
+import gov.samhsa.c2s.c2suiapi.service.dto.ConsentActivityDto;
 import gov.samhsa.c2s.c2suiapi.service.dto.JwtTokenKey;
 import gov.samhsa.c2s.c2suiapi.service.exception.DuplicateConsentException;
 import gov.samhsa.c2s.c2suiapi.service.exception.InvalidConsentSignDateException;
 import gov.samhsa.c2s.c2suiapi.service.exception.PcmInterfaceException;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.lang.reflect.Type;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
-import com.netflix.hystrix.exception.HystrixRuntimeException;
-import feign.FeignException;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Slf4j
 public class PcmServiceImpl implements PcmService {
-    private final PcmClient pcmClient;
-    private final EnforceUserAuthService enforceUserAuthService;
-    private final JwtTokenExtractor jwtTokenExtractor;
-
     private static final boolean CREATED_BY_PATIENT = true;
     private static final boolean UPDATED_BY_PATIENT = true;
     private static final boolean ATTESTED_BY_PATIENT = true;
     private static final boolean REVOKED_BY_PATIENT = true;
+    private static final String DATA_SOURCE_DATE_TIME_FORMATTER = "yyyy-MM-dd HH:mm:ss.S";
+    private static final String OUTPUT_DATE_TIME_FORMATTER = "MM/dd/yyyy HH:mm:ss";
+    private final PcmClient pcmClient;
+    private final EnforceUserAuthService enforceUserAuthService;
+    private final JwtTokenExtractor jwtTokenExtractor;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public PcmServiceImpl(PcmClient pcmClient, EnforceUserAuthService enforceUserAuthService, JwtTokenExtractor jwtTokenExtractor) {
+    public PcmServiceImpl(PcmClient pcmClient, EnforceUserAuthService enforceUserAuthService, JwtTokenExtractor jwtTokenExtractor, ModelMapper modelMapper) {
         this.pcmClient = pcmClient;
         this.enforceUserAuthService = enforceUserAuthService;
         this.jwtTokenExtractor = jwtTokenExtractor;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -100,15 +112,15 @@ public class PcmServiceImpl implements PcmService {
             // Get current user authId
             String createdBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
             pcmClient.saveConsent(mrn, consentDto, locale, createdBy, CREATED_BY_PATIENT);
-        } catch (HystrixRuntimeException hystrixErr){
+        } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
-            if(!(causedBy instanceof FeignException)){
+            if (!(causedBy instanceof FeignException)) {
                 log.error("Unexpected instance of HystrixRuntimeException has occurred", hystrixErr);
                 throw new PcmInterfaceException("An unknown error occurred while attempting to communicate with PCM service");
             }
 
-            if(((FeignException) causedBy).status() == 409){
+            if (((FeignException) causedBy).status() == 409) {
                 log.info("The specified patient already has this consent", causedBy);
                 throw new DuplicateConsentException("Already created same consent.");
             }
@@ -138,22 +150,22 @@ public class PcmServiceImpl implements PcmService {
 
     @Override
     public void attestConsent(String mrn, Long consentId, ConsentAttestationDto consentAttestationDto) {
-        try{
+        try {
             //Assert mrn belong to current user
             enforceUserAuthService.assertCurrentUserAuthorizedForMrn(mrn);
 
             // Get current user authId
             String attestedBy = jwtTokenExtractor.getValueByKey(JwtTokenKey.USER_ID);
             pcmClient.attestConsent(mrn, consentId, consentAttestationDto, attestedBy, ATTESTED_BY_PATIENT);
-        }catch(HystrixRuntimeException hystrixErr){
+        } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
-            if(!(causedBy instanceof FeignException)){
+            if (!(causedBy instanceof FeignException)) {
                 log.error("Unexpected instance of HystrixRuntimeException has occurred", hystrixErr);
                 throw new PcmInterfaceException("An unknown error occurred while attempting to communicate with PCM service");
             }
 
-            if(((FeignException) causedBy).status() == 400) {
+            if (((FeignException) causedBy).status() == 400) {
                 log.info("Consent start date early than Signing date.", causedBy);
                 throw new InvalidConsentSignDateException("Consent start date early than Signing date.");
             }
@@ -183,5 +195,37 @@ public class PcmServiceImpl implements PcmService {
     @Override
     public ConsentTermDto getConsentRevocationTerm(Long id, Locale locale) {
         return pcmClient.getConsentRevocationTerm(id, locale);
+    }
+
+    @Override
+    public PageableDto<ConsentActivityDto> getConsentActivities(String mrn, Integer page, Integer size, Locale locale) {
+        //Mapping of generic parameterized types
+        Type pageableConsentActivityDtoType = new TypeToken<PageableDto<ConsentActivityDto>>() {
+        }.getType();
+
+        PageableDto<PcmConsentActivityDto> pcmConsentActivityDtoPageableDto = pcmClient.getConsentActivities(mrn, page, size, locale);
+        PageableDto<ConsentActivityDto> consentActivityDtoPageableDto = modelMapper.map(pcmConsentActivityDtoPageableDto, pageableConsentActivityDtoType);
+        consentActivityDtoPageableDto.setContent(mapToConsentActivityDtoList(pcmConsentActivityDtoPageableDto));
+
+        return consentActivityDtoPageableDto;
+    }
+
+    private List<ConsentActivityDto> mapToConsentActivityDtoList(PageableDto<PcmConsentActivityDto> pcmConsentActivityDtoPageableDto) {
+        return pcmConsentActivityDtoPageableDto.getContent().stream()
+                .map(pcmConsentActivityDto -> ConsentActivityDto.builder()
+                        .consentReferenceId(pcmConsentActivityDto.getConsentReferenceId())
+                        .actionType(pcmConsentActivityDto.getActionType())
+                        .updatedBy(pcmConsentActivityDto.getUpdatedBy())
+                        .updatedDateTime(formatDateTime(pcmConsentActivityDto.getUpdatedDateTime()))
+                        .role(pcmConsentActivityDto.getRole().getName())
+                        .build())
+                .collect(toList());
+    }
+
+    private String formatDateTime(String updatedDateTime) {
+        DateTimeFormatter dataSourceFormatter = DateTimeFormatter.ofPattern(DATA_SOURCE_DATE_TIME_FORMATTER);
+        LocalDateTime formatterLocalDateTime = LocalDateTime.parse(updatedDateTime, dataSourceFormatter);
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern(OUTPUT_DATE_TIME_FORMATTER);
+        return formatterLocalDateTime.format(outputFormatter);
     }
 }
