@@ -10,6 +10,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PurposeDto;
 import gov.samhsa.c2s.c2suiapi.service.PcmService;
+import gov.samhsa.c2s.c2suiapi.service.dto.ConsentActivityDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -89,7 +90,7 @@ public class PcmRestController {
     @PostMapping("/patients/{mrn}/consents")
     @ResponseStatus(HttpStatus.CREATED)
     public void saveConsent(@PathVariable String mrn,
-                            @Valid @RequestBody ConsentDto consentDto,@RequestHeader("Accept-Language") Locale locale) {
+                            @Valid @RequestBody ConsentDto consentDto, @RequestHeader("Accept-Language") Locale locale) {
         pcmService.saveConsent(mrn, consentDto, locale);
     }
 
@@ -126,11 +127,19 @@ public class PcmRestController {
 
     @GetMapping("/consentAttestationTerm")
     public ConsentTermDto getConsentAttestationTerm(@RequestParam(value = "id", required = false) Long id, @RequestHeader("Accept-Language") Locale locale) {
-        return pcmService.getConsentAttestationTerm(id,locale);
+        return pcmService.getConsentAttestationTerm(id, locale);
     }
 
     @GetMapping("/consentRevocationTerm")
     public ConsentTermDto getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id, @RequestHeader("Accept-Language") Locale locale) {
-        return pcmService.getConsentRevocationTerm(id,locale);
+        return pcmService.getConsentRevocationTerm(id, locale);
+    }
+
+    @GetMapping("/patients/{mrn}/consent-activities")
+    public PageableDto<ConsentActivityDto> getConsentActivities(@PathVariable String mrn,
+                                                                @RequestParam(value = "page", required = false) Integer page,
+                                                                @RequestParam(value = "size", required = false) Integer size,
+                                                                @RequestHeader("Accept-Language") Locale locale) {
+        return pcmService.getConsentActivities(mrn, page, size, locale);
     }
 }

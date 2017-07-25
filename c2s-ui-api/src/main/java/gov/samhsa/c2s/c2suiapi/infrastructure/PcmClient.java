@@ -8,6 +8,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.ConsentTermDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.DetailedConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PageableDto;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PcmConsentActivityDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PurposeDto;
 import org.springframework.cloud.netflix.feign.FeignClient;
 import org.springframework.http.HttpStatus;
@@ -101,4 +102,10 @@ public interface PcmClient {
     @RequestMapping(value = "/consentRevocationTerm", method = RequestMethod.GET)
     ConsentTermDto getConsentRevocationTerm(@RequestParam(value = "id", required = false) Long id,
                                             @RequestHeader("Accept-Language") Locale locale);
+
+    @RequestMapping(value = "/patients/{patientId}/consent-activities", method = RequestMethod.GET)
+    PageableDto<PcmConsentActivityDto> getConsentActivities(@PathVariable("patientId") String patientId,
+                                                            @RequestParam(value = "page", required = false) Integer page,
+                                                            @RequestParam(value = "size", required = false) Integer size,
+                                                            @RequestHeader("Accept-Language") Locale locale);
 }

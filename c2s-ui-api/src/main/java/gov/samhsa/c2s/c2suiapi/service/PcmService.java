@@ -9,6 +9,7 @@ import gov.samhsa.c2s.c2suiapi.infrastructure.dto.DetailedConsentDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.IdentifiersDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PageableDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.dto.PurposeDto;
+import gov.samhsa.c2s.c2suiapi.service.dto.ConsentActivityDto;
 
 import java.util.List;
 import java.util.Locale;
@@ -40,7 +41,9 @@ public interface PcmService {
 
     List<PurposeDto> getPurposes();
 
-    ConsentTermDto getConsentAttestationTerm(Long id,Locale locale);
+    ConsentTermDto getConsentAttestationTerm(Long id, Locale locale);
 
     ConsentTermDto getConsentRevocationTerm(Long id, Locale locale);
+
+    PageableDto<ConsentActivityDto> getConsentActivities(String mrn, Integer page, Integer size, Locale locale);
 }
