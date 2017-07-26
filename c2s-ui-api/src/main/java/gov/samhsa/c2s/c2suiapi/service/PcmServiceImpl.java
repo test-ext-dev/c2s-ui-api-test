@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.lang.reflect.Type;
@@ -198,12 +199,13 @@ public class PcmServiceImpl implements PcmService {
     }
 
     @Override
-    public PageableDto<ConsentActivityDto> getConsentActivities(String mrn, Integer page, Integer size, Locale locale) {
+    public PageableDto<ConsentActivityDto> getConsentActivities(String mrn, Integer page, Integer size) {
         //Mapping of generic parameterized types
         Type pageableConsentActivityDtoType = new TypeToken<PageableDto<ConsentActivityDto>>() {
         }.getType();
 
-        PageableDto<PcmConsentActivityDto> pcmConsentActivityDtoPageableDto = pcmClient.getConsentActivities(mrn, page, size, locale);
+        Locale selectedLocale = LocaleContextHolder.getLocale();
+        PageableDto<PcmConsentActivityDto> pcmConsentActivityDtoPageableDto = pcmClient.getConsentActivities(mrn, page, size, selectedLocale);
         PageableDto<ConsentActivityDto> consentActivityDtoPageableDto = modelMapper.map(pcmConsentActivityDtoPageableDto, pageableConsentActivityDtoType);
         consentActivityDtoPageableDto.setContent(mapToConsentActivityDtoList(pcmConsentActivityDtoPageableDto));
 
