@@ -45,5 +45,5 @@ public interface PcmService {
 
     ConsentTermDto getConsentRevocationTerm(Long id, Locale locale);
 
-    PageableDto<ConsentActivityDto> getConsentActivities(String mrn, Integer page, Integer size, Locale locale);
+    PageableDto<ConsentActivityDto> getConsentActivities(String mrn, Integer page, Integer size);
 }
