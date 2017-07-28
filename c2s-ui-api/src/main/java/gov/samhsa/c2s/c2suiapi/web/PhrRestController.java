@@ -25,17 +25,17 @@ public class PhrRestController {
 
 
     @GetMapping("/uploadedDocuments/documentTypeCodes")
-    public List<Object> getAllDocumentTypeCodesList(){
+    public List<Object> getAllDocumentTypeCodesList() {
         return phrUploadedDocumentsService.getAllDocumentTypeCodesList();
     }
 
     @GetMapping("/uploadedDocuments/patients/{patientMrn}/documents")
-    public List<Object> getPatientDocumentsList(@PathVariable String patientMrn){
+    public Object getPatientDocumentsList(@PathVariable String patientMrn) {
         return phrUploadedDocumentsService.getPatientDocumentInfoList(patientMrn);
     }
 
     @GetMapping("/uploadedDocuments/patients/{patientMrn}/documents/{id}")
-    public Object getPatientDocumentByDocId(@PathVariable("patientMrn") String patientMrn, @PathVariable("id") Long id){
+    public Object getPatientDocumentByDocId(@PathVariable("patientMrn") String patientMrn, @PathVariable("id") Long id) {
         return phrUploadedDocumentsService.getPatientDocumentByDocId(patientMrn, id);
     }
 
@@ -44,12 +44,12 @@ public class PhrRestController {
                                          @RequestParam(value = "documentFile") MultipartFile documentFile,
                                          @RequestParam(value = "documentName") String documentName,
                                          @RequestParam(value = "description", required = false) String description,
-                                         @RequestParam(value = "documentTypeCodeId") Long documentTypeCodeId){
+                                         @RequestParam(value = "documentTypeCodeId") Long documentTypeCodeId) {
         return phrUploadedDocumentsService.saveNewPatientDocument(patientMrn, documentFile, documentName, description, documentTypeCodeId);
     }
 
     @DeleteMapping("/uploadedDocuments/patients/{patientMrn}/documents/{id}")
-    public void deletePatientDocument(@PathVariable("patientMrn") String patientMrn, @PathVariable("id") Long id){
+    public void deletePatientDocument(@PathVariable("patientMrn") String patientMrn, @PathVariable("id") Long id) {
         phrUploadedDocumentsService.deletePatientDocument(patientMrn, id);
     }
 }

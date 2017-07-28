@@ -2,6 +2,8 @@ package gov.samhsa.c2s.c2suiapi.service.phr;
 
 import com.netflix.hystrix.exception.HystrixRuntimeException;
 import feign.FeignException;
+import gov.samhsa.c2s.c2suiapi.infrastructure.TryPolicyClient;
+import gov.samhsa.c2s.c2suiapi.infrastructure.dto.UploadedDocumentInfoDto;
 import gov.samhsa.c2s.c2suiapi.infrastructure.phr.PhrUploadedDocumentsClient;
 import gov.samhsa.c2s.c2suiapi.service.EnforceUserAuthService;
 import gov.samhsa.c2s.c2suiapi.service.exception.phr.DocumentDeleteException;
@@ -17,17 +19,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
 public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsService {
+    private static final String SAMPLE_DOCUMENT_CONTENT_TYPE = "text/xml";
+    private static final String SAMPLE_DOCUMENT_TYPE_DISPLAY_NAME = "Sample Document Type";
+    private static final long SAMPLE_DOCUMENT_TYPE_CODE_ID = -1;
     private final PhrUploadedDocumentsClient phrUploadedDocumentsClient;
+    private final TryPolicyClient tryPolicyClient;
     private final EnforceUserAuthService enforceUserAuthService;
 
     @Autowired
-    public PhrUploadedDocumentsServiceImpl(PhrUploadedDocumentsClient phrUploadedDocumentsClient, EnforceUserAuthService enforceUserAuthService) {
+    public PhrUploadedDocumentsServiceImpl(PhrUploadedDocumentsClient phrUploadedDocumentsClient, EnforceUserAuthService enforceUserAuthService, TryPolicyClient tryPolicyClient) {
         this.phrUploadedDocumentsClient = phrUploadedDocumentsClient;
         this.enforceUserAuthService = enforceUserAuthService;
+        this.tryPolicyClient = tryPolicyClient;
     }
 
 
@@ -45,26 +54,32 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
         return documentTypeCodes;
     }
 
+    /**
+     * Combine patient uploaded clinical documents and sample clinical documents provided by try my policy
+     *
+     * @param patientMrn
+     * @return
+     */
     @Override
-    public List<Object> getPatientDocumentInfoList(String patientMrn) {
-        List<Object> uploadedDocuments;
+    public Object getPatientDocumentInfoList(String patientMrn) {
+        Object uploadedDocuments;
 
         // Assert mrn belong to current user
         enforceUserAuthService.assertCurrentUserAuthorizedForMrn(patientMrn);
 
         try {
-            uploadedDocuments = phrUploadedDocumentsClient.getPatientDocumentInfoList(patientMrn);
+            uploadedDocuments = addSampleDocsToPatientUploadedDocumentList(patientMrn);
         } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
-            if(!(causedBy instanceof FeignException)){
+            if (!(causedBy instanceof FeignException)) {
                 log.error("Unexpected instance of HystrixRuntimeException has occurred", hystrixErr);
                 throw new PhrClientInterfaceException("An unknown error occurred while attempting to communicate with PHR service");
             }
 
             int causedByStatus = ((FeignException) causedBy).status();
 
-            switch (causedByStatus){
+            switch (causedByStatus) {
                 case 404:
                     log.debug("PHR client returned a 404 - NOT FOUND status, indicating no documents were found for the specified patientMrn", causedBy);
                     throw new NoDocumentsFoundException("No documents found for the specified patient");
@@ -89,14 +104,14 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
         } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
-            if(!(causedBy instanceof FeignException)){
+            if (!(causedBy instanceof FeignException)) {
                 log.error("Unexpected instance of HystrixRuntimeException has occurred", hystrixErr);
                 throw new PhrClientInterfaceException("An unknown error occurred while attempting to communicate with PHR service");
             }
 
             int causedByStatus = ((FeignException) causedBy).status();
 
-            switch(causedByStatus){
+            switch (causedByStatus) {
                 case 404:
                     log.debug("PHR client returned a 404 - NOT FOUND status, indicating either no documents were found for the specified patientMrn," +
                             "or the document requested does not belong to the specified patientMrn", causedBy);
@@ -120,19 +135,19 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
         // Assert mrn belong to current user
         enforceUserAuthService.assertCurrentUserAuthorizedForMrn(patientMrn);
 
-        try{
+        try {
             returnedSavedDocument = phrUploadedDocumentsClient.saveNewPatientDocument(patientMrn, file, documentName, description, documentTypeCodeId);
         } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
-            if(!(causedBy instanceof FeignException)){
+            if (!(causedBy instanceof FeignException)) {
                 log.error("Unexpected instance of HystrixRuntimeException has occurred", hystrixErr);
                 throw new PhrClientInterfaceException("An unknown error occurred while attempting to communicate with PHR service");
             }
 
             int causedByStatus = ((FeignException) causedBy).status();
 
-            switch(causedByStatus){
+            switch (causedByStatus) {
                 case 400:
                     log.error("PHR client returned a 400 - BAD REQUEST status, indicating invalid input was passed to PHR client", causedBy);
                     throw new InvalidInputException("Invalid input was passed to PHR client");
@@ -164,14 +179,14 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
         } catch (HystrixRuntimeException hystrixErr) {
             Throwable causedBy = hystrixErr.getCause();
 
-            if(!(causedBy instanceof FeignException)){
+            if (!(causedBy instanceof FeignException)) {
                 log.error("Unexpected instance of HystrixRuntimeException has occurred", hystrixErr);
                 throw new PhrClientInterfaceException("An unknown error occurred while attempting to communicate with PHR service");
             }
 
             int causedByStatus = ((FeignException) causedBy).status();
 
-            switch(causedByStatus){
+            switch (causedByStatus) {
                 case 400:
                     log.error("PHR client returned a 400 - BAD REQUEST status, indicating invalid input was passed to PHR client", causedBy);
                     throw new InvalidInputException("Invalid input was passed to PHR client");
@@ -186,5 +201,23 @@ public class PhrUploadedDocumentsServiceImpl implements PhrUploadedDocumentsServ
                     throw new PhrClientInterfaceException("An unknown error occurred while attempting to communicate with PHR service");
             }
         }
+    }
+
+    private Object addSampleDocsToPatientUploadedDocumentList(String patientMrn) {
+        List<Object> uploadedDocumentInfoDtos = phrUploadedDocumentsClient.getPatientDocumentInfoList(patientMrn);
+        List<UploadedDocumentInfoDto> sampleDocDtos = tryPolicyClient.getSampleDocuments().stream()
+                .map(sampleDocDto -> UploadedDocumentInfoDto.builder()
+                        .id((long) sampleDocDto.getId())
+                        .isSampleDocument(sampleDocDto.isSampleDocument())
+                        .documentName(sampleDocDto.getDocumentName())
+                        .fileName(sampleDocDto.getFilePath())
+                        .contentType(SAMPLE_DOCUMENT_CONTENT_TYPE)
+                        .documentTypeCodeId(SAMPLE_DOCUMENT_TYPE_CODE_ID)
+                        .documentTypeDisplayName(SAMPLE_DOCUMENT_TYPE_DISPLAY_NAME)
+                        .build())
+                .collect(Collectors.toList());
+
+        return Stream.concat(uploadedDocumentInfoDtos.stream(), sampleDocDtos.stream())
+                .collect(Collectors.toList());
     }
 }

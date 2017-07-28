@@ -1,13 +1,11 @@
 package gov.samhsa.c2s.c2suiapi.web;
 
 import gov.samhsa.c2s.c2suiapi.service.TryPolicyService;
-import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Locale;
 
 @RestController
 @RequestMapping("/try-policy")
@@ -19,13 +17,12 @@ public class TryPolicyRestController {
         this.tryPolicyService = tryPolicyService;
     }
 
-    @RequestMapping(value = "/tryPolicyXHTML", method = RequestMethod.GET)
-    public Object tryPolicyByConsentIdXHTML(@RequestParam("documentId") String documentId,
-                                                       @RequestParam("consentId") String consentId,
-                                                       @RequestParam("patientId") String patientId,
-                                                       @RequestParam("purposeOfUseCode") String purposeOfUseCode,
-                                                       @RequestHeader("Accept-Language") Locale locale) {
-        return tryPolicyService.getSegmentDocXHTML(documentId, consentId, patientId, purposeOfUseCode, locale);
+    @GetMapping("/tryPolicyXHTML/{patientId}")
+    public Object tryPolicyByConsentIdXHTML(@PathVariable("patientId") String patientId,
+                                            @RequestParam("consentId") String consentId,
+                                            @RequestParam("documentId") String documentId,
+                                            @RequestParam("purposeOfUseCode") String purposeOfUseCode) {
+        return tryPolicyService.getSegmentDocXHTML(patientId, consentId, documentId, purposeOfUseCode);
     }
 
 }
