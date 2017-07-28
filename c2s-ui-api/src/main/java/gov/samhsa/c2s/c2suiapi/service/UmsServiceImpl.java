@@ -60,11 +60,11 @@ public class UmsServiceImpl implements UmsService {
     }
 
     @Override
-    public void updateUser(Long userId, UserDto userDto) {
+    public Object updateUser(Long userId, UserDto userDto) {
         //Assert user ID belongs to current user
         enforceUserAuthService.assertCurrentUserMatchesUserId(userId);
 
-        umsClient.updateUser(userId, modelMapper.map(userDto, UmsUserDto.class));
+        return umsClient.updateUser(userId, modelMapper.map(userDto, UmsUserDto.class));
     }
 
     @Override
@@ -88,6 +88,7 @@ public class UmsServiceImpl implements UmsService {
         UmsUserDto currentUser = umsClient.getUserByAuthId(userAuthId);
 
         return LimitedProfileResponse.builder()
+                .userId(currentUser.getId())
                 .userLocale(currentUser.getLocale())
                 .supportedLocales(supportedLocales)
                 .username(currentUsername)
