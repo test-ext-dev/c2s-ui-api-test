@@ -23,7 +23,7 @@ public interface UmsService {
 
     Object getUser(Long userId);
 
-    void updateUser(Long userId, UserDto userDto);
+    Object updateUser(Long userId, UserDto userDto);
 
     FullProfileResponse updateUserSelfService(Long userId, UserProfileSelfServiceEditDto editUserDto);
 
