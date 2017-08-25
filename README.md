@@ -10,7 +10,7 @@ The Consent2Share User Interface API (c2s-ui-api) is a Backend For Frontends(BFF
 + [Docker Engine](https://docs.docker.com/engine/installation/) (for building a Docker image from the project)
 
 ### Commands
-
+feature/test
 This is a Maven project and requires [Apache Maven](https://maven.apache.org/) 3.3.3 or greater to build it. It is recommended to use the *Maven Wrapper* scripts provided with this project. *Maven Wrapper* requires an internet connection to download Maven and project dependencies for the very first build.
 
 To build the project, navigate to the folder that contains `pom.xml` file using the terminal/command line.
